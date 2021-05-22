@@ -1,0 +1,15 @@
+.grid-rows-10 {
+    grid-template-rows: repeat(10, minmax(0, 1fr));
+}
+
+.classDisplay {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 65vh;
+}
+
+.banner {
+    margin-left: -5px;
+    right: -60%;
+    text-align: left;
+}
