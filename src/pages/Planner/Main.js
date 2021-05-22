@@ -6,6 +6,7 @@ import { saveClasses } from "../../state/actions";
 import ClassList from "./ClassSection/ClassList";
 import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
+import Schedules from "./Schedules/Schedules";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -48,6 +49,7 @@ class Main extends Component {
           </div>
           <div className="shadow-xl w-4/5 ml-3 h-full flex">
             <Calendar />
+            <Schedules />
           </div>
         </div>
       </div>
