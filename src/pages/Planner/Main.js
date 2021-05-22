@@ -24,10 +24,12 @@ class Main extends Component {
   }
 
   toggleMenu() {
+    // Toggle the recommended menu
     this.setState({ recommendedOpen: !this.state.recommendedOpen });
   }
 
   componentDidMount() {
+    // Get all classes
     axios.get("http://localhost:8000/api/classes/").then((response) => {
       this.props.saveClasses(response.data);
     });

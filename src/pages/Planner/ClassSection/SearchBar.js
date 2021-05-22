@@ -17,9 +17,13 @@ export default class SearchBar extends Component {
           onChange={this.props.handleType}
           className="w-10/12 text-md xl:text-xl h-full pl-4 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500 bg-blue-50"
         />
+
+        {/* Order button */}
         <button className="h-full w-1/12 flex items-center justify-center mx-2 text-gray-600">
           <ImSortAmountDesc className="text-xl" />
         </button>
+
+        {/* Filter button */}
         <button className="h-full w-1/12 flex items-center justify-center text-gray-600">
           <FaFilter className="text-xl" />
         </button>
