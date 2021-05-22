@@ -28,6 +28,7 @@ const activeSections = [
   },
 ];
 
+// Will probably be replaced by a library
 export default class CalendarGraph extends Component {
   constructor(props) {
     super(props);

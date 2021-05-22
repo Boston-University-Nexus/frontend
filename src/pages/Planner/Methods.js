@@ -1,3 +1,4 @@
+// Filters classes according to text typed
 export function filter(numWords, classes, val) {
   if (val[0] == "") return [];
 

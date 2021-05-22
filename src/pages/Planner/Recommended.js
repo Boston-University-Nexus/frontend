@@ -13,7 +13,7 @@ export default class Recommended extends Component {
           "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center " +
           (isOpen ? "h-3/7" : "h-16")
         }
-        style={{ transition: "height 100ms" }}
+        style={{ transition: "height 100ms" }} // For the animation
       >
         <div className="bg-white p-3 xl:p-5 flex uppercase font-bold flex justify-between items-center">
           <h2 className="font-black text-sm lg:text-md 2xl:text-xl">
