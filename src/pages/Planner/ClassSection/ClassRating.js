@@ -1,20 +1,21 @@
 import React from "react";
 
 function getColor(val, type) {
+  // Decides the color based on the rating
   if (type === "Quality") {
-    if (val < 5 / 3) return "bg-red-300";
-    else if (val < 10 / 3) return "bg-yellow-300";
-    else return "bg-green-300";
+    if (val < 5 / 3) return "bg-red-200";
+    else if (val < 10 / 3) return "bg-yellow-200";
+    else return "bg-green-200";
   } else {
-    if (val < 5 / 3) return "bg-green-300";
-    else if (val < 10 / 3) return "bg-yellow-300";
-    else return "bg-red-300";
+    if (val < 5 / 3) return "bg-green-200";
+    else if (val < 10 / 3) return "bg-yellow-200";
+    else return "bg-red-200";
   }
 }
 
 export default function ClassRating(props) {
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center w-1/5">
       <div
         className={"px-4 rounded-full " + getColor(props.val, props.ratingType)}
       >

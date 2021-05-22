@@ -47,20 +47,29 @@ class ClassList extends Component {
     let classList = this.props.displayedClasses.slice(0, 10);
 
     return (
-      <div className="w-1/5 h-full bg-white shadow-xl flex flex-col">
+      <div className="bg-white shadow-xl flex flex-col w-full mb-4 flex-grow overflow-hidden">
         <SearchBar handleType={this.handleType} />
-        <div className="bg-white p-5 border border-gray-200 flex uppercase font-bold text-gray-500">
+
+        {/* INDICATES WHAT EACH ITEM IS */}
+        <div className="bg-white p-5 flex uppercase font-bold text-gray-500 border-b border-gray-300">
           <p className="w-3/5">course</p>
           <p className="w-1/5 text-center">qual</p>
           <p className="w-1/5 text-center">diff</p>
         </div>
-        <div className="overflow-y-auto h-full w-full">
+
+        {/* DISPLAYED CLASSES */}
+        <div className="flex flex-col flex-grow w-full overflow-y-scroll">
+          {/* IF CLASSES */}
           {classList.map((item, key) => {
             return <ClassItem item={item} key={key} />;
           })}
+
+          {/* IF EMPTY SEARCH */}
           {classList.length == 0 && this.state.typedText.length < 1 && (
             <StartTyping />
           )}
+
+          {/* IF NOT FOUND */}
           {classList.length == 0 && this.state.typedText.length > 0 && (
             <NotFound />
           )}
