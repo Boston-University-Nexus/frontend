@@ -16,7 +16,15 @@ const mapDispatchToProps = (dispatch) => {
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      recommendedOpen: false,
+    };
+
+    this.toggleMenu = this.toggleMenu.bind(this);
+  }
+
+  toggleMenu() {
+    this.setState({ recommendedOpen: !this.state.recommendedOpen });
   }
 
   componentDidMount() {
@@ -29,10 +37,15 @@ class Main extends Component {
     return (
       <div className="flex justify-center items-center h-full bg-blue-300 p-8 pt-24">
         <div className="flex justify-center items-center h-full w-full">
-          <ClassList />
+          <div className="flex flex-col items-center justify-between w-1/5 h-full">
+            <ClassList open={this.state.recommendedOpen} />
+            <Recommended
+              open={this.state.recommendedOpen}
+              toggleMenu={this.toggleMenu}
+            />
+          </div>
           <div className="shadow-xl w-4/5 ml-3 h-full flex">
             <Calendar />
-            <Recommended />
           </div>
         </div>
       </div>
