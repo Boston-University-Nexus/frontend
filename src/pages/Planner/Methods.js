@@ -1,5 +1,5 @@
 export function filter(numWords, classes, val) {
-  if (val[0] == "") return classes;
+  if (val[0] == "") return [];
 
   let currentClasses;
 

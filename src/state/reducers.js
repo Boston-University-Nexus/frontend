@@ -11,7 +11,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         classes: action.payload,
-        displayedClasses: action.payload,
       };
     case FILTER_CLASSES:
       return {

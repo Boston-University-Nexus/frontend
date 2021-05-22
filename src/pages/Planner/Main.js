@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { saveClasses } from "../../state/actions";
-import ClassList from "./ClassList";
+import ClassList from "./ClassSection/ClassList";
 import Calendar from "./Calendar";
 import Recommended from "./Recommended";
 
@@ -27,7 +27,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-5/6 p-8 pb-0">
+      <div className="flex justify-center items-center h-full bg-blue-300 p-8 pt-24">
         <div className="flex justify-center items-center h-full w-full">
           <ClassList />
           <div className="shadow-xl w-4/5 ml-3 h-full flex">
