@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { saveClasses } from "../../state/actions";
 import ClassList from "./ClassSection/ClassList";
-import Calendar from "./Calendar";
+import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
 
 const mapDispatchToProps = (dispatch) => {
@@ -37,7 +37,7 @@ class Main extends Component {
     return (
       <div className="flex justify-center items-center h-full bg-blue-300 p-8 pt-24">
         <div className="flex justify-center items-center h-full w-full">
-          <div className="flex flex-col items-center justify-between w-1/5 h-full">
+          <div className="flex flex-col items-center justify-between w-1/5 h-full overflow-hidden">
             <ClassList open={this.state.recommendedOpen} />
             <Recommended
               open={this.state.recommendedOpen}

@@ -15,12 +15,14 @@ export default class Recommended extends Component {
         }
         style={{ transition: "height 100ms" }}
       >
-        <div className="bg-white p-5 flex uppercase font-bold flex justify-between items-center">
-          <h2 className="font-black text-xl">recommended</h2>
+        <div className="bg-white p-3 xl:p-5 flex uppercase font-bold flex justify-between items-center">
+          <h2 className="font-black text-sm lg:text-md 2xl:text-xl">
+            recommended
+          </h2>
 
           {/* TOGGLE BUTTON */}
           <button
-            className="bg-black text-white px-3 rounded-full focus:outline-none ml-3"
+            className="bg-black text-white text-xs xl:text-sm px-2 rounded-full focus:outline-none ml-1 xl:ml-3"
             onClick={this.props.toggleMenu}
           >
             {isOpen ? (

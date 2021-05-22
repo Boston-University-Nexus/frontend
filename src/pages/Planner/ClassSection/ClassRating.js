@@ -15,9 +15,9 @@ function getColor(val, type) {
 
 export default function ClassRating(props) {
   return (
-    <div className="flex items-center justify-center w-1/5">
+    <div className="flex items-center justify-center w-1/5 text-sm">
       <div
-        className={"px-4 rounded-full " + getColor(props.val, props.ratingType)}
+        className={"px-3 rounded-full " + getColor(props.val, props.ratingType)}
       >
         <span>{props.val}</span>
       </div>
