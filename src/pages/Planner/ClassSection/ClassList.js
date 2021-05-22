@@ -51,7 +51,7 @@ class ClassList extends Component {
         <SearchBar handleType={this.handleType} />
 
         {/* INDICATES WHAT EACH ITEM IS */}
-        <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs xl:text-md">
+        <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs lg:text-md">
           <p className="w-3/5">course</p>
           <p className="w-1/5 text-center">qual</p>
           <p className="w-1/5 text-center">diff</p>

@@ -3,13 +3,6 @@ import React, { Component } from "react";
 import CalendarGraph from "./CalendarGraph";
 import CalendarStats from "./CalendarStats";
 
-const sectionTest = {
-  id: 1,
-  title: "CAS CS 112 A1",
-  professor: "Papadakis",
-  location: "CAS 202",
-};
-
 export default class Calendar extends Component {
   render() {
     return (

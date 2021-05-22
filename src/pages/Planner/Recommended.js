@@ -22,7 +22,7 @@ export default class Recommended extends Component {
 
           {/* TOGGLE BUTTON */}
           <button
-            className="bg-black text-white text-xs xl:text-sm px-2 rounded-full focus:outline-none ml-1 xl:ml-3"
+            className="bg-gray-600 text-white text-xs xl:text-sm px-2 rounded-full focus:outline-none ml-1 xl:ml-3"
             onClick={this.props.toggleMenu}
           >
             {isOpen ? (
@@ -39,12 +39,12 @@ export default class Recommended extends Component {
         {isOpen && (
           <>
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="bg-white p-5 flex uppercase font-bold text-gray-500  border-b border-gray-300">
+            <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs lg:text-md">
               <p className="w-3/5">course</p>
               <p className="w-1/5 text-center">qual</p>
               <p className="w-1/5 text-center">diff</p>
             </div>
-            <div className="overflow-y-auto h-full w-full">
+            <div className="overflow-y-scroll h-full w-full">
               {/* JUST VISUALS FOR NOW */}
               <ClassItem
                 item={{
