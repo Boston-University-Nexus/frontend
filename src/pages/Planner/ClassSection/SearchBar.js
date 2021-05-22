@@ -6,7 +6,7 @@ import { ImSortAmountDesc } from "react-icons/im";
 export default class SearchBar extends Component {
   render() {
     return (
-      <div className="flex items-center border-b border-gray-300 pr-2 w-full py-5 bg-blue-50">
+      <div className="flex items-center border-b border-gray-300 pr-2 w-full bg-blue-50">
         <input
           type="text"
           placeholder="SEARCH..."
@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
           onBlur={(e) => (e.target.placeholder = "SEARCH...")}
           // ------------------------------------------------------
           onChange={this.props.handleType}
-          className="w-10/12 text-md xl:text-xl h-full pl-4 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500 bg-blue-50"
+          className="w-10/12 h-full text-md xl:text-xl pl-4 py-5 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500 bg-blue-50"
         />
 
         {/* Order button */}
