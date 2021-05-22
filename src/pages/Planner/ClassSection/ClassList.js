@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ClassItem from "../../components/Planner/ClassList/ClassItem";
-import { filterClasses } from "../../state/actions";
-import { filter } from "./Methods";
+import ClassItem from "./ClassItem";
+import { filterClasses } from "../../../state/actions";
+import { filter } from "../Methods";
+
+import NotFound from "./NotFound";
+import StartTyping from "./StartTyping";
+import SearchBar from "./SearchBar";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,11 +24,18 @@ const mapDispatchToProps = (dispatch) => {
 class ClassList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      hasTyped: false,
+      typedText: "",
+    };
 
     this.handleType = this.handleType.bind(this);
   }
 
   handleType(e) {
+    // Is used to determine if we show "not found" or "start typing"
+    this.setState({ typedText: e.target.value });
+
     let numWords = e.target.value.split(" ").length;
     let val = e.target.value.toLowerCase().split(" ");
     let currentClasses = filter(numWords, this.props.classes, val);
@@ -37,22 +48,21 @@ class ClassList extends Component {
 
     return (
       <div className="w-1/5 h-full bg-white shadow-xl flex flex-col">
-        <input
-          type="text"
-          placeholder="Search classes..."
-          onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = "Search classes...")}
-          onChange={this.handleType}
-          className="w-full text-3xl p-4 border-b border-gray-300 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500"
-        />
-        <div className="overflow-y-auto">
+        <SearchBar handleType={this.handleType} />
+        <div className="bg-white p-5 border border-gray-200 flex uppercase font-bold text-gray-500">
+          <p className="w-3/5">course</p>
+          <p className="w-1/5 text-center">qual</p>
+          <p className="w-1/5 text-center">diff</p>
+        </div>
+        <div className="overflow-y-auto h-full w-full">
           {classList.map((item, key) => {
             return <ClassItem item={item} key={key} />;
           })}
-          {classList.length == 0 && (
-            <div className="bg-white p-3 py-2 flex-flex-col text-xl text-gray-500 w-full text-justify">
-              No classes found... Try a different search
-            </div>
+          {classList.length == 0 && this.state.typedText.length < 1 && (
+            <StartTyping />
+          )}
+          {classList.length == 0 && this.state.typedText.length > 0 && (
+            <NotFound />
           )}
         </div>
       </div>

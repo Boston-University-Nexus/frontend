@@ -11,7 +11,7 @@ export default class PlannerNav extends Component {
   }
   render() {
     return (
-      <div className="w-full py-4 flex justify-center items-center bg-white shadow-xl">
+      <div className="w-full py-4 flex justify-center items-center bg-white shadow-xl absolute">
         <div className="w-full px-8 flex justify-between items-center">
           <div className="font-bold text-xl">
             <a href="/">BUNexus</a>
