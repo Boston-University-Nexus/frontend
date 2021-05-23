@@ -2,7 +2,11 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { saveClasses } from "../../state/actions";
+import {
+  changeCalendar,
+  saveCalendars,
+  saveClasses,
+} from "../../state/actions";
 import ClassList from "./ClassSection/ClassList";
 import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
@@ -11,6 +15,8 @@ import Schedules from "./Schedules/Schedules";
 const mapDispatchToProps = (dispatch) => {
   return {
     saveClasses: (classes) => dispatch(saveClasses(classes)),
+    saveCalendars: (calendars) => dispatch(saveCalendars(calendars)),
+    changeCalendar: (calendar) => dispatch(changeCalendar(calendar)),
   };
 };
 
@@ -29,10 +35,16 @@ class Main extends Component {
     this.setState({ recommendedOpen: !this.state.recommendedOpen });
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // Get all classes
     axios.get("http://localhost:8000/api/classes/").then((response) => {
       this.props.saveClasses(response.data);
+    });
+
+    // Get calendars
+    axios.get("http://localhost:8000/api/calendars/").then((response) => {
+      this.props.saveCalendars(response.data);
+      this.props.changeCalendar(response.data[0]);
     });
   }
 

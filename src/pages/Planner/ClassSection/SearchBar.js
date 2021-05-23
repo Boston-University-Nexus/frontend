@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
           onBlur={(e) => (e.target.placeholder = "SEARCH...")}
           // ------------------------------------------------------
           onChange={this.props.handleType}
-          className="w-10/12 h-full text-md xl:text-xl pl-4 py-5 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500 bg-blue-50"
+          className="w-10/12 h-full text-base xl:text-xl pl-4 py-5 text-gray-700 focus:outline-none focus:border focus:border-solid focus:border-blue-500 bg-blue-50"
         />
 
         {/* Order button */}

@@ -40,10 +40,57 @@ body,
   height: 42.85%;
 }
 
-.h-cal {
-  height: 45px;
+.text-2xs {
+  font-size: 0.625rem;
 }
 
-.text-2xs {
-  font-size: 0.5rem;
+.calendarItem {
+  @media (max-width: 1024px) {
+    .sectionTitle {
+      font-size: 0.5rem;
+    }
+
+    .sectionProps .left-child {
+      font-size: 0.35rem;
+      margin-right: 3px;
+    }
+
+    .sectionProps .right-child {
+      font-size: 0.35rem;
+    }
+  }
+
+  @media (max-width: 1440px) {
+    .sectionTitle {
+      font-size: 0.55rem;
+    }
+
+    .sectionProps .left-child {
+      font-size: 0.5rem;
+      margin-right: 3px;
+      max-width: 48%;
+    }
+
+    .sectionProps .right-child {
+      font-size: 0.5rem;
+      max-width: 48%;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .sectionTitle {
+      font-size: 0.8rem;
+    }
+
+    .sectionProps .left-child {
+      font-size: 0.65rem;
+      margin-right: 3px;
+      max-width: 48%;
+    }
+
+    .sectionProps .right-child {
+      font-size: 0.65rem;
+      max-width: 48%;
+    }
+  }
 }

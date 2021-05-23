@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import CalendarGraph from "./CalendarGraph";
+import CalendarGraph from "./CalendarGraph/CalendarGraph";
 import CalendarStats from "./CalendarStats";
 
 const testStats = {
@@ -17,16 +18,28 @@ const testStats = {
   latest: "4 PM",
 };
 
-export default class Calendar extends Component {
+const mapStateToProps = (state) => {
+  return {
+    activeCalendar: state.activeCalendar,
+  };
+};
+
+class Calendar extends Component {
   render() {
     return (
-      <div className="w-4/5 h-full bg-white p-2 px-4">
-        <h1 className="font-black text-lg xl:text-xl uppercase">
-          prioritize major
-        </h1>
-        <CalendarGraph />
-        <CalendarStats stats={testStats} />
-      </div>
+      <>
+        {this.props.activeCalendar && (
+          <div className="w-4/5 h-full bg-white p-2 px-4">
+            <h1 className="font-black text-lg xl:text-xl uppercase">
+              {this.props.activeCalendar.title}
+            </h1>
+            <CalendarGraph />
+            {/* <CalendarStats stats={testStats} /> */}
+          </div>
+        )}
+      </>
     );
   }
 }
+
+export default connect(mapStateToProps)(Calendar);

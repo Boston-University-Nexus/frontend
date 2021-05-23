@@ -1,8 +1,15 @@
-import { FILTER_CLASSES, SAVE_CLASSES } from "./constants";
+import {
+  CHANGE_CALENDAR,
+  FILTER_CLASSES,
+  SAVE_CALENDARS,
+  SAVE_CLASSES,
+} from "./constants";
 
 const initialState = {
   classes: [],
+  calendars: [],
   displayedClasses: [],
+  activeCalendar: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -16,6 +23,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         displayedClasses: action.payload,
+      };
+    case SAVE_CALENDARS:
+      return {
+        ...state,
+        calendars: action.payload,
+      };
+    case CHANGE_CALENDAR:
+      return {
+        ...state,
+        activeCalendar: action.payload,
       };
     default:
       return state;

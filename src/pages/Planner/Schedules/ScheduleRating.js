@@ -15,7 +15,7 @@ function getColor(val, type) {
 
 export default function ScheduleRating(props) {
   return (
-    <div className="flex items-center justify-center text-sm ml-2">
+    <div className="flex items-center justify-center text-xs ml-2">
       <div className={"px-3 rounded-full " + getColor(props.val, props.type)}>
         <span>{props.val}</span>
       </div>

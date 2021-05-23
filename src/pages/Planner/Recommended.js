@@ -16,7 +16,7 @@ export default class Recommended extends Component {
         style={{ transition: "height 100ms" }} // For the animation
       >
         <div className="bg-white p-3 xl:p-5 flex uppercase font-bold flex justify-between items-center">
-          <h2 className="font-black text-sm lg:text-md 2xl:text-xl">
+          <h2 className="font-black text-sm lg:text-base 2xl:text-xl">
             recommended
           </h2>
 
@@ -39,7 +39,7 @@ export default class Recommended extends Component {
         {isOpen && (
           <>
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs lg:text-md">
+            <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs lg:text-base">
               <p className="w-3/5">course</p>
               <p className="w-1/5 text-center">qual</p>
               <p className="w-1/5 text-center">diff</p>
