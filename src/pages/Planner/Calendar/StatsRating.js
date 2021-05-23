@@ -21,8 +21,8 @@ export default function StatsRating(props) {
   let col = getColor(props.val, props.text);
 
   return (
-    <div className="flex items-center m-4">
-      <div className="w-12 h-12 mr-2 text-center">
+    <div className="flex items-center m-1 xl:m-4">
+      <div className="w-8 xl:w-12 h-8 xl:h-12 mr-1 xl:mr-2 text-center">
         <CircularProgressbarWithChildren
           value={props.val}
           maxValue={5}
@@ -50,12 +50,14 @@ export default function StatsRating(props) {
             backgroundColor: "#3e98c7",
           })}
         >
-          <div className="flex w-full h-full items-center justify-center font-bold text-xl">
+          <div className="flex w-full h-full items-center justify-center font-bold text-sm xl:text-lg">
             {props.val}
           </div>
         </CircularProgressbarWithChildren>
       </div>
-      <h3 className="uppercase w-20 font-medium">{props.text}</h3>
+      <h3 className="uppercase w-20 font-medium text-xs xl:text-base">
+        {props.text}
+      </h3>
     </div>
   );
 }
