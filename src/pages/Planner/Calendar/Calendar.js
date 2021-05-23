@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import CalendarGraph from "./CalendarGraph";
+import CalendarGraph from "./CalendarGraph/CalendarGraph";
 import CalendarStats from "./CalendarStats";
 
 const testStats = {
@@ -33,8 +33,8 @@ class Calendar extends Component {
             <h1 className="font-black text-lg xl:text-xl uppercase">
               {this.props.activeCalendar.title}
             </h1>
-            {/* <CalendarGraph /> */}
-            <CalendarStats stats={testStats} />
+            <CalendarGraph />
+            {/* <CalendarStats stats={testStats} /> */}
           </div>
         )}
       </>
