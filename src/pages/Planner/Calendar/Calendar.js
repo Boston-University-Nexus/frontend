@@ -29,12 +29,12 @@ class Calendar extends Component {
     return (
       <>
         {this.props.activeCalendar && (
-          <div className="w-4/5 h-full bg-white p-2 px-4">
-            <h1 className="font-black text-lg xl:text-xl uppercase">
+          <div className="w-4/5 h-full bg-white p-2 px-4 flex flex-col items-center justify-between">
+            <h1 className="font-black text-lg xl:text-xl uppercase w-full text-left">
               {this.props.activeCalendar.title}
             </h1>
             <CalendarGraph />
-            {/* <CalendarStats stats={testStats} /> */}
+            <CalendarStats stats={testStats} />
           </div>
         )}
       </>

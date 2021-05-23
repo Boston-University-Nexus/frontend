@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import CalendarItem from "./CalendarItem";
+import { getCellHeight } from "./CalendarMethods";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-
-const hours = [7, 19];
 
 const mapStateToProps = (state) => {
   return {
@@ -24,23 +23,29 @@ class CalendarGraph extends Component {
     super(props);
 
     this.state = {
-      activeCalendar: {},
-      sections: {},
+      activeCalendar: {}, // The current calendar displayed
+      sections: {}, // A dictionary containing all section items
       cellHeight: null,
     };
 
     this.hours = this.hours.bind(this);
     this.days = this.days.bind(this);
 
+    this.calendarStart = 7; // Earliest hour displayed
+    this.calendarEnd = 19; // Latest hour displayed
+
     this.calendarRef = React.createRef();
   }
 
+  // Returns a cell for every hour in a day
   hours() {
     let arr = [];
-    for (let i = hours[0]; i < hours[1]; i++) {
+    for (let i = this.calendarStart; i < this.calendarEnd; i++) {
       arr.push(
         <div
-          className={i == hours[1] - 1 ? "" : "border-b border-gray-300"}
+          className={
+            i == this.calendarEnd - 1 ? "" : "border-b border-gray-300"
+          }
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
         ></div>
@@ -50,6 +55,7 @@ class CalendarGraph extends Component {
     return arr;
   }
 
+  // Returns a day for every day of the week (with all hours in it)
   days() {
     let arr = [];
     for (const i of daysOfWeek) {
@@ -79,9 +85,10 @@ class CalendarGraph extends Component {
     return arr;
   }
 
+  // Returns the hour text next to the scheduler
   hourLeyend() {
     let arr = [];
-    for (let i = hours[0]; i <= hours[1]; i++) {
+    for (let i = this.calendarStart; i <= this.calendarEnd; i++) {
       let text = i % 12;
       if (i > 12) text += " PM";
       else if (i == 12) text = "12 PM";
@@ -107,6 +114,7 @@ class CalendarGraph extends Component {
       this.props.activeCalendar &&
       this.props.activeCalendar.id != this.state.activeCalendar.id
     ) {
+      // Save state so we know what the current calendar is
       this.setState({ activeCalendar: this.props.activeCalendar });
 
       // Add classes according to received data
@@ -114,13 +122,15 @@ class CalendarGraph extends Component {
     }
   }
 
+  // On resize this is called
   resize() {
-    let cellHeight = 45 - (23 * (1920 - window.innerWidth)) / 1152;
+    let cellHeight = getCellHeight(window.innerWidth);
     this.setState({ cellHeight });
   }
 
   componentWillMount() {
-    let cellHeight = 45 - (23 * (1920 - window.innerWidth)) / 1152;
+    // Gets cell height according to current window width
+    let cellHeight = getCellHeight(window.innerWidth);
     window.addEventListener("resize", this.resize.bind(this));
 
     this.setState(
@@ -132,6 +142,7 @@ class CalendarGraph extends Component {
     );
   }
 
+  // Generates all the calendar sections in their corresponding day
   generateSections(calendar) {
     let sections = {
       monday: [],
@@ -148,6 +159,7 @@ class CalendarGraph extends Component {
             section={section}
             h={this.state.cellHeight}
             key={section.id}
+            start={this.calendarStart}
           />
         );
       });
@@ -158,7 +170,7 @@ class CalendarGraph extends Component {
 
   render() {
     return (
-      <div className="flex mt-10">
+      <div className="flex mt-10 w-full">
         <div className="flex w-full h-full overflow-hidden">
           <div
             className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"

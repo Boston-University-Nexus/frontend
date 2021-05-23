@@ -8,10 +8,9 @@ const colors = ["green", "yellow", "red", "blue", "indigo", "purple", "pink"];
 
 export default function CalendarItem(props) {
   let color = colors[props.section.id];
-  let fromTop = props.h + textToTime(props.section.start, 7) * props.h;
+  let fromTop =
+    props.h + textToTime(props.section.start, props.start) * props.h;
   let calcHeight = textToDiff(props.section.start, props.section.end) * props.h;
-
-  console.log(props.h);
 
   return (
     <div
