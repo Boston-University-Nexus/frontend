@@ -50,14 +50,14 @@ export default function CalendarItem(props) {
       }}
     >
       <div className="flex justify-between">
-        <h3 className="font-bold text-xs">{props.section.title}</h3>
+        <h3 className="font-bold text-2xs">{props.section.title}</h3>
         <IoClose />
       </div>
-      <h4 className="flex items-center text-2xs uppercase">
+      <h4 className="flex items-center text-3xs uppercase">
         <FaUserAlt />
         <span className="ml-2">{props.section.professor}</span>
       </h4>
-      <h4 className="flex items-center text-2xs uppercase">
+      <h4 className="flex items-center text-3xs uppercase">
         <IoLocationSharp />
         <span className="ml-2">{props.section.location}</span>
       </h4>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import StatsRating from "./StatsRating";
 
 export default function CalendarStats(props) {

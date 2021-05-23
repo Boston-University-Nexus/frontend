@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import CalendarItem from "./CalendarItem";
 
@@ -6,34 +7,26 @@ const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
 const hours = [7, 19];
 
-// TESTING
-const activeSections = [
-  {
-    id: 0,
-    title: "CAS CS 112 A1",
-    professor: "Papadakis",
-    location: "CAS 202",
-    days: ["monday", "wednesday", "friday"],
-    start: "11:00",
-    end: "11:55",
-  },
-  {
-    id: 1,
-    title: "CAS CS 132 B1",
-    professor: "Raju",
-    location: "COM 134",
-    days: ["tuesday", "thursday"],
-    start: "12:00",
-    end: "13:15",
-  },
-];
+const mapStateToProps = (state) => {
+  return {
+    calendars: state.calendars,
+    activeCalendar: state.activeCalendar,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
 // Will probably be replaced by a library
-export default class CalendarGraph extends Component {
+class CalendarGraph extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      activeCalendar: {},
+      sections: {},
+    };
 
     this.hours = this.hours.bind(this);
     this.days = this.days.bind(this);
@@ -72,7 +65,7 @@ export default class CalendarGraph extends Component {
           >
             {this.hours()}
           </div>
-          {this.state[i]}
+          {this.state.sections[i]}
         </div>
       );
     }
@@ -98,10 +91,42 @@ export default class CalendarGraph extends Component {
     return arr;
   }
 
-  componentDidMount() {
-    for (const i of activeSections)
-      for (const day of i.days)
-        this.setState({ [day]: <CalendarItem section={i} /> });
+  componentDidUpdate() {
+    // Only update if active calendar changed
+    if (
+      this.props.activeCalendar &&
+      this.props.activeCalendar.id != this.state.activeCalendar.id
+    ) {
+      this.setState({ activeCalendar: this.props.activeCalendar });
+
+      // Add classes according to received data
+      this.generateSections(this.props.activeCalendar);
+    }
+  }
+
+  componentWillMount() {
+    this.setState({ activeCalendar: this.props.activeCalendar });
+
+    // Add classes according to received data
+    this.generateSections(this.props.activeCalendar);
+  }
+
+  generateSections(calendar) {
+    let sections = {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+    };
+
+    for (const section of calendar.sections) {
+      for (const day of section.days) {
+        sections[day].push(<CalendarItem section={section} />);
+      }
+    }
+
+    this.setState({ sections });
   }
 
   render() {
@@ -119,3 +144,5 @@ export default class CalendarGraph extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarGraph);
