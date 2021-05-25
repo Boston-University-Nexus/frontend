@@ -3,6 +3,7 @@ import {
   FILTER_CLASSES,
   SAVE_CALENDARS,
   SAVE_CLASSES,
+  SAVE_SECTIONS,
 } from "./constants";
 
 // Saves classes to state
@@ -18,6 +19,11 @@ export const filterClasses = (payload) => {
 // Saves calendars to state
 export const saveCalendars = (payload) => {
   return { type: SAVE_CALENDARS, payload };
+};
+
+// Saves sections to state
+export const saveSections = (payload) => {
+  return { type: SAVE_SECTIONS, payload };
 };
 
 // Changes the displayed calendar
