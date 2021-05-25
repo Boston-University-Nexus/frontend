@@ -6,17 +6,20 @@ import {
   changeCalendar,
   saveCalendars,
   saveClasses,
+  saveSections,
 } from "../../state/actions";
+
 import ClassList from "./ClassSection/ClassList";
 import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
-import Schedules from "./Schedules/Schedules";
+import Cart from "./Cart/Cart";
 
 const mapDispatchToProps = (dispatch) => {
   return {
     saveClasses: (classes) => dispatch(saveClasses(classes)),
     saveCalendars: (calendars) => dispatch(saveCalendars(calendars)),
     changeCalendar: (calendar) => dispatch(changeCalendar(calendar)),
+    saveSections: (sections) => dispatch(saveSections(sections)),
   };
 };
 
@@ -45,6 +48,7 @@ class Main extends Component {
     axios.get("http://localhost:8000/api/calendars/").then((response) => {
       this.props.saveCalendars(response.data);
       this.props.changeCalendar(response.data[0]);
+      this.props.saveSections(response.data[0].sections);
     });
   }
 
@@ -61,7 +65,7 @@ class Main extends Component {
           </div>
           <div className="shadow-xl w-4/5 ml-3 h-full flex">
             <Calendar />
-            <Schedules />
+            <Cart />
           </div>
         </div>
       </div>

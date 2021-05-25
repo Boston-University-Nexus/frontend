@@ -9,12 +9,23 @@ const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 const mapStateToProps = (state) => {
   return {
     calendars: state.calendars,
-    activeCalendar: state.activeCalendar,
+    activeSections: state.activeSections,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
+const compareArrOfObj = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) return false;
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (
+      arr1[i].title != arr2[i].title ||
+      arr1[i].displayed != arr2[i].displayed
+    ) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 // Will probably be replaced by a library
@@ -23,13 +34,14 @@ class CalendarGraph extends Component {
     super(props);
 
     this.state = {
-      activeCalendar: {}, // The current calendar displayed
+      activeSections: {}, // The current calendar displayed
       sections: {}, // A dictionary containing all section items
       cellHeight: null,
     };
 
     this.hours = this.hours.bind(this);
     this.days = this.days.bind(this);
+    this.generateSections = this.generateSections.bind(this);
 
     this.calendarStart = 7; // Earliest hour displayed
     this.calendarEnd = 19; // Latest hour displayed
@@ -110,15 +122,19 @@ class CalendarGraph extends Component {
 
   componentDidUpdate() {
     // Only update if active calendar changed
-    if (
-      this.props.activeCalendar &&
-      this.props.activeCalendar.id != this.state.activeCalendar.id
-    ) {
-      // Save state so we know what the current calendar is
-      this.setState({ activeCalendar: this.props.activeCalendar });
+    let same = compareArrOfObj(
+      this.state.activeSections,
+      this.props.activeSections
+    );
 
-      // Add classes according to received data
-      this.generateSections(this.props.activeCalendar);
+    if (!same) {
+      // Save state so we know what the current calendar is
+      this.setState(
+        {
+          activeSections: JSON.parse(JSON.stringify(this.props.activeSections)),
+        },
+        () => this.generateSections(this.state.activeSections)
+      );
     }
   }
 
@@ -133,17 +149,14 @@ class CalendarGraph extends Component {
     let cellHeight = getCellHeight(window.innerWidth);
     window.addEventListener("resize", this.resize.bind(this));
 
-    this.setState(
-      {
-        activeCalendar: this.props.activeCalendar,
-        cellHeight,
-      },
-      () => this.generateSections(this.props.activeCalendar)
-    );
+    let sectionsList = JSON.parse(JSON.stringify(this.props.activeSections));
+
+    this.setState({ cellHeight });
+    this.generateSections(sectionsList);
   }
 
   // Generates all the calendar sections in their corresponding day
-  generateSections(calendar) {
+  generateSections(sectionsList) {
     let sections = {
       monday: [],
       tuesday: [],
@@ -152,17 +165,18 @@ class CalendarGraph extends Component {
       friday: [],
     };
 
-    calendar.sections.map((section) => {
-      return section.days.map((day) => {
-        return sections[day].push(
-          <CalendarItem
-            section={section}
-            h={this.state.cellHeight}
-            key={section.id}
-            start={this.calendarStart}
-          />
-        );
-      });
+    sectionsList.map((section) => {
+      if (!(section.displayed === false))
+        return section.days.map((day) => {
+          return sections[day].push(
+            <CalendarItem
+              section={section}
+              h={this.state.cellHeight}
+              key={section.id}
+              start={this.calendarStart}
+            />
+          );
+        });
     });
 
     this.setState({ sections });
@@ -187,4 +201,4 @@ class CalendarGraph extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarGraph);
+export default connect(mapStateToProps)(CalendarGraph);

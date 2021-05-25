@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import CalendarGraph from "./CalendarGraph/CalendarGraph";
 import CalendarStats from "./CalendarStats";
+import ScheduleList from "./ScheduleList";
 
 const testStats = {
   quality: 3,
@@ -30,9 +31,12 @@ class Calendar extends Component {
       <>
         {this.props.activeCalendar && (
           <div className="w-4/5 h-full bg-white p-2 px-4 flex flex-col items-center justify-between">
-            <h1 className="font-black text-lg xl:text-xl uppercase w-full text-left">
-              {this.props.activeCalendar.title}
-            </h1>
+            <div className="flex w-full items-center justify-start">
+              <h1 className="font-black text-lg xl:text-xl uppercase text-left">
+                Schedules
+              </h1>
+              <ScheduleList />
+            </div>
             <CalendarGraph />
             <CalendarStats stats={testStats} />
           </div>
