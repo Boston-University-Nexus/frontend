@@ -1,4 +1,6 @@
 import { Route, Switch } from "react-router";
+
+// Components
 import PlannerNav from "../components/Planner/PlannerNav";
 import NotFound from "../pages/Planner/ClassSection/NotFound";
 import Main from "../pages/Planner/Main";

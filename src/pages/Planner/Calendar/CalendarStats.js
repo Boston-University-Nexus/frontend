@@ -1,10 +1,12 @@
 import React from "react";
 import StatsRating from "./StatsRating";
 
+// Displays current calendar's statistics
 export default function CalendarStats(props) {
   return (
     <div className="w-full h-1/5 flex xl:py-4 overflow-hidden">
       <div className="flex flex-col w-1/2 items-center justify-center">
+        {/* Circular stats */}
         <div className="flex justify-center items-center">
           <StatsRating text="course quality" val={props.stats.quality} />
           <StatsRating text="instructor quality" val={props.stats.instructor} />
@@ -15,6 +17,7 @@ export default function CalendarStats(props) {
         </div>
       </div>
       <div className="flex items-center justify-center w-1/2">
+        {/* Rating stats */}
         <div className="flex flex-col w-3/5 justify-evenly text-xs xl:text-base whitespace-nowrap">
           <p className="uppercase">
             <span className="font-bold w-7 text-right inline-block">
@@ -47,6 +50,8 @@ export default function CalendarStats(props) {
             total hours/week
           </p>
         </div>
+
+        {/* Hour stats */}
         <div className="flex flex-col justify-between w-2/5 text-xs xl:text-base">
           <div className="flex flex-col">
             <h3 className="uppercase">earliest start</h3>

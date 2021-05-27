@@ -1,15 +1,21 @@
 import React from "react";
 
+// Icons
 import { FaUserAlt } from "react-icons/fa";
 import { IoLocationSharp, IoClose } from "react-icons/io5";
 import { textToDiff, textToTime } from "./CalendarMethods";
 
+// Different colors for each class
 const colors = ["green", "yellow", "red", "blue", "indigo", "purple", "pink"];
 
 export default function CalendarItem(props) {
-  let color = colors[props.section.id];
+  let color = colors[props.section.id % colors.length];
+
+  // Days of week fields are also h, so h + diff * h
   let fromTop =
     props.h + textToTime(props.section.start, props.start) * props.h;
+
+  // duration in hours * h px/height
   let calcHeight = textToDiff(props.section.start, props.section.end) * props.h;
 
   return (

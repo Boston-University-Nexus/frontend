@@ -1,5 +1,6 @@
 import React from "react";
 
+// Display when search bar is empty
 export default function StartTyping() {
   return (
     <div className="flex items-end uppercase h-full text-center p-4">

@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+// Components
 import CalendarItem from "./CalendarItem";
+
+// Functions
 import { getCellHeight } from "./CalendarMethods";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
+// Redux
 const mapStateToProps = (state) => {
   return {
     calendars: state.calendars,
@@ -28,7 +32,6 @@ const compareArrOfObj = (arr1, arr2) => {
   return true;
 };
 
-// Will probably be replaced by a library
 class CalendarGraph extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +39,7 @@ class CalendarGraph extends Component {
     this.state = {
       activeSections: {}, // The current calendar displayed
       sections: {}, // A dictionary containing all section items
-      cellHeight: null,
+      cellHeight: null, // Dinamically sets cell height
     };
 
     this.hours = this.hours.bind(this);
@@ -149,6 +152,7 @@ class CalendarGraph extends Component {
     let cellHeight = getCellHeight(window.innerWidth);
     window.addEventListener("resize", this.resize.bind(this));
 
+    // Deep copy of sections to avoid shallow copy reference changing
     let sectionsList = JSON.parse(JSON.stringify(this.props.activeSections));
 
     this.setState({ cellHeight });

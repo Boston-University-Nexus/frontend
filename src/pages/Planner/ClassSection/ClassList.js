@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ClassItem from "./ClassItem";
+
+// Functions
 import { filterClasses } from "../../../state/actions";
 import { filter } from "../Methods";
 
+// Components
 import NotFound from "./NotFound";
 import StartTyping from "./StartTyping";
 import SearchBar from "./SearchBar";
+import ClassItem from "./ClassItem";
 
+// Redux
 const mapStateToProps = (state) => {
   return {
     displayedClasses: state.displayedClasses,
@@ -38,8 +42,11 @@ class ClassList extends Component {
 
     let numWords = e.target.value.split(" ").length;
     let val = e.target.value.toLowerCase().split(" ");
+
+    // Call helper function filter
     let currentClasses = filter(numWords, this.props.classes, val);
 
+    // Save to state
     this.props.filterClasses(currentClasses);
   }
 

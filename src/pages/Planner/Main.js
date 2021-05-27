@@ -2,6 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
+// Functions
 import {
   changeCalendar,
   saveCalendars,
@@ -9,11 +10,13 @@ import {
   saveSections,
 } from "../../state/actions";
 
+// Components
 import ClassList from "./ClassSection/ClassList";
 import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
 import Cart from "./Cart/Cart";
 
+// Redux
 const mapDispatchToProps = (dispatch) => {
   return {
     saveClasses: (classes) => dispatch(saveClasses(classes)),

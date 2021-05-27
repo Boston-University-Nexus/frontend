@@ -1,5 +1,6 @@
 import { Component } from "react";
 
+// Landing page to decide course planner vs course search
 class Landing extends Component {
   constructor(props) {
     super(props);

@@ -1,4 +1,6 @@
 import { Route, Switch } from "react-router";
+
+// Components
 import NotFound from "../pages/Planner/ClassSection/NotFound";
 
 const CourseSearchRouter = () => {
