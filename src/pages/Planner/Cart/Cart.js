@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+// Functions
 import {
   changeCalendar,
   saveCalendars,
@@ -8,6 +10,7 @@ import {
 
 import CartItem from "./CartItem";
 
+// Redux
 const mapStateToProps = (state) => {
   return {
     activeSections: state.activeSections,
@@ -31,12 +34,14 @@ class Cart extends Component {
   }
 
   updateCart(thisTitle) {
+    // Copies state (avoids shallow copies)
     let calendars = [...this.props.calendars];
     let currentSection;
 
     for (let i = 0; i < calendars.length; i++)
       if (calendars[i] === this.props.activeCalendar) currentSection = i;
 
+    // Finds and changes the appropiate class display property
     for (let j = 0; j < calendars[currentSection].sections.length; j++)
       if (calendars[currentSection].sections[j].title === thisTitle) {
         let currentVal = calendars[currentSection].sections[j].displayed;
@@ -44,6 +49,7 @@ class Cart extends Component {
           typeof currentVal === "undefined" ? false : !currentVal;
       }
 
+    // Saves to state
     this.props.saveCalendars(calendars);
     this.props.changeCalendar(calendars[currentSection]);
   }

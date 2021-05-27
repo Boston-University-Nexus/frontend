@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+// Components
 import CalendarGraph from "./CalendarGraph/CalendarGraph";
 import CalendarStats from "./CalendarStats";
 import ScheduleList from "./ScheduleList";
 
+// Fake stats to test with
 const testStats = {
   quality: 3,
   instructor: 4,
@@ -19,6 +21,7 @@ const testStats = {
   latest: "4 PM",
 };
 
+// Redux
 const mapStateToProps = (state) => {
   return {
     activeCalendar: state.activeCalendar,

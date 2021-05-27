@@ -1,5 +1,7 @@
 import React from "react";
 
+// Rating number in class/recommended section
+
 function getColor(val, type) {
   // Decides the color based on the rating
   if (type === "Quality") {

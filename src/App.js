@@ -2,11 +2,13 @@ import "./css/index.scss";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+// Components
 import Landing from "./pages/Landing/Landing";
 import PlannerRouter from "./routers/PlannerRouter";
 import CourseSearchRouter from "./routers/CourseSearchRouter";
 import NotFound from "./pages/NotFound/NotFound";
 
+// Divide in different routers for organized routing
 function App() {
   return (
     <Router>

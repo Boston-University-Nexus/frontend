@@ -1,5 +1,6 @@
 import ClassRating from "./ClassRating";
 
+// The item displayed in the class section/recommended section
 const ClassItem = (props) => {
   let classCode =
     props.item.college + " " + props.item.department + " " + props.item.number;

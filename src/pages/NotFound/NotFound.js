@@ -1,5 +1,6 @@
 import { Component } from "react";
 
+// 404 Page
 class NotFound extends Component {
   constructor(props) {
     super(props);

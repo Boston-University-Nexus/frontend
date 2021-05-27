@@ -1,5 +1,6 @@
 import React from "react";
 
+// Search results not found display
 export default function NotFound() {
   return (
     <div className="flex items-end uppercase h-full text-center p-4">

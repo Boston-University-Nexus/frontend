@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+// Icons
 import { FaFilter } from "react-icons/fa";
 import { ImSortAmountDesc } from "react-icons/im";
 

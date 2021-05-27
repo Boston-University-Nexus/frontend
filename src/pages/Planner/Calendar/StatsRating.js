@@ -4,8 +4,8 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 
+// Helper function to decide the color based on the rating
 function getColor(val, type) {
-  // Decides the color based on the rating
   if (type === "course quality" || type === "instructor quality") {
     if (val < 5 / 3) return ["#EF4444", "#FECACA"];
     else if (val < 10 / 3) return ["#FBBF24", "#FDE68A"];

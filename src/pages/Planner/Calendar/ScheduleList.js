@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+// Icons
 import { IoIosArrowDown } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt, FaCopy } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
 
+// Functions
 import { changeCalendar } from "../../../state/actions";
 
+// Redux
 const mapStateToProps = (state) => {
   return {
     activeCalendar: state.activeCalendar,
@@ -34,6 +37,7 @@ class ScheduleList extends Component {
   }
 
   changeCalendar(e) {
+    // Changes displayed calendar in state
     let itemTitle = e.target.value;
 
     for (const schedule of this.props.calendars) {
@@ -44,6 +48,7 @@ class ScheduleList extends Component {
   }
 
   handleClick(e) {
+    // Closes popup when clicked outside
     if (
       this.state.open &&
       this.scheduleDrop &&
@@ -63,6 +68,7 @@ class ScheduleList extends Component {
         className="ml-3 relative bg-gray-200 rounded-full px-3 flex items-center capitalize cursor-pointer select-none w-42"
         ref={this.scheduleDrop}
       >
+        {/* Dropdown */}
         <div
           className="flex items-center w-full"
           onClick={() => this.setState({ open: !this.state.open })}
@@ -72,6 +78,7 @@ class ScheduleList extends Component {
         </div>
         {this.state.open && (
           <div className="absolute top-full mt-3 left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border">
+            {/* For every calendar saved in state */}
             {this.props.calendars.map((item, key) => {
               let selected = item.title === this.props.activeCalendar.title;
               return (

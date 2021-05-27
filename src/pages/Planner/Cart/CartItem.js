@@ -1,6 +1,7 @@
 import React from "react";
 import { Component } from "react";
 
+// Helper function to get day initials
 function getDayInits(arr) {
   let str = "";
   for (const day of arr) {
@@ -14,6 +15,7 @@ function getDayInits(arr) {
 export default class CartItem extends Component {
   state = { checked: true };
 
+  // Updates the checkboxes with their correct value
   componentDidUpdate(prevProps) {
     if (prevProps.item !== this.props.item) {
       this.setState({ checked: !(this.props.item.displayed === false) });

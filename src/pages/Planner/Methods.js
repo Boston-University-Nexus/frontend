@@ -29,7 +29,7 @@ export function filter(numWords, classes, val) {
         el.number.toLowerCase().includes(val[2])
       );
     });
-  else currentClasses = classes;
+  else currentClasses = [];
 
   return currentClasses;
 }
