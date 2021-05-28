@@ -57,7 +57,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-full bg-blue-300 p-8 pt-24">
+      <div className="flex justify-center items-center h-full bg-blue-300 p-4" style={{marginTop: "72px"}}>
         <div className="flex justify-center items-center h-full w-full">
           <div className="flex flex-col items-center justify-between w-1/5 h-full overflow-hidden">
             <ClassList open={this.state.recommendedOpen} />
