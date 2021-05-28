@@ -19,7 +19,7 @@ export default function ClassRating(props) {
   return (
     <div className="flex items-center justify-center w-1/5 text-sm">
       <div
-        className={"px-3 py-2 rounded-full " + getColor(props.val, props.ratingType)}
+        className={"px-3 py-1 rounded-full " + getColor(props.val, props.ratingType)}
       >
         <span className="font-bold">{props.val}</span>
       </div>
