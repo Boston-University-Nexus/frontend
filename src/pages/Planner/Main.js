@@ -66,7 +66,6 @@ class Main extends Component {
               toggleMenu={this.toggleMenu}
             />
           </div>
-          <div className="shadow-xl w-4/5 ml-3 h-full flex">
           <div className="shadow-xl w-4/5 ml-4 h-full flex">
             <Calendar />
             <Cart />
