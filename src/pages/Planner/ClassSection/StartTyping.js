@@ -6,7 +6,7 @@ export default function StartTyping() {
     <div className="flex items-end uppercase h-full text-center p-4">
       <div className="h-2/3 xl:1/2 2xl:h-1/3 w-full flex flex-col justify-between">
         <div>
-          <h2 className="font-black text-sm xl:text-lg">start searching...</h2>
+          <h2 className="font-bold text-sm xl:text-lg">start searching...</h2>
           <p className="text-xs xl:text-sm">
             find courses, departments & instructors
           </p>
