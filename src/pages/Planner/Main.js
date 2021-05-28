@@ -57,7 +57,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-full bg-blue-300 p-4" style={{marginTop: "72px"}}>
+      <div className="flex justify-center items-center h-full bg-blue-300 p-4" style={{marginTop: "56px"}}>
         <div className="flex justify-center items-center h-full w-full">
           <div className="flex flex-col items-center justify-between w-1/5 h-full overflow-hidden">
             <ClassList open={this.state.recommendedOpen} />
@@ -67,6 +67,7 @@ class Main extends Component {
             />
           </div>
           <div className="shadow-xl w-4/5 ml-3 h-full flex">
+          <div className="shadow-xl w-4/5 ml-4 h-full flex">
             <Calendar />
             <Cart />
           </div>
