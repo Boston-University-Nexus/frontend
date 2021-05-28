@@ -14,11 +14,11 @@ const ClassItem = (props) => {
       </div>
       <ClassRating
         ratingType="Quality"
-        val={Math.floor(Math.random() * 5) + 1}
+        val={(Math.random() * 3 + 1 + Math.random()).toFixed(2)}
       />
       <ClassRating
         ratingType="Difficulty"
-        val={Math.floor(Math.random() * 5) + 1}
+        val={(Math.random() * 3 + 1 + Math.random()).toFixed(2)}
       />
     </div>
   );
