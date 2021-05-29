@@ -10,9 +10,7 @@ export default class Recommended extends Component {
     return (
       <div
         className={
-          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center transition-all " +
-          (isOpen ? "h-3/7" : "h-16")
-        }
+          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center transition-all " + (isOpen ? "h-2/3" : "h-16")}
       >
         <div className="bg-white p-4 flex uppercase font-bold flex justify-between items-center">
           <span className="font-bold text-2xl">

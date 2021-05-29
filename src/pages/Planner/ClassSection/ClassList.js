@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import AnimateHeight from 'react-animate-height';
 
 // Functions
 import { filterClasses } from "../../../state/actions";
@@ -52,10 +53,12 @@ class ClassList extends Component {
 
   render() {
     let classList = this.props.displayedClasses.slice(0, 10);
+    let isOpen = this.props.open;
 
     return (
       <div
-        className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden flex-grow">
+        className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full"
+      >
         <SearchBar handleType={this.handleType} />
 
         {/* INDICATES WHAT EACH ITEM IS */}
