@@ -57,9 +57,10 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-full bg-blue-300 p-4" style={{paddingTop: 56 + 16 }}>
+      <div className="flex justify-center items-center h-full bg-blue-300 p-4"
+      style={{paddingTop: 56 + 16 }}>
         <div className="flex justify-center items-center h-full w-full">
-          <div className="flex flex-col items-center justify-between w-1/4 2xl:w-1/5 h-full overflow-hidden">
+          <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">
             <ClassList open={this.state.recommendedOpen} />
             <Recommended
               open={this.state.recommendedOpen}

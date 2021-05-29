@@ -54,11 +54,12 @@ class ClassList extends Component {
     let classList = this.props.displayedClasses.slice(0, 10);
 
     return (
-      <div className="bg-white shadow-xl flex flex-col w-full mb-4 flex-grow overflow-hidden">
+      <div
+        className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden flex-grow">
         <SearchBar handleType={this.handleType} />
 
         {/* INDICATES WHAT EACH ITEM IS */}
-        <div className="pt-3 pl-4 pr-2 flex uppercase font-bold text-gray-600 border-gray-300 text-lg">
+        <div className="p-2 pl-4 flex uppercase font-bold text-gray-600 text-lg">
           <span className="w-3/5">course</span>
           <span className="w-1/5 text-center">qual</span>
           <span className="w-1/5 text-center">diff</span>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import ClassItem from "./ClassSection/ClassItem";
 
 export default class Recommended extends Component {
@@ -10,28 +10,27 @@ export default class Recommended extends Component {
     return (
       <div
         className={
-          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center " +
+          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center transition-all " +
           (isOpen ? "h-3/7" : "h-16")
         }
-        style={{ transition: "height 100ms" }} // For the animation
       >
-        <div className="bg-white p-3 xl:p-5 flex uppercase font-bold flex justify-between items-center">
-          <h2 className="font-black text-sm lg:text-base 2xl:text-xl">
+        <div className="bg-white p-4 flex uppercase font-bold flex justify-between items-center">
+          <span className="font-bold text-2xl">
             recommended
-          </h2>
+          </span>
 
           {/* TOGGLE BUTTON */}
           <button
-            className="bg-gray-600 text-white text-xs xl:text-sm px-2 rounded-full focus:outline-none ml-1 xl:ml-3"
+            className="bg-gray-600 text-white text-sm px-2 rounded-full focus:outline-none px-3 py-1 font-bold"
             onClick={this.props.toggleMenu}
           >
             {isOpen ? (
-              <div className="flex items-center justify-center">
-                hide <IoIosArrowDown className="ml-1" />
+              <div className="flex items-center justify-center uppercase">
+                hide <FaChevronDown className="ml-1" />
               </div>
             ) : (
-              <div className="flex items-center justify-center">
-                show <IoIosArrowUp className="ml-1" />
+              <div className="flex items-center justify-center uppercase">
+                show <FaChevronUp className="ml-1" />
               </div>
             )}
           </button>
@@ -39,7 +38,7 @@ export default class Recommended extends Component {
         {isOpen && (
           <>
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="bg-white py-5 pl-5 pr-3 flex uppercase font-bold text-gray-500 border-b border-gray-300 text-xs lg:text-base">
+            <div className="p-2 pt-0 pl-4 flex uppercase font-bold text-gray-600 text-lg">
               <p className="w-3/5">course</p>
               <p className="w-1/5 text-center">qual</p>
               <p className="w-1/5 text-center">diff</p>
