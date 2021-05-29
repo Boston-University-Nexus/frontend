@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Icons
-import { MdModeEdit } from "react-icons/md";
-import { FaTrashAlt, FaCopy, FaChevronDown } from "react-icons/fa";
-import { AiOutlineStar } from "react-icons/ai";
+import { FaTrashAlt, FaCopy, FaChevronDown, FaEdit } from "react-icons/fa";
+import { FiStar } from "react-icons/fi";
 
 // Functions
 import { changeCalendar } from "../../../state/actions";
@@ -83,7 +82,7 @@ class ScheduleList extends Component {
               return (
                 <div
                   className={
-                    "p-4 hover:bg-blue-100 flex items-center justify-between " +
+                    "px-3 py-4 hover:bg-blue-100 flex items-center justify-between " +
                     (selected ? "bg-blue-100" : "bg-white")
                   }
                   key={key}
@@ -93,15 +92,15 @@ class ScheduleList extends Component {
                   }}
                 >
                   <div className="flex items-center w-2/3">
-                    <AiOutlineStar />
+                    <FiStar />
                     <span className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
                       {item.title}
                     </span>
                   </div>
 
                   <div className="flex text-gray-500 text-sm">
-                    <MdModeEdit />
-                    <FaCopy className="xl:mx-1" />
+                    <FaEdit />
+                    <FaCopy className="mx-1" />
                     <FaTrashAlt />
                   </div>
                 </div>
