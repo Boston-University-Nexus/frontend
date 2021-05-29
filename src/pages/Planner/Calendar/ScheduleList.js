@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Icons
-import { IoIosArrowDown } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
-import { FaTrashAlt, FaCopy } from "react-icons/fa";
+import { FaTrashAlt, FaCopy, FaChevronDown } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
 
 // Functions
@@ -65,7 +64,7 @@ class ScheduleList extends Component {
   render() {
     return (
       <div
-        className="ml-3 relative bg-gray-200 rounded-full px-3 flex items-center capitalize cursor-pointer select-none w-42"
+        className="ml-5 relative bg-gray-200 text-gray-600 rounded-full px-4 py-0.5 flex items-center capitalize cursor-pointer select-none font-bold"
         ref={this.scheduleDrop}
       >
         {/* Dropdown */}
@@ -74,7 +73,7 @@ class ScheduleList extends Component {
           onClick={() => this.setState({ open: !this.state.open })}
         >
           {this.props.activeCalendar.title}
-          <IoIosArrowDown />
+          <FaChevronDown className="ml-2"/>
         </div>
         {this.state.open && (
           <div className="absolute top-full mt-3 left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border">
