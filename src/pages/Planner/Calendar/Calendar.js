@@ -33,10 +33,10 @@ class Calendar extends Component {
     return (
       <>
         {this.props.activeCalendar && (
-          <div className="w-4/5 h-full bg-white p-2 px-4 flex flex-col items-center justify-between">
+          <div className="w-4/5 h-full bg-white p-4 flex flex-col items-center justify-between">
             <div className="flex w-full items-center justify-start">
-              <h1 className="font-black text-lg xl:text-xl uppercase text-left">
-                Schedules
+              <h1 className="font-bold text-2xl uppercase">
+                Schedule
               </h1>
               <ScheduleList />
             </div>
