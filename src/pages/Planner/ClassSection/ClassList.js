@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import AnimateHeight from 'react-animate-height';
 
 // Functions
 import { filterClasses } from "../../../state/actions";
