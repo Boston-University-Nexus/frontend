@@ -87,7 +87,6 @@ class ScheduleList extends Component {
                   }
                   key={key}
                   onClick={() => {
-                    this.setState({ open: false });
                     this.props.changeCalendar(item);
                   }}
                 >
