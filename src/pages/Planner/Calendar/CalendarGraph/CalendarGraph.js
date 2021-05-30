@@ -188,7 +188,7 @@ class CalendarGraph extends Component {
 
   render() {
     return (
-      <div className="flex mt-10 w-full">
+      <div className="flex w-full">
         <div className="flex w-full h-full overflow-hidden">
           <div
             className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"
