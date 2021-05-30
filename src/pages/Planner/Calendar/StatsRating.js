@@ -22,11 +22,12 @@ export default function StatsRating(props) {
 
   return (
     <div className="flex items-center m-1 xl:m-4">
-      <div className="w-8 xl:w-12 h-8 xl:h-12 mr-1 xl:mr-2 text-center">
+      <div className="w-8 xl:w-12 h-8 xl:h-12 mr-2 xl:mr-3 text-center">
         <CircularProgressbarWithChildren
           value={props.val}
           maxValue={5}
           className="flex items-center justify-center"
+          strokeWidth="12"
           styles={buildStyles({
             // Rotation of path and trail, in number of turns (0-1)
             rotation: 0,

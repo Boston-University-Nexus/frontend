@@ -8,17 +8,17 @@ import ScheduleList from "./ScheduleList";
 
 // Fake stats to test with
 const testStats = {
-  quality: 3,
-  instructor: 4,
-  difficulty: 2,
+  quality: "3.0",
+  instructor: "4.0",
+  difficulty: "2.0",
   workload: 4.5,
   majorClasses: 2,
   hubClasses: 2,
   newHubs: 3,
   hoursDay: 1.7,
   hoursWeek: 8.5,
-  earliest: "8 AM",
-  latest: "4 PM",
+  earliest: "8:00 AM",
+  latest: "4:00 PM",
 };
 
 // Redux
