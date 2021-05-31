@@ -54,8 +54,8 @@ export default class CartItem extends Component {
             </span>
           </div>
         </div>
-        <FaInfoCircle className={"text-xl text-gray-400 hover:text-gray-600 transition-all " + (this.state.hovered ? "opacity-100" : "opacity-0" )} />
-        <FaTrashAlt className={"text-xl text-gray-400 hover:text-red-500 transition-all " + (this.state.hovered ? "opacity-100" : "opacity-0" )} />
+        <FaInfoCircle className={"text-xl text-gray-400 hover:text-gray-600 transition " + (this.state.hovered ? "opacity-100" : "opacity-0" )} />
+        <FaTrashAlt className={"text-xl text-gray-400 hover:text-red-500 transition " + (this.state.hovered ? "opacity-100" : "opacity-0" )} />
       </div>
     );
   }
