@@ -4,7 +4,7 @@ import StatsRating from "./StatsRating";
 // Displays current calendar's statistics
 export default function CalendarStats(props) {
   return (
-    <div className="w-full h-1/5 flex xl:py-4 overflow-hidden">
+    <div className="w-full h-1/5 flex overflow-hidden">
       <div className="flex flex-col w-1/2 items-center justify-center">
         {/* Circular stats */}
         <div className="flex justify-center items-center">
@@ -52,7 +52,7 @@ export default function CalendarStats(props) {
         </div>
 
         {/* Hour stats */}
-        <div className="flex flex-col justify-between w-2/5 text-xs xl:text-base">
+        <div className="flex flex-col justify-between w-2/5 text-xs xl:text-base h-full py-1 xl:py-4">
           <div className="flex flex-col">
             <h3 className="uppercase">earliest start</h3>
             <span className="font-bold">{props.stats.earliest}</span>

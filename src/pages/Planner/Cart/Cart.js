@@ -56,7 +56,7 @@ class Cart extends Component {
 
   render() {
     return (
-      <div className="w-1/5 h-full bg-blue-100 flex flex-col">
+      <div className="w-1/4 2xl:w-1/5 h-full bg-blue-100 flex flex-col">
         {this.props.activeCalendar.sections &&
           this.props.activeCalendar.sections.map((item, key) => {
             return (
