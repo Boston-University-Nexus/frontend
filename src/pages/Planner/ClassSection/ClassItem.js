@@ -38,7 +38,7 @@ class ClassItem extends Component {
       this.props.item.number;
     return (
       <div
-        className="bg-white py-3 pl-4 pr-2 flex hover:bg-blue-100 cursor-pointer transition"
+        className="bg-white py-3 pl-4 pr-2 flex hover:bg-blue-100 cursor-pointer transition justify-between items-center"
         onClick={this.display}
       >
         <div className="flex flex-col w-3/5">
@@ -47,8 +47,16 @@ class ClassItem extends Component {
             {this.props.item.title}
           </span>
         </div>
-        <ClassRating ratingType="Quality" val={this.props.item.quality} />
-        <ClassRating ratingType="Difficulty" val={this.props.item.difficulty} />
+        <div className="flex w-2/5 gap-1 justify-evenly items-center">
+          <ClassRating
+            ratingType="Quality"
+            val={this.props.item.qualityRating}
+          />
+          <ClassRating
+            ratingType="Difficulty"
+            val={this.props.item.difficultyRating}
+          />
+        </div>
       </div>
     );
   }

@@ -63,16 +63,21 @@ class ClassList extends Component {
         <SearchBar handleType={this.handleType} />
 
         {this.props.classStack.length === 0 && (
-          <>
+          <div
+            className="flex flex-col w-full items-center justify-center"
+            style={{ height: "91.66%" }}
+          >
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="p-2 pl-4 flex uppercase font-bold text-gray-600 text-lg">
+            <div className="py-2 pl-4 pr-6 flex uppercase font-bold text-gray-600 text-lg w-full">
               <span className="w-3/5">course</span>
-              <span className="w-1/5 text-center">qual</span>
-              <span className="w-1/5 text-center">diff</span>
+              <div className="flex w-2/5 gap-1 justify-evenly items-center">
+                <span className="w-1/3 text-center">qual</span>
+                <span className="w-1/3 text-center">diff</span>
+              </div>
             </div>
 
             {/* DISPLAYED CLASSES */}
-            <div className="flex flex-col flex-grow w-full overflow-y-scroll">
+            <div className="flex flex-col flex-grow w-full overflow-y-scroll h-5/6">
               {/* IF CLASSES */}
               {classList.map((item, key) => {
                 return (
@@ -94,7 +99,7 @@ class ClassList extends Component {
                 <NotFound />
               )}
             </div>
-          </>
+          </div>
         )}
         {this.props.classStack.length > 0 && (
           <ClassCard
