@@ -30,7 +30,7 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recommendedOpen: false,
+      recommendedOpen: true,
     };
 
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -57,16 +57,17 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-full bg-blue-300 p-8 pt-24">
+      <div className="flex justify-center items-center h-full bg-blue-300 p-4"
+      style={{paddingTop: 56 + 16 }}>
         <div className="flex justify-center items-center h-full w-full">
-          <div className="flex flex-col items-center justify-between w-1/5 h-full overflow-hidden">
+          <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">
             <ClassList open={this.state.recommendedOpen} />
             <Recommended
               open={this.state.recommendedOpen}
               toggleMenu={this.toggleMenu}
             />
           </div>
-          <div className="shadow-xl w-4/5 ml-3 h-full flex">
+          <div className="shadow-xl w-3/4 2xl:w-4/5 ml-4 h-full flex">
             <Calendar />
             <Cart />
           </div>

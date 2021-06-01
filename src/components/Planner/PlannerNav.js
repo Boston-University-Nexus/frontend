@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, NavLink, Link } from "react-router-dom";
 
 export default class PlannerNav extends Component {
   constructor(props) {
@@ -11,21 +11,27 @@ export default class PlannerNav extends Component {
   }
   render() {
     return (
-      <div className="w-full py-4 flex justify-center items-center bg-white shadow-xl absolute">
-        <div className="w-full px-8 flex justify-between items-center">
+      <div className="w-full py-2 flex justify-center items-center bg-white shadow-xl absolute">
+        <div className="w-full px-4 flex justify-between items-center">
           <div className="font-bold text-xl">
             <a href="/">BUNexus</a>
           </div>
           <div className="flex items-center">
-            <Link to="/planner" className="text-blue-500 hover:underline mx-2">
+            <NavLink
+              exact
+              to="/planner"
+              activeClassName="font-bold"
+              className="uppercase hover:underline mx-2"
+            >
               Planner
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/planner/about"
-              className="text-blue-500 hover:underline mx-2"
+              activeClassName="font-bold"
+              className="uppercase hover:underline mx-2"
             >
               About
-            </Link>
+            </NavLink>
             <div
               className="relative"
               onMouseEnter={() => this.setState({ menuOpen: true })}
