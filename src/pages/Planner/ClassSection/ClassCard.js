@@ -9,6 +9,22 @@ import { displayClass } from "../../../state/actions";
 import axios from "axios";
 import SectionItem from "./SectionItem";
 
+const formatDescription = (descr) => {
+  if (descr.length > 150) {
+    return (
+      <>
+        {descr.substring(0, 150)}
+        {"... "}
+        <button className="text-blue-500 font-bold cursor-pointer hover:text-blue-700 inline">
+          see more
+        </button>
+      </>
+    );
+  } else {
+    return descr;
+  }
+};
+
 // Redux
 const mapStateToProps = (state) => {
   return {
@@ -110,7 +126,7 @@ class ClassCard extends Component {
 
     return (
       <div className="w-full" style={{ height: "91.66%" }}>
-        <div className="h-3/5 flex w-full items-start justify-start flex-col">
+        <div className="h-1/2 flex w-full items-start justify-start flex-col mb-3">
           <button
             className="flex items-center justify-start text-gray-800 w-full focus:outline-none hover:text-black m-3"
             onClick={this.removeClassFromStack}
@@ -118,7 +134,7 @@ class ClassCard extends Component {
             <IoChevronBackOutline />
             Back
           </button>
-          <h1 className="font-black lg:text-xl xl:text-2xl m-3">
+          <h1 className="font-black lg:text-xl xl:text-2xl m-3 mb-0">
             {item.college + " " + item.department + " " + item.number}
           </h1>
           <h2 className="text-lg mx-3">{item.title}</h2>
@@ -127,7 +143,7 @@ class ClassCard extends Component {
               href=""
               target="_blank"
               rel="noreferrer"
-              className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-2 bg-blue-100 hover:bg-blue-200 mt-4 text-sm"
+              className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-2 bg-blue-100 hover:bg-blue-200 mt-1 text-sm"
             >
               <span className="inline align-middle">
                 View on Nexus Course Review
@@ -147,8 +163,8 @@ class ClassCard extends Component {
               </div>
             )}
             {item.prereqs !== "" && (
-              <div className="flex mt-4 text-sm">
-                <p>Prerequisites:</p>
+              <div className="mt-4 text-sm">
+                <p className="inline">Prerequisites:</p>
                 {item.prereqs.split(",").map((thisItem, key) => {
                   return (
                     <>
@@ -166,10 +182,12 @@ class ClassCard extends Component {
                 ; or equivalent.
               </div>
             )}
-            <p className="text-sm mt-4">{item.description}</p>
+            <p className="text-sm mt-4">
+              {formatDescription(item.description)}
+            </p>
           </div>
         </div>
-        <div className="flex flex-col mt-4 h-2/5">
+        <div className="flex flex-col h-1/2">
           <div className="uppercase text-gray-700 font-black flex justify-between w-full px-3">
             <span className="w-3/5">section</span>
             <div className="w-2/5">

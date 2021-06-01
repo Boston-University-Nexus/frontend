@@ -8,7 +8,7 @@ export default class SearchBar extends Component {
   render() {
     return (
       <div
-        className="flex items-center pr-4 w-full bg-blue-100"
+        className="flex items-center pr-4 w-full bg-blue-100 transition-none"
         style={{ height: "8.33%" }}
       >
         <input
