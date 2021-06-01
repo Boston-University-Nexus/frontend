@@ -1,5 +1,6 @@
 import {
   CHANGE_CALENDAR,
+  CLASS_STACK,
   FILTER_CLASSES,
   SAVE_CALENDARS,
   SAVE_CLASSES,
@@ -7,11 +8,12 @@ import {
 } from "./constants";
 
 const initialState = {
-  classes: [],
-  calendars: [],
-  displayedClasses: [],
-  activeCalendar: {},
-  activeSections: [],
+  classes: [], // All the classes received from the backend
+  calendars: [], // All the calendars received from the backend
+  displayedClasses: [], // The classes currently displayed when search
+  activeCalendar: {}, // The calendar displayed
+  activeSections: [], // The sections displayed on the current calendar
+  classStack: [], // The class stack used for navigation (class cards)
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -43,6 +45,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         activeCalendar: action.payload,
         activeSections: action.payload.sections,
+      };
+    case CLASS_STACK:
+      return {
+        ...state,
+        classStack: action.payload,
       };
     default:
       return state;

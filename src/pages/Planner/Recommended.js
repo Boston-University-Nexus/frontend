@@ -10,12 +10,12 @@ export default class Recommended extends Component {
     return (
       <div
         className={
-          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center transition-all " + (isOpen ? "h-2/3" : "h-16")}
+          "bg-white shadow-xl flex flex-col w-full overflow-hidden justify-center transition-all " +
+          (isOpen ? "h-2/3" : "h-16")
+        }
       >
         <div className="bg-white p-4 flex uppercase font-bold flex justify-between items-center">
-          <span className="font-bold text-2xl">
-            recommended
-          </span>
+          <span className="font-bold text-2xl">recommended</span>
 
           {/* TOGGLE BUTTON */}
           <button
@@ -50,6 +50,7 @@ export default class Recommended extends Component {
                   college: "CAS",
                   number: "123",
                 }}
+                toggleMenu={this.props.toggleMenu}
               />
               <ClassItem
                 item={{
@@ -58,6 +59,7 @@ export default class Recommended extends Component {
                   college: "CAS",
                   number: "123",
                 }}
+                toggleMenu={this.props.toggleMenu}
               />
               <ClassItem
                 item={{
@@ -66,6 +68,7 @@ export default class Recommended extends Component {
                   college: "CAS",
                   number: "123",
                 }}
+                toggleMenu={this.props.toggleMenu}
               />
             </div>
           </>
