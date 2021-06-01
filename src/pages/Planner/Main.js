@@ -36,9 +36,11 @@ class Main extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
-  toggleMenu() {
-    // Toggle the recommended menu
-    this.setState({ recommendedOpen: !this.state.recommendedOpen });
+  toggleMenu(e, val) {
+    if (typeof val !== "undefined")
+      // Toggle the recommended menu
+      this.setState({ recommendedOpen: val });
+    else this.setState({ recommendedOpen: !this.state.recommendedOpen });
   }
 
   componentWillMount() {
@@ -57,11 +59,16 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="flex justify-center items-center h-full bg-blue-300 p-4"
-      style={{paddingTop: 56 + 16 }}>
+      <div
+        className="flex justify-center items-center h-full bg-blue-300 p-4"
+        style={{ paddingTop: 56 + 16 }}
+      >
         <div className="flex justify-center items-center h-full w-full">
           <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">
-            <ClassList open={this.state.recommendedOpen} />
+            <ClassList
+              open={this.state.recommendedOpen}
+              toggleMenu={this.toggleMenu}
+            />
             <Recommended
               open={this.state.recommendedOpen}
               toggleMenu={this.toggleMenu}
