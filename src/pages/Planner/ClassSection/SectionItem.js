@@ -38,8 +38,8 @@ export default class SectionItem extends Component {
   render() {
     let item = this.props.item;
     return (
-      <div className="flex justify-between items-center text-xs pl-3 pr-1 py-1">
-        <div className="flex flex-col justify-center w-1/4">
+      <div className="flex justify-between items-center text-xs py-3 hover:bg-blue-100 transition-colors pl-4 pr-1">
+        <div className="flex flex-col justify-center w-1/3">
           <div className="flex items-end gap-1">
             <h1 className="font-black text-base">{item.section}</h1>
             <h2 className="uppercase">{item.type.substring(0, 3)}</h2>
@@ -48,7 +48,7 @@ export default class SectionItem extends Component {
             {item.professor.name}
           </h2>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center w-1/3">
           <div className="flex items-end gap-1">
             <h1 className="font-black uppercase">
               {getDayInits(item.days.split(","))}
@@ -62,7 +62,7 @@ export default class SectionItem extends Component {
             {item.building || "TBD"}
           </h2>
         </div>
-        <div className="flex w-2/5 justify-evenly items-center">
+        <div className="flex w-1/3 justify-evenly items-center">
           <SectionRating ratingType="Professor" val={item.professorRating} />
           <SectionRating ratingType="Workload" val={item.workloadRating} />
           <button
