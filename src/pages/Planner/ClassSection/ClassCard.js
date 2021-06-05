@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 // Icons
-import { IoChevronBackOutline } from "react-icons/io5";
 import { FiExternalLink } from "react-icons/fi";
+import { FaArrowLeft } from "react-icons/fa";
 
 import { connect } from "react-redux";
 import { displayClass } from "../../../state/actions";
@@ -15,7 +15,7 @@ const formatDescription = (descr) => {
       <>
         {descr.substring(0, 150)}
         {"... "}
-        <button className="text-blue-500 font-bold cursor-pointer hover:text-blue-700 inline">
+        <button className="text-blue-500 font-bold cursor-pointer hover:text-blue-600 transition-colors inline">
           see more
         </button>
       </>
@@ -125,37 +125,41 @@ class ClassCard extends Component {
     let hubs = this.state.hubs;
 
     return (
-      <div className="w-full" style={{ height: "91.66%" }}>
-        <div className="h-1/2 flex w-full items-start justify-start flex-col mb-3">
+      <div className="w-full h-full">
+          <div class="p-4">
           <button
-            className="flex items-center justify-start text-gray-800 w-full focus:outline-none hover:text-black m-3"
+            className="flex items-center justify-start text-gray-600 w-full focus:outline-none hover:text-black transition-colors mb-4"
             onClick={this.removeClassFromStack}
           >
-            <IoChevronBackOutline />
+            <FaArrowLeft className="mr-2"/>
             Back
           </button>
-          <h1 className="font-black lg:text-xl xl:text-2xl m-3 mb-0">
+          <h1 className="font-black lg:text-xl xl:text-2xl">
             {item.college + " " + item.department + " " + item.number}
           </h1>
-          <h2 className="text-lg mx-3">{item.title}</h2>
-          <div className="text-gray-700 p-3">
-            <a
-              href=""
-              target="_blank"
-              rel="noreferrer"
-              className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-2 bg-blue-100 hover:bg-blue-200 mt-1 text-sm"
-            >
-              <span className="inline align-middle">
-                View on Nexus Course Review
-              </span>
-              <FiExternalLink className="inline align-middle ml-1" />
-            </a>
+          <h2 className="text-lg mb-1">{item.title}</h2>
+          <a
+            href=""
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm"
+          >
+            <span className="inline align-middle">
+              View on Nexus Course Review
+            </span>
+            <FiExternalLink className="inline align-middle ml-1" />
+          </a>
+        </div>
+        <div className="flex w-full h-full items-start justify-start flex-col overflow-y-scroll"
+          style={{ height: "calc(100% - 228px)" }}
+        >
+          <div className="text-gray-600 px-4 pb-4">
             {hubs.length > 0 && (
-              <div className="flex flex-wrap text-sm mt-4 gap-1">
+              <div className="flex flex-wrap items-center text-sm gap-2">
                 <p>Hub Areas:</p>
                 {hubs.map((thisItem, key) => {
                   return (
-                    <div className="bg-gray-200 rounded-full px-2" key={key}>
+                    <div className="bg-gray-200 rounded-full px-3 py-1" key={key}>
                       {thisItem}
                     </div>
                   );
@@ -169,7 +173,7 @@ class ClassCard extends Component {
                   return (
                     <>
                       <button
-                        className="inline text-blue-500 font-bold ml-1"
+                        className="inline text-blue-500 hover:text-blue-600 transition-colors font-bold ml-1"
                         onClick={() => this.addClassToStack(thisItem)}
                         key={key}
                       >
@@ -186,18 +190,19 @@ class ClassCard extends Component {
               {formatDescription(item.description)}
             </p>
           </div>
-        </div>
-        <div className="flex flex-col h-1/2">
-          <div className="uppercase text-gray-700 font-black flex justify-between w-full px-3">
-            <span className="w-3/5">section</span>
-            <div className="w-2/5">
-              <span className="w-2/3">prof/work</span>
+
+          <div className="flex flex-col w-full">
+            <div className="uppercase text-gray-600 font-black flex justify-between w-full px-4">
+              <span className="w-1/3">section</span>
+              <div className="w-1/3">
+                <span>prof/work</span>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col overflow-y-auto overflow-x-hidden w-full">
-            {this.state.sections.map((item, key) => {
-              return <SectionItem item={item} key={key} />;
-            })}
+            <div className="flex flex-col w-full">
+              {this.state.sections.map((item, key) => {
+                return <SectionItem item={item} key={key} />;
+              })}
+            </div>
           </div>
         </div>
       </div>
