@@ -17,13 +17,13 @@ const config = {
 firebase.initializeApp(config);
 
 const Login = () => {
-  const [userLoggedIn, setUser] = useState('false');
+  const [loginStatus, setLoginStatus] = useState(false);
 
   useEffect(() => {
-    const user = firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user.uid);
-        setUser('true');
+        console.log(user);
+        setLoginStatus(true);
       } else {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
@@ -36,7 +36,7 @@ const Login = () => {
             .catch(console.error);
         }
 
-        setUser('false');
+        setLoginStatus(false);
       }
     })
   }, []);
@@ -59,7 +59,7 @@ const Login = () => {
       <button className="pr-3" onClick={signIn}>Sign In</button>
       <button onClick={signOut}>Sign Out</button>
 
-      <p>Status: {userLoggedIn}</p>
+      <p>Login Status: {loginStatus.toString()}</p>
     </div>
   );
 };
