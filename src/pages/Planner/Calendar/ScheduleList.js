@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Icons
-import { FaTrashAlt, FaCopy, FaChevronDown, FaChevronUp, FaEdit } from "react-icons/fa";
+import {
+  FaTrashAlt,
+  FaCopy,
+  FaChevronDown,
+  FaChevronUp,
+  FaEdit,
+} from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 
 // Functions
@@ -72,13 +78,18 @@ class ScheduleList extends Component {
           onClick={() => this.setState({ open: !this.state.open })}
         >
           {this.props.activeCalendar.title}
-          {this.state.open
-            ? <FaChevronUp className="ml-2"/>
-            : <FaChevronDown className="ml-2"/>
-          }
+          {this.state.open ? (
+            <FaChevronUp className="ml-2" />
+          ) : (
+            <FaChevronDown className="ml-2" />
+          )}
         </div>
-        <div className={"absolute top-full mt-3 left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity " +
-        (this.state.open ? "opacity-100" : "invisible opacity-0")}>
+        <div
+          className={
+            "absolute top-full mt-3 left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity " +
+            (this.state.open ? "opacity-100" : "invisible opacity-0")
+          }
+        >
           {/* For every calendar saved in state */}
           {this.props.calendars.map((item, key) => {
             let selected = item.title === this.props.activeCalendar.title;
@@ -101,9 +112,9 @@ class ScheduleList extends Component {
                 </div>
 
                 <div className="flex text-gray-500 text-sm">
-                  <FaEdit />
-                  <FaCopy className="mx-1" />
-                  <FaTrashAlt />
+                  <FaEdit className="hover:text-gray-400" />
+                  <FaCopy className="mx-1 hover:text-gray-400" />
+                  <FaTrashAlt className="hover:text-gray-400" />
                 </div>
               </div>
             );

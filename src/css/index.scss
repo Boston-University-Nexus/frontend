@@ -44,23 +44,26 @@ body,
   font-size: 0.625rem;
 }
 
+.cellAnim {
+  transition: width 100ms ease-in, height 100ms ease-in;
+}
+
 .calendarItem {
-  @media (max-width: 1024px) {
+  transition: top 100ms ease-in;
+
+  @media (max-width: 768px) {
     .sectionTitle {
-      font-size: 0.5rem;
-    }
-
-    .sectionProps .left-child {
-      font-size: 0.35rem;
-      margin-right: 3px;
-    }
-
-    .sectionProps .right-child {
-      font-size: 0.35rem;
+      font-size: 0.37rem;
     }
   }
 
-  @media (max-width: 1440px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .sectionTitle {
+      font-size: 0.47rem;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1440px) {
     .sectionTitle {
       font-size: 0.55rem;
     }

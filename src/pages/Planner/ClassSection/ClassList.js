@@ -68,7 +68,7 @@ class ClassList extends Component {
             style={{ height: "calc(100% - 55px)" }}
           >
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-lg w-full">
+            <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-xs lg:text-sm xl:text-lg w-full">
               <span className="w-3/5">course</span>
               <div className="flex w-2/5 justify-center items-center">
                 <span className="text-center">qual/diff</span>
