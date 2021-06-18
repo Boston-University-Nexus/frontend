@@ -42,8 +42,10 @@ class ClassItem extends Component {
         onClick={this.display}
       >
         <div className="flex flex-col w-3/5">
-          <span className="text-lg mr-3 font-bold">{classCode}</span>
-          <span className="text-sm overflow-ellipsis w-full whitespace-nowrap overflow-hidden">
+          <span className="text-xs lg:text-base xl:text-lg mr-3 font-bold">
+            {classCode}
+          </span>
+          <span className="text-xs lg:text-sm overflow-ellipsis w-full whitespace-nowrap overflow-hidden">
             {this.props.item.title}
           </span>
         </div>

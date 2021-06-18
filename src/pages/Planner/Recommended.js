@@ -15,20 +15,24 @@ export default class Recommended extends Component {
         }
       >
         <div className="bg-white p-4 flex uppercase font-bold flex justify-between items-center">
-          <span className="font-bold text-2xl">recommended</span>
+          <span className="font-bold text-sm lg:text-lg xl:text-2xl mr-1">
+            recommended
+          </span>
 
           {/* TOGGLE BUTTON */}
           <button
-            className="bg-gray-600 text-white text-sm px-2 rounded-full focus:outline-none px-3 py-1 font-bold"
+            className="bg-gray-600 text-white text-xs lg:text-sm px-1 lg:px-2 rounded-full focus:outline-none py-1 font-bold mr-1"
             onClick={this.props.toggleMenu}
           >
             {isOpen ? (
               <div className="flex items-center justify-center uppercase">
-                hide <FaChevronDown className="ml-1" />
+                {window.innerWidth > 1024 && "hide "}
+                <FaChevronDown />
               </div>
             ) : (
               <div className="flex items-center justify-center uppercase">
-                show <FaChevronUp className="ml-1" />
+                {window.innerWidth > 1024 && "show "}
+                <FaChevronUp />
               </div>
             )}
           </button>
@@ -36,7 +40,7 @@ export default class Recommended extends Component {
         {isOpen && (
           <>
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="p-2 pt-0 pl-4 flex uppercase font-bold text-gray-600 text-lg">
+            <div className="p-2 pt-0 pl-4 flex uppercase font-bold text-gray-600 text-xs lg:text-sm xl:text-lg">
               <p className="w-3/5">course</p>
               <p className="w-1/5 text-center">qual</p>
               <p className="w-1/5 text-center">diff</p>

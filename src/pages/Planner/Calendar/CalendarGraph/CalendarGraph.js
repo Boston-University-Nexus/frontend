@@ -37,7 +37,7 @@ class CalendarGraph extends Component {
     super(props);
 
     this.state = {
-      activeSections: {}, // The current calendar displayed
+      activeSections: [], // The current calendar displayed
       sections: {}, // A dictionary containing all section items
       cellHeight: null, // Dinamically sets cell height
     };
@@ -59,7 +59,7 @@ class CalendarGraph extends Component {
       arr.push(
         <div
           className={
-            i == this.calendarEnd - 1 ? "" : "border-b border-gray-300"
+            i == this.calendarEnd - 1 ? "" : "border-b border-gray-300 cellAnim"
           }
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
@@ -77,14 +77,14 @@ class CalendarGraph extends Component {
       arr.push(
         <div className="flex flex-col w-full relative" key={i}>
           <div
-            className="uppercase text-gray-600 flex items-center justify-center text-sm xl:text-base"
+            className="uppercase text-gray-600 flex items-center justify-center text-xs lg:text-sm xl:text-base cellAnim"
             style={{ height: this.state.cellHeight + "px" }}
           >
-            {i}
+            {window.innerWidth > 768 ? i : i.substring(0, 3)}
           </div>
           <div
             className={
-              "flex flex-col " +
+              "flex flex-col cellAnim " +
               (i == daysOfWeek[0]
                 ? "border border-gray-300"
                 : "border border-l-0 border-gray-300")
@@ -111,7 +111,7 @@ class CalendarGraph extends Component {
 
       arr.push(
         <div
-          className="w-full flex items-center justify-end text-gray-600"
+          className="w-full flex items-center justify-end text-gray-600 whitespace-nowrap text-xs md:text-md cellAnim"
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
         >
@@ -143,8 +143,13 @@ class CalendarGraph extends Component {
 
   // On resize this is called
   resize() {
+    console.log(
+      "Resized window " + window.innerWidth + "x" + window.innerHeight
+    );
     let cellHeight = getCellHeight(window.innerWidth);
-    this.setState({ cellHeight });
+    this.setState({ cellHeight }, () =>
+      this.generateSections(this.state.activeSections)
+    );
   }
 
   componentWillMount() {
@@ -191,12 +196,12 @@ class CalendarGraph extends Component {
       <div className="flex w-full">
         <div className="flex w-full h-full overflow-hidden">
           <div
-            className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"
+            className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm cellAnim"
             style={{ marginTop: this.state.cellHeight / 2 + "px" }}
           >
             {this.hourLeyend()}
           </div>
-          <div className="flex w-11/12 h-full" ref={this.calendarRef}>
+          <div className="flex w-11/12 h-full cellAnim" ref={this.calendarRef}>
             {this.days()}
           </div>
         </div>
