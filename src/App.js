@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Landing from "./pages/Landing/Landing";
 import PlannerRouter from "./routers/PlannerRouter";
 import CourseSearchRouter from "./routers/CourseSearchRouter";
+import LoginRouter from "./routers/LoginRouter";
 import NotFound from "./pages/NotFound/NotFound";
 
 // Divide in different routers for organized routing
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route exact path="/coursesearch">
             <CourseSearchRouter />
+          </Route>
+          <Route exact path="/login">
+            <LoginRouter />
           </Route>
           <Route>
             <NotFound />
