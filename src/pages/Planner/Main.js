@@ -61,7 +61,7 @@ class Main extends Component {
     return (
       <div
         className="flex justify-center items-center h-full bg-blue-300 p-4"
-        style={{ paddingTop: 56 + 16 }}
+        style={{ paddingTop: 72 }}
       >
         <div className="flex justify-center items-center h-full w-full">
           <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">

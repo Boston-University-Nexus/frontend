@@ -3,6 +3,8 @@ import { Component } from "react";
 import { FaTrashAlt, FaInfoCircle } from "react-icons/fa";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
+import 'react-toastify/dist/ReactToastify.css';
+
 // Helper function to get day initials
 function getDayInits(arr) {
   let str = "";
@@ -41,6 +43,7 @@ export default class CartItem extends Component {
       <div
         className="w-full h-26 flex items-center justify-between px-2 lg:px-4 py-5 border-b border-solid border-gray-400 cursor-pointer hover:bg-blue-200 transition-colors select-none"
         onClick={() => {
+          toast("Hid section")
           this.props.updateCart(this.props.item.title, this.props.item);
           this.setState({ checked: !this.state.checked });
         }}

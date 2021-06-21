@@ -17,10 +17,10 @@ function App() {
           <Route exact path="/">
             <Landing />
           </Route>
-          <Route exact path="/planner">
+          <Route path="/planner">
             <PlannerRouter />
           </Route>
-          <Route exact path="/coursesearch">
+          <Route path="/coursesearch">
             <CourseSearchRouter />
           </Route>
           <Route>
