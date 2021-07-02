@@ -7,12 +7,15 @@ import Landing from "./pages/Landing/Landing";
 import PlannerRouter from "./routers/PlannerRouter";
 import CourseSearchRouter from "./routers/CourseSearchRouter";
 import NotFound from "./pages/NotFound/NotFound";
+import About from "./pages/About/About";
+import Nav from "./components/Nav";
 
 // Divide in different routers for organized routing
 function App() {
   return (
     <Router>
       <div className="w-full h-full">
+        <Nav />
         <Switch>
           <Route exact path="/">
             <Landing />
@@ -22,6 +25,9 @@ function App() {
           </Route>
           <Route path="/coursesearch">
             <CourseSearchRouter />
+          </Route>
+          <Route exact path="/about">
+            <About />
           </Route>
           <Route>
             <NotFound />
