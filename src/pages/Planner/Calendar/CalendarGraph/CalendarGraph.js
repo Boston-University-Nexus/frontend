@@ -188,7 +188,7 @@ class CalendarGraph extends Component {
             />
           );
         });
-      else return;
+      return <></>;
     });
 
     this.setState({ sections });

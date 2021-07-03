@@ -15,27 +15,38 @@ const checkTypedType = (text) => {
   let college_expr = new RegExp(/[a-z]{3}/);
   let prof_expr = new RegExp(/[a-z]*/);
 
-  // CHECKS FOR AAABB0
-  if (full_course_expr.test(text) && len <= 8) return ["course1"];
-  // CHECKS FOR AAABB000A
-  else if (full_section_expr.test(text) && len <= 10) return ["section1"];
-  // CHECKS FOR BB0
-  else if (half_course_expr.test(text) && len <= 5) return ["course2"];
-  // CHECKS FOR BB000A
-  else if (half_section_expr.test(text) && len <= 7) return ["section2"];
-  // CHECKS FOR AAB OR AA0
-  else if (college_expr.test(text) && len <= 6) return ["course3"];
-  else if (prof_expr.test(text)) return ["professor1"];
-  return [];
+  let query_terms = {};
 
-  // CAS,CS,CASCS,CAS112,CS112,CASCS112,CS112A1,CASCS112A1,James,James Smith,James Smith-Ortega
+  // CHECKS FOR AAABB0
+  if (full_course_expr.test(text) && len <= 8) {
+    return [["course"], query_terms];
+  }
+  // CHECKS FOR AAABB000A
+  else if (full_section_expr.test(text) && len <= 10) {
+    return [["section"], query_terms];
+  }
+  // CHECKS FOR BB0
+  else if (half_course_expr.test(text) && len <= 5) {
+    return [["course"], query_terms];
+  }
+  // CHECKS FOR BB000A
+  else if (half_section_expr.test(text) && len <= 7) {
+    return [["section"], query_terms];
+  }
+  // CHECKS FOR AAB OR AA0
+  else if (college_expr.test(text) && len <= 6) {
+    return [["course", "professor"], query_terms];
+    // CHECKS FOR ONLY LETTERS
+  } else if (prof_expr.test(text)) {
+    return [["professor"], query_terms];
+  } else {
+    return [];
+  }
+
+  // Test for CAS,CS,CASCS,CAS112,CS112,CASCS112,CS112A1,CASCS112A1,James,James Smith,James Smith-Ortega
 };
 
 export default class Main extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   //   Makes a request to the server of type "req_type" with
   //   query "query"
   makeRequest(req_type, query) {}
@@ -49,7 +60,7 @@ export default class Main extends Component {
   render() {
     return (
       <div
-        className="w-full md:w-2/3 xl:w-1/2 bg-white h-full shadow-2xl px-7"
+        className="w-full md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl px-7"
         style={{ paddingTop: 72 }}
       >
         <h1 className="font-bold text-xl mt-3">
