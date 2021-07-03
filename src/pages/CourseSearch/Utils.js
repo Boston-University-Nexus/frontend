@@ -1,4 +1,9 @@
+import { Link } from "react-router-dom";
+
 export const checkTypedType = (text) => {
+  // IF SEARCH BAR EMPTY
+  if (text.length == 0) return [[], {}];
+
   let text_original = text;
   text = text.replace(/\s/g, "").toLowerCase();
   let len = text.length;
@@ -55,16 +60,81 @@ export const checkTypedType = (text) => {
       query_terms["number__icontains"] = text.substring(3, 6);
     else query_terms["department__icontains"] = text.substring(3, 5);
 
-    query_terms["professor__icontains"] = text_original;
+    query_terms["professor"] = text_original;
 
     return [["courses", "professors"], query_terms];
     // CHECKS FOR ONLY LETTERS
   } else if (prof_expr.test(text)) {
-    query_terms["professor__icontains"] = text_original;
+    query_terms["professor"] = text_original;
     return [["professors"], query_terms];
   } else {
     return [[], {}]; // Something went wrong
   }
 
   // Test for CAS,CS,CASCS,CAS112,CS112,CASCS112,CS112A1,CASCS112A1,James,James Smith,James Smith-Ortega
+};
+
+export const formatTime = (time) => {
+  time = time.substring(0, time.length - 3);
+
+  let pmam = "";
+  let hour = parseInt(time.substring(0, 2));
+
+  // Getting AM or PM
+  if (hour >= 12 && hour < 24) pmam = "pm";
+  else pmam = "am";
+
+  // Converting to 12h format
+  if (hour > 12) hour = hour % 12;
+
+  time = hour + time.substring(2, 5) + pmam.toUpperCase();
+
+  return time;
+};
+
+export const formatProfessor = (prof) => {
+  prof = (
+    <Link
+      to={"/coursesearch/professors?professor=" + prof}
+      className="hover:text-blue-500"
+    >
+      {prof}
+    </Link>
+  );
+  return prof;
+};
+
+export const formatDays = (days) => {
+  return days.replaceAll(",", ", ");
+};
+
+export const formatPrereqs = (prereqs) => {
+  if (!prereqs || prereqs.length === 0) return "-";
+
+  prereqs = prereqs.split(",");
+
+  let result = [];
+
+  for (let i = 0; i < prereqs.length; i++) {
+    result.push(
+      <Link
+        to={"/coursesearch/courses?course=" + prereqs[i]}
+        className="hover:text-blue-500"
+      >
+        {prereqs[i].substring(3, prereqs[i].length)}
+      </Link>
+    );
+    result.push(", ");
+  }
+
+  return result.slice(0, result.length - 1);
+};
+
+export const formatRating = (rating) => {
+  if (parseInt(rating) === -1)
+    return <div className="h-full rounded-sm bg-gray-200 text-center">TBD</div>;
+  else
+    return (
+      <div className="h-full rounded-sm bg-blue-100 text-center">{rating}</div>
+    );
 };
