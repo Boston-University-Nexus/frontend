@@ -3,6 +3,8 @@ import { Component } from "react";
 import { FaTrashAlt, FaInfoCircle } from "react-icons/fa";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
+import 'react-toastify/dist/ReactToastify.css';
+
 // Helper function to get day initials
 function getDayInits(arr) {
   let str = "";
