@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import CoursesRating from "./CoursesRating";
 import {
   formatDays,
   formatPrereqs,
@@ -82,6 +83,7 @@ export default class Courses extends Component {
                 <span className="text-xl text-gray-700">{element.title}</span>
               </div>
               <div className="flex gap-1">
+                <CoursesRating />
                 {ratingToDiv(element.qualityRating, "Q")}
                 {ratingToDiv(element.difficultyRating, "D")}
               </div>
