@@ -1,67 +1,68 @@
 import React, { Component } from "react";
 import SearchBar from "./SearchBar";
-
-const checkTypedType = (text) => {
-  text = text.replace(/\s/g, "").toLowerCase();
-  let len = text.length;
-
-  // REGEX EXPRESSIONS
-  let full_section_expr = new RegExp(/\b[a-z]{5}[0-9]{3}[a-z]/);
-  let full_course_expr = new RegExp(/\b[a-z]{5}[0-9]+/);
-
-  let half_course_expr = new RegExp(/[a-z]{2}/);
-  let half_section_expr = new RegExp(/[a-z]{2}[0-9]{3}[a-z]/);
-
-  let college_expr = new RegExp(/[a-z]{3}/);
-  let prof_expr = new RegExp(/[a-z]*/);
-
-  let query_terms = {};
-
-  // CHECKS FOR AAABB0
-  if (full_course_expr.test(text) && len <= 8) {
-    query_terms["college"] = text.substring(0, 3);
-    query_terms["department"] = text.substring(3, 5);
-    query_terms["number"] = text.substring(5, 8);
-    return [["course"], query_terms];
-  }
-  // CHECKS FOR AAABB000A
-  else if (full_section_expr.test(text) && len <= 10) {
-    query_terms["college"] = text.substring(0, 3);
-    query_terms["department"] = text.substring(3, 5);
-    query_terms["number"] = text.substring(5, 8);
-    query_terms["number"] = text.substring(5, 8);
-    return [["section"], query_terms];
-  }
-  // CHECKS FOR BB0
-  else if (half_course_expr.test(text) && len <= 5) {
-    return [["course"], query_terms];
-  }
-  // CHECKS FOR BB000A
-  else if (half_section_expr.test(text) && len <= 7) {
-    return [["section"], query_terms];
-  }
-  // CHECKS FOR AAB OR AA0
-  else if (college_expr.test(text) && len <= 6) {
-    return [["course", "professor"], query_terms];
-    // CHECKS FOR ONLY LETTERS
-  } else if (prof_expr.test(text)) {
-    return [["professor"], query_terms];
-  } else {
-    return [];
-  }
-
-  // Test for CAS,CS,CASCS,CAS112,CS112,CASCS112,CS112A1,CASCS112A1,James,James Smith,James Smith-Ortega
-};
+import { checkTypedType } from "./Utils";
+import axios from "axios";
 
 export default class Main extends Component {
-  //   Makes a request to the server of type "req_type" with
-  //   query "query"
-  makeRequest(req_type, query) {}
+  constructor(props) {
+    super(props);
 
-  searchAction(e) {
-    console.log(
-      e.target.value.replace(/\s/g, "") + " - " + checkTypedType(e.target.value)
-    );
+    this.makeRequest = this.makeRequest.bind(this);
+    this.searchAction = this.searchAction.bind(this);
+
+    this.state = {
+      data_type: "",
+      data: [],
+      finished_loading: true,
+    };
+  }
+
+  //   Makes a request to the server at url "url"
+  async makeRequest(url) {
+    let res = await axios.get(url);
+    let data = res.data;
+
+    if (data.length === 0) return false;
+    else return data;
+  }
+
+  async searchAction(e) {
+    // So we dont render info we dont have
+    this.setState({ finished_loading: false });
+
+    let result = checkTypedType(e.target.value);
+    let query_terms = result[1];
+    let search_for = result[0];
+
+    let url = "http://localhost:8000/api/";
+
+    // For every query option we have
+    for (const search_item of search_for) {
+      let search_url = url + search_item + "?";
+
+      // Create the search url
+      if (search_item != "professors")
+        for (const query in query_terms) {
+          if (query != "professor")
+            search_url += query + "=" + query_terms[query] + "&";
+        }
+      else search_url += "professor__icontains=" + query_terms["professor"];
+
+      console.log(search_url);
+
+      // Make request and check if there are any results
+      var valid = await this.makeRequest(search_url);
+      if (valid) {
+        this.setState({ data_type: search_item });
+        break;
+      }
+    }
+
+    if (valid && valid.length > 0) {
+      this.setState({ data: valid.slice(0, 10) });
+    }
+
+    this.setState({ finished_loading: true });
   }
 
   render() {
@@ -79,6 +80,19 @@ export default class Main extends Component {
           searching something in the search bar below!
         </h2>
         <SearchBar searchAction={this.searchAction} />
+        {this.state.finished_loading &&
+          this.state.data.map((element) => {
+            let data_type = this.state.data_type;
+
+            if (data_type === "courses") return <p>{element.title}</p>;
+            else if (data_type === "sections")
+              return (
+                <p>
+                  {element.course.title}- {element.section}
+                </p>
+              );
+            else if (data_type === "professors") return <p>{element.name}</p>;
+          })}
       </div>
     );
   }
