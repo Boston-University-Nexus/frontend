@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
-  Link,
-} from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default class PlannerNav extends Component {
   constructor(props) {

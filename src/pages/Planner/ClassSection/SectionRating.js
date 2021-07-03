@@ -6,7 +6,7 @@ function getColor(val, type) {
   // Decides the color based on the rating
   if (val < 1) return "bg-gray-200";
 
-  if (type == "Professor") {
+  if (type === "Professor") {
     if (val < 5 / 3) return "bg-red-300";
     else if (val < 10 / 3) return "bg-yellow-200";
     else return "bg-green-300";

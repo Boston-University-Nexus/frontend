@@ -89,12 +89,12 @@ class ClassList extends Component {
               })}
 
               {/* IF EMPTY SEARCH */}
-              {classList.length == 0 && this.state.typedText.length < 1 && (
+              {classList.length === 0 && this.state.typedText.length < 1 && (
                 <StartTyping />
               )}
 
               {/* IF NOT FOUND */}
-              {classList.length == 0 && this.state.typedText.length > 0 && (
+              {classList.length === 0 && this.state.typedText.length > 0 && (
                 <NotFound />
               )}
             </div>

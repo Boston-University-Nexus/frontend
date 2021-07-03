@@ -1,15 +1,15 @@
 import React from "react";
 import { Component } from "react";
-import { FaTrashAlt, FaInfoCircle } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 // Helper function to get day initials
 function getDayInits(arr) {
   let str = "";
   for (const day of arr) {
-    if (day.toLowerCase() == "thursday") str += "r";
+    if (day.toLowerCase() === "thursday") str += "r";
     else str += day.charAt(0);
   }
 

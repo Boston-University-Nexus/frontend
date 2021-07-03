@@ -8,7 +8,6 @@ const checkTypedType = (text) => {
   // REGEX EXPRESSIONS
   let full_section_expr = new RegExp(/\b[a-z]{5}[0-9]{3}[a-z]/);
   let full_course_expr = new RegExp(/\b[a-z]{5}[0-9]+/);
-  let full_prof_expr = new RegExp(/^[a-zA-Z]+$/);
 
   let half_course_expr = new RegExp(/[a-z]{2}/);
   let half_section_expr = new RegExp(/[a-z]{2}[0-9]{3}[a-z]/);

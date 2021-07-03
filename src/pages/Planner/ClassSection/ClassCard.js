@@ -126,12 +126,12 @@ class ClassCard extends Component {
 
     return (
       <div className="w-full h-full">
-          <div class="p-4">
+        <div class="p-4">
           <button
             className="flex items-center justify-start text-gray-600 w-full focus:outline-none hover:text-black transition-colors mb-4"
             onClick={this.removeClassFromStack}
           >
-            <FaArrowLeft className="mr-2"/>
+            <FaArrowLeft className="mr-2" />
             Back
           </button>
           <h1 className="font-black lg:text-xl xl:text-2xl">
@@ -139,7 +139,7 @@ class ClassCard extends Component {
           </h1>
           <h2 className="text-lg mb-1">{item.title}</h2>
           <a
-            href=""
+            href="/coursereview"
             target="_blank"
             rel="noreferrer"
             className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm"
@@ -150,7 +150,8 @@ class ClassCard extends Component {
             <FiExternalLink className="inline align-middle ml-1" />
           </a>
         </div>
-        <div className="flex w-full h-full items-start justify-start flex-col overflow-y-scroll"
+        <div
+          className="flex w-full h-full items-start justify-start flex-col overflow-y-scroll"
           style={{ height: "calc(100% - 228px)" }}
         >
           <div className="text-gray-600 px-4 pb-4">
@@ -159,7 +160,10 @@ class ClassCard extends Component {
                 <p>Hub Areas:</p>
                 {hubs.map((thisItem, key) => {
                   return (
-                    <div className="bg-gray-200 rounded-full px-3 py-1" key={key}>
+                    <div
+                      className="bg-gray-200 rounded-full px-3 py-1"
+                      key={key}
+                    >
                       {thisItem}
                     </div>
                   );

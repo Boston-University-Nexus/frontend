@@ -3,7 +3,7 @@ import React, { Component } from "react";
 // Icons
 import { IoLocationSharp } from "react-icons/io5";
 import { TiPlus } from "react-icons/ti";
-import { FaCheck, FaMinus } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa";
 
 // Components
 import SectionRating from "./SectionRating";
