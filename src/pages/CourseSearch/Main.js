@@ -19,10 +19,17 @@ const checkTypedType = (text) => {
 
   // CHECKS FOR AAABB0
   if (full_course_expr.test(text) && len <= 8) {
+    query_terms["college"] = text.substring(0, 3);
+    query_terms["department"] = text.substring(3, 5);
+    query_terms["number"] = text.substring(5, 8);
     return [["course"], query_terms];
   }
   // CHECKS FOR AAABB000A
   else if (full_section_expr.test(text) && len <= 10) {
+    query_terms["college"] = text.substring(0, 3);
+    query_terms["department"] = text.substring(3, 5);
+    query_terms["number"] = text.substring(5, 8);
+    query_terms["number"] = text.substring(5, 8);
     return [["section"], query_terms];
   }
   // CHECKS FOR BB0
