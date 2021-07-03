@@ -22,8 +22,8 @@ const compareArrOfObj = (arr1, arr2) => {
 
   for (let i = 0; i < arr1.length; i++) {
     if (
-      arr1[i].title != arr2[i].title ||
-      arr1[i].displayed != arr2[i].displayed
+      arr1[i].title !== arr2[i].title ||
+      arr1[i].displayed !== arr2[i].displayed
     ) {
       return false;
     }
@@ -59,7 +59,9 @@ class CalendarGraph extends Component {
       arr.push(
         <div
           className={
-            i == this.calendarEnd - 1 ? "" : "border-b border-gray-300 cellAnim"
+            i === this.calendarEnd - 1
+              ? ""
+              : "border-b border-gray-300 cellAnim"
           }
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
@@ -85,7 +87,7 @@ class CalendarGraph extends Component {
           <div
             className={
               "flex flex-col cellAnim " +
-              (i == daysOfWeek[0]
+              (i === daysOfWeek[0]
                 ? "border border-gray-300"
                 : "border border-l-0 border-gray-300")
             }
@@ -106,7 +108,7 @@ class CalendarGraph extends Component {
     for (let i = this.calendarStart; i <= this.calendarEnd; i++) {
       let text = i % 12;
       if (i > 12) text += " PM";
-      else if (i == 12) text = "12 PM";
+      else if (i === 12) text = "12 PM";
       else text += " AM";
 
       arr.push(
@@ -186,6 +188,7 @@ class CalendarGraph extends Component {
             />
           );
         });
+      else return;
     });
 
     this.setState({ sections });
