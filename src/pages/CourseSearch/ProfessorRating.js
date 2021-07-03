@@ -4,13 +4,13 @@ import SliderRating from "./SliderRating";
 
 import { GrClose } from "react-icons/gr";
 
-export default class CoursesRating extends Component {
+export default class ProfessorRating extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       ratings: [0, 0, 0, 0],
-      selected_prof: "",
+      selected_course: "",
     };
 
     this.updateRating = this.updateRating.bind(this);
@@ -24,17 +24,17 @@ export default class CoursesRating extends Component {
   }
 
   componentDidMount() {
-    this.setState({ selected_prof: this.props.professors[0] });
+    this.setState({ selected_course: this.props.courses[0] });
   }
 
   async submitRating() {
-    let course = this.props.course;
+    let course = this.state.selected_course;
     let ratings = this.state.ratings;
     let professorRating = ratings[0];
     let workloadRating = ratings[1];
     let qualityRating = ratings[2];
     let difficultyRating = ratings[3];
-    let professor = this.state.selected_prof;
+    let professor = this.props.prof.name;
 
     let data = {
       professorRating,
@@ -54,8 +54,8 @@ export default class CoursesRating extends Component {
   }
 
   render() {
-    let professors = this.props.professors;
-    let class_name = this.props.course;
+    let courses = this.props.courses;
+    let prof = this.props.prof;
 
     return (
       <>
@@ -82,16 +82,16 @@ export default class CoursesRating extends Component {
                 className="absolute right-5 top-5 cursor-pointer"
               />
               <div className="flex">
-                <span className="font-bold text-2xl mr-3 w-2/5">
-                  Rating {class_name}
+                <span className="font-bold text-2xl w-1/2 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                  Rating {prof.name}
                 </span>
                 <select
-                  className="text-xl bg-white border-none focus:outline-none cursor-pointer overflow-hidden overflow-ellipsis whitespace-nowrap"
+                  className="text-2xl bg-white border-none focus:outline-none cursor-pointer"
                   onChange={(e) =>
-                    this.setState({ selected_section: e.target.value })
+                    this.setState({ selected_course: e.target.value })
                   }
                 >
-                  {professors.map((element, idx) => {
+                  {courses.map((element, idx) => {
                     return (
                       <option
                         value={element}

@@ -13,8 +13,6 @@ export default class SliderRating extends Component {
   }
 
   updateRating(idx) {
-    console.log(idx);
-
     let colors = ["#F87171", "#D97706", "#FBBF24", "#059669", "#34D399"];
     if (this.props.reverse) colors = colors.reverse();
 
@@ -30,6 +28,8 @@ export default class SliderRating extends Component {
       rating: idx + 1,
       colors: prev_colors,
     });
+
+    this.props.updateRating(this.props.number, idx + 1);
   }
 
   render() {

@@ -139,7 +139,12 @@ class ClassCard extends Component {
           </h1>
           <h2 className="text-lg mb-1">{item.title}</h2>
           <a
-            href="/coursereview"
+            href={
+              "/coursesearch/courses?course=" +
+              item.college +
+              item.department +
+              item.number
+            }
             target="_blank"
             rel="noreferrer"
             className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm"
