@@ -6,29 +6,8 @@ import {
   formatPrereqs,
   formatProfessor,
   formatTime,
+  ratingToDiv,
 } from "./Utils";
-
-const ratingToDiv = (rating, text) => {
-  rating = parseInt(rating) === 0 ? "TBD" : parseFloat(rating);
-  let color = "text-gray-600";
-
-  if (text === "Quality:" && rating !== "TBD") {
-    if (rating < 1.66) color = "text-red-500";
-    else if (rating < 3.33) color = "text-yellow-500";
-    else color = "text-green-500";
-  }
-
-  return (
-    <div
-      className={
-        "px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center " +
-        color
-      }
-    >
-      {text + " " + rating}/5
-    </div>
-  );
-};
 
 export default class Courses extends Component {
   constructor(props) {
@@ -98,11 +77,11 @@ export default class Courses extends Component {
                 professors={this.state.professors}
                 course={element.college + element.department + element.number}
               />
-              {ratingToDiv(element.qualityRating, "Quality:")}
-              {ratingToDiv(element.difficultyRating, "Difficulty:")}
               <span className="px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center text-gray-600">
                 {element.difficultyRatingNum} Ratings
               </span>
+              {ratingToDiv(element.qualityRating, "Quality:")}
+              {ratingToDiv(element.difficultyRating, "Difficulty:")}
             </div>
             <div>
               <p className="text-gray-700 leading-loose">
@@ -150,25 +129,52 @@ export default class Courses extends Component {
                 </thead>
                 <tbody className="overflow-y-auto">
                   {this.state.data_sections.map((element) => {
+                    let loc =
+                      "/coursesearch/sections?section=" +
+                      element.course.college +
+                      element.course.department +
+                      element.course.number +
+                      element.section;
+                    let prof =
+                      "/coursesearch/professors?professor=" +
+                      element.professor.name;
                     return (
                       <tr className="h-12 w-full text-gray-700 bg-indigo-50">
-                        <td className="px-3">{element.section}</td>
-                        <td className="px-3">{element.type || "-"}</td>
-                        <td className="px-3">{formatDays(element.days)}</td>
-                        <td className="px-3">
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {element.section}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {element.type || "-"}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {formatDays(element.days)}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
                           {formatTime(element.start)}-{formatTime(element.end)}
                         </td>
-                        <td className="px-3">
-                          {formatProfessor(element.professor.name)}
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = prof)}
+                        >
+                          {element.professor.name}
                         </td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
-            </div>
-            <div className="">
-              <p className="text-lg mt-3 mb-1 font-bold">Course Ratings</p>
             </div>
           </>
         )}

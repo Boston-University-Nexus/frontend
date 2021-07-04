@@ -108,6 +108,23 @@ export const formatDays = (days) => {
   return days.replaceAll(",", ", ");
 };
 
+export const formatDaysLong = (days) => {
+  days = days.split(",");
+  console.log(days);
+
+  let daysLong = {
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+  };
+  let result = "";
+  for (const day of days) result += daysLong[day] + ", ";
+
+  return result.substr(0, result.length - 2);
+};
+
 export const formatPrereqs = (prereqs) => {
   if (!prereqs || prereqs.length === 0) return "-";
 
@@ -117,12 +134,12 @@ export const formatPrereqs = (prereqs) => {
 
   for (let i = 0; i < prereqs.length; i++) {
     result.push(
-      <Link
-        to={"/coursesearch/courses?course=" + prereqs[i]}
+      <a
+        href={"/coursesearch/courses?course=" + prereqs[i]}
         className="hover:text-blue-500"
       >
         {prereqs[i].substring(3, prereqs[i].length)}
-      </Link>
+      </a>
     );
     result.push(", ");
   }
@@ -137,4 +154,30 @@ export const formatRating = (rating) => {
     return (
       <div className="h-full rounded-sm bg-blue-100 text-center">{rating}</div>
     );
+};
+
+export const ratingToDiv = (rating, text) => {
+  rating = parseInt(rating) === 0 ? "TBD" : parseFloat(rating);
+  let color = "text-gray-600";
+
+  if ((text === "Quality:" || text === "Professor:") && rating !== "TBD") {
+    if (rating < 1.66) color = "text-red-500";
+    else if (rating < 3.33) color = "text-yellow-500";
+    else color = "text-green-500";
+  } else if (rating !== "TBD") {
+    if (rating < 1.66) color = "text-green-500";
+    else if (rating < 3.33) color = "text-yellow-500";
+    else color = "text-red-500";
+  }
+
+  return (
+    <div
+      className={
+        "px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center " +
+        color
+      }
+    >
+      {text + " " + rating}/5
+    </div>
+  );
 };

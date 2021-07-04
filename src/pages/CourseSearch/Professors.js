@@ -1,29 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import ProfessorRating from "./ProfessorRating";
-import { formatDays, formatProfessor, formatTime } from "./Utils";
-
-const ratingToDiv = (rating, text) => {
-  rating = parseInt(rating) === 0 ? "TBD" : parseFloat(rating);
-  let color = "text-gray-600";
-
-  if (text === "Quality:" && rating !== "TBD") {
-    if (rating < 1.66) color = "text-red-500";
-    else if (rating < 3.33) color = "text-yellow-500";
-    else color = "text-green-500";
-  }
-
-  return (
-    <div
-      className={
-        "px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center " +
-        color
-      }
-    >
-      {text + " " + rating}/5
-    </div>
-  );
-};
+import { formatDays, formatProfessor, formatTime, ratingToDiv } from "./Utils";
 
 export default class Professors extends Component {
   constructor(props) {
@@ -81,10 +59,10 @@ export default class Professors extends Component {
               <h1 className="font-bold text-xl mr-4">{prof.name}</h1>
               <div className="flex gap-2 my-4">
                 <ProfessorRating courses={this.state.courses} prof={prof} />
-                {ratingToDiv(prof.rating, "Quality:")}
                 <span className="px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center text-gray-600">
                   {prof.ratingNum} Ratings
                 </span>
+                {ratingToDiv(prof.rating, "Quality:")}
               </div>
             </div>
             <p className="text-lg mt-3 mb-1 font-bold">
@@ -117,15 +95,28 @@ export default class Professors extends Component {
                 </thead>
                 <tbody className="overflow-y-auto">
                   {this.state.sections.map((element) => {
+                    let loc =
+                      "/coursesearch/sections?section=" +
+                      element.course.college +
+                      element.course.department +
+                      element.course.number +
+                      element.section;
                     return (
-                      <tr className="h-12 w-full text-gray-700 bg-indigo-50">
-                        <td className="px-3">
+                      <tr
+                        className="h-12 w-full text-gray-700 bg-indigo-50"
+                        onClick={() => (window.location = loc)}
+                      >
+                        <td className="px-3 cursor-pointer hover:text-blue-500">
                           {element.course.college} {element.course.department}{" "}
                           {element.course.number} {element.section}
                         </td>
-                        <td className="px-3">{element.type || "-"}</td>
-                        <td className="px-3">{formatDays(element.days)}</td>
-                        <td className="px-3">
+                        <td className="px-3 cursor-pointer hover:text-blue-500">
+                          {element.type || "-"}
+                        </td>
+                        <td className="px-3 cursor-pointer hover:text-blue-500">
+                          {formatDays(element.days)}
+                        </td>
+                        <td className="px-3 cursor-pointer hover:text-blue-500">
                           {formatTime(element.start)}-{formatTime(element.end)}
                         </td>
                       </tr>
