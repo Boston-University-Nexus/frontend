@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import config from "../../../config";
 
 // Icons
 import { FiExternalLink } from "react-icons/fi";
@@ -63,7 +64,7 @@ class ClassCard extends Component {
       current.number;
 
     // Get all hubs
-    axios.get("http://localhost:8000/api/hub/" + url).then(
+    axios.get(config["server"] + "api/hub/" + url).then(
       function (response) {
         let arr = [];
         for (const item of response.data) {
@@ -87,7 +88,7 @@ class ClassCard extends Component {
       current.number;
 
     // Get all sections
-    axios.get("http://localhost:8000/api/" + url).then(
+    axios.get(config["server"] + "api/" + url).then(
       function (response) {
         console.log(response.data);
         this.setState({ sections: response.data });

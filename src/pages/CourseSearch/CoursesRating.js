@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import SliderRating from "./SliderRating";
+import config from "../../config";
 
 import { GrClose } from "react-icons/gr";
 
@@ -45,10 +46,7 @@ export default class CoursesRating extends Component {
       course,
     };
 
-    let res = await axios.post(
-      "http://localhost:8000/api/ratings/create/",
-      data
-    );
+    let res = await axios.post(config["server"] + "api/ratings/create/", data);
 
     this.setState({ open: false });
   }

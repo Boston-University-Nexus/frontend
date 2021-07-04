@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SearchBar from "./SearchBar";
+import config from "../../config";
 import {
   checkTypedType,
   formatDays,
@@ -49,7 +50,7 @@ export default class Main extends Component {
       return;
     }
 
-    let url = "http://localhost:8000/api/";
+    let url = config["server"] + "api/";
 
     // For every query option we have
     for (const search_item of search_for) {

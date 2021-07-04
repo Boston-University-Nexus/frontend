@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import CoursesRating from "./CoursesRating";
+import config from "../../config";
 import {
   formatDays,
   formatPrereqs,
@@ -28,7 +29,8 @@ export default class Courses extends Component {
     let number = query.substring(5, 8);
 
     let res_courses = await axios.get(
-      "http://localhost:8000/api/courses?college=" +
+      config["server"] +
+        "api/courses?college=" +
         college +
         "&department=" +
         department +
@@ -37,7 +39,8 @@ export default class Courses extends Component {
     );
 
     let res_sections = await axios.get(
-      "http://localhost:8000/api/sections?course__college=" +
+      config["server"] +
+        "api/sections?course__college=" +
         college +
         "&course__department=" +
         department +
