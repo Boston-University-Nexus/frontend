@@ -24,6 +24,10 @@ export function textToDiff(txt1, txt2) {
 
 // Basic math so that the cell is 40px when screen is 1920
 // and 20 when screen is 768. Can be changed later
-export function getCellHeight(windowWidth) {
-  return 40 - (20 * (1920 - windowWidth)) / 1152;
+export function getCellHeight(start, end) {
+  let wantedHeight = window.innerHeight * 0.4;
+  let numCells = end - start;
+  let cellHeight = wantedHeight / numCells;
+
+  return cellHeight;
 }

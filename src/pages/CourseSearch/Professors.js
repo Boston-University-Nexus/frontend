@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import ProfessorRating from "./ProfessorRating";
-import { formatDays, formatProfessor, formatTime, ratingToDiv } from "./Utils";
+import {
+  formatDays,
+  formatProfessor,
+  formatRating,
+  formatTime,
+  ratingToDiv,
+} from "./Utils";
+import { FiChevronRight } from "react-icons/fi";
 
 export default class Professors extends Component {
   constructor(props) {
@@ -56,11 +63,23 @@ export default class Professors extends Component {
         {this.state.loaded && (
           <>
             <div>
+              <div
+                id="breadcrumbs"
+                className="flex items-center text-blue-500 mb-3 text-sm"
+              >
+                <a href="/coursesearch" className="hover:underline">
+                  Home
+                </a>
+                <FiChevronRight />
+                <a href="" className="hover:underline">
+                  {prof.name}
+                </a>
+              </div>
               <h1 className="font-bold text-xl mr-4">{prof.name}</h1>
               <div className="flex gap-2 my-4">
                 <ProfessorRating courses={this.state.courses} prof={prof} />
-                <span className="px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center text-gray-600">
-                  {prof.ratingNum} Ratings
+                <span className="font-bold flex items-center justify-center text-gray-600">
+                  {prof.ratingNum} Ratings:
                 </span>
                 {ratingToDiv(prof.rating, "Quality:")}
               </div>
@@ -91,6 +110,12 @@ export default class Professors extends Component {
                     <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
                       Hours
                     </th>
+                    <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
+                      Prof. Rating
+                    </th>
+                    <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
+                      Workload
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="overflow-y-auto">
@@ -118,6 +143,18 @@ export default class Professors extends Component {
                         </td>
                         <td className="px-3 cursor-pointer hover:text-blue-500">
                           {formatTime(element.start)}-{formatTime(element.end)}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {formatRating(element.professorRating, "P")}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {formatRating(element.workloadRating, "W")}
                         </td>
                       </tr>
                     );

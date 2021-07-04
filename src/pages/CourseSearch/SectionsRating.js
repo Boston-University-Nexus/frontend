@@ -4,13 +4,12 @@ import SliderRating from "./SliderRating";
 
 import { GrClose } from "react-icons/gr";
 
-export default class CoursesRating extends Component {
+export default class SectionsRating extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       ratings: [0, 0, 0, 0],
-      selected_prof: "",
     };
 
     this.updateRating = this.updateRating.bind(this);
@@ -23,18 +22,18 @@ export default class CoursesRating extends Component {
     this.setState({ ratings: prev });
   }
 
-  componentDidMount() {
-    this.setState({ selected_prof: this.props.professors[0] });
-  }
-
   async submitRating() {
-    let course = this.props.course;
+    let section = this.props.section;
+    let course =
+      section.course.college +
+      section.course.department +
+      section.course.number;
     let ratings = this.state.ratings;
     let professorRating = ratings[0];
     let workloadRating = ratings[1];
     let qualityRating = ratings[2];
     let difficultyRating = ratings[3];
-    let professor = this.state.selected_prof;
+    let professor = section.professor.name;
 
     let data = {
       professorRating,
@@ -54,8 +53,7 @@ export default class CoursesRating extends Component {
   }
 
   render() {
-    let professors = this.props.professors;
-    let class_name = this.props.course;
+    let section = this.props.section;
 
     return (
       <>
@@ -82,27 +80,14 @@ export default class CoursesRating extends Component {
                 className="absolute right-5 top-5 cursor-pointer"
               />
               <div className="flex">
-                <span className="font-bold text-2xl mr-3 w-2/5">
-                  Rating {class_name}
+                <span className="font-bold text-2xl w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+                  Rating{" "}
+                  {section.course.college +
+                    section.course.department +
+                    section.course.number +
+                    " " +
+                    section.professor.name}
                 </span>
-                <select
-                  className="text-xl bg-white border-none focus:outline-none cursor-pointer overflow-hidden overflow-ellipsis whitespace-nowrap"
-                  onChange={(e) =>
-                    this.setState({ selected_section: e.target.value })
-                  }
-                >
-                  {professors.map((element, idx) => {
-                    return (
-                      <option
-                        value={element}
-                        key={idx}
-                        className="cursor-pointer"
-                      >
-                        {element}
-                      </option>
-                    );
-                  })}
-                </select>
               </div>
               <SliderRating
                 number={1}

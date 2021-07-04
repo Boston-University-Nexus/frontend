@@ -21,11 +21,11 @@ export default function SectionRating(props) {
   return (
     <div
       className={
-        "px-2 rounded-full w-1/4 h-6 flex items-center justify-center text-xs " +
+        "px-2 rounded-sm w-1/4 h-6 flex items-center justify-center text-xs " +
         getColor(props.val, props.ratingType)
       }
     >
-      <span className="font-bold">{props.val < 0 ? "--" : props.val}</span>
+      <span className="">{props.val < 0 ? "--" : props.val}</span>
     </div>
   );
 }

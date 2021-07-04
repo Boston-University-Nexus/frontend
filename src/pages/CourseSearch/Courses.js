@@ -5,9 +5,11 @@ import {
   formatDays,
   formatPrereqs,
   formatProfessor,
+  formatRating,
   formatTime,
   ratingToDiv,
 } from "./Utils";
+import { FiChevronRight } from "react-icons/fi";
 
 export default class Courses extends Component {
   constructor(props) {
@@ -59,6 +61,7 @@ export default class Courses extends Component {
 
   render() {
     let element = this.state.data;
+
     return (
       <div
         className="w-full md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white shadow-2xl px-7 flex flex-col pb-5 min-h-full"
@@ -67,6 +70,18 @@ export default class Courses extends Component {
         {this.state.loaded && (
           <>
             <div>
+              <div
+                id="breadcrumbs"
+                className="flex items-center text-blue-500 mb-3 text-sm"
+              >
+                <a href="/coursesearch" className="hover:underline">
+                  Home
+                </a>
+                <FiChevronRight />
+                <a href="" className="hover:underline">
+                  {element.college} {element.department} {element.number}
+                </a>
+              </div>
               <span className="font-bold text-xl mr-4">
                 {element.college} {element.department} {element.number}
               </span>
@@ -77,24 +92,30 @@ export default class Courses extends Component {
                 professors={this.state.professors}
                 course={element.college + element.department + element.number}
               />
-              <span className="px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center text-gray-600">
-                {element.difficultyRatingNum} Ratings
+              <span className="font-bold rounded-full flex items-center justify-center text-gray-600">
+                {element.difficultyRatingNum} Ratings:
               </span>
               {ratingToDiv(element.qualityRating, "Quality:")}
               {ratingToDiv(element.difficultyRating, "Difficulty:")}
             </div>
-            <div>
-              <p className="text-gray-700 leading-loose">
-                {element.description}
+            <div className="mb-5 w-full mt-3">
+              <p className="mb-2 text-gray-700 font-bold w-full border-b border-gray-300">
+                Description
               </p>
+              <p className="text-gray-700">{element.description}</p>
             </div>
-            <div className="mt-5 text-gray-700">
-              <span className="mr-3">Prerequirements: </span>
-              <span>{formatPrereqs(element.prereqs)}</span>
-            </div>
-            <div className="mb-5 text-gray-700">
-              <span className="mr-3">Corequirements: </span>
-              <span>{formatPrereqs(element.coreqs)}</span>
+            <div className="mb-5 w-full mt-3">
+              <p className="mb-2 text-gray-700 font-bold w-full border-b border-gray-300">
+                Requirements
+              </p>
+              <div className="text-gray-700">
+                <span className="mr-3">Prerequirements: </span>
+                <span>{formatPrereqs(element.prereqs)}</span>
+              </div>
+              <div className="text-gray-700">
+                <span className="mr-3">Corequirements: </span>
+                <span>{formatPrereqs(element.coreqs)}</span>
+              </div>
             </div>
             <p className="text-lg mt-3 mb-1 font-bold">
               {this.state.data_sections.length} sections scheduled for{" "}
@@ -124,6 +145,12 @@ export default class Courses extends Component {
                     </th>
                     <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
                       Professor
+                    </th>
+                    <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
+                      Prof. Rating
+                    </th>
+                    <th className="px-3 sticky top-0 bg-blue-100 border-b border-gray-400">
+                      Workload
                     </th>
                   </tr>
                 </thead>
@@ -169,6 +196,18 @@ export default class Courses extends Component {
                           onClick={() => (window.location = prof)}
                         >
                           {element.professor.name}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {formatRating(element.professorRating, "P")}
+                        </td>
+                        <td
+                          className="px-3 cursor-pointer hover:text-blue-500"
+                          onClick={() => (window.location = loc)}
+                        >
+                          {formatRating(element.workloadRating, "W")}
                         </td>
                       </tr>
                     );

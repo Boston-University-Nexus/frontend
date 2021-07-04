@@ -44,11 +44,10 @@ class ClassList extends Component {
     this.setState({ typedText: e.target.value });
     this.props.displayClass([]);
 
-    let numWords = e.target.value.split(" ").length;
-    let val = e.target.value.toLowerCase().split(" ");
+    let searched = e.target.value.replaceAll(" ", "").toLowerCase();
 
     // Call helper function filter
-    let currentClasses = filter(numWords, this.props.classes, val);
+    let currentClasses = filter(searched, this.props.classes);
 
     // Save to state
     this.props.filterClasses(currentClasses);

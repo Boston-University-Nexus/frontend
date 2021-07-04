@@ -147,13 +147,35 @@ export const formatPrereqs = (prereqs) => {
   return result.slice(0, result.length - 1);
 };
 
-export const formatRating = (rating) => {
-  if (parseInt(rating) === -1)
-    return <div className="h-full rounded-sm bg-gray-200 text-center">TBD</div>;
-  else
+export const formatRating = (rating, type) => {
+  rating = parseFloat(rating);
+  if (rating === 0)
     return (
-      <div className="h-full rounded-sm bg-blue-100 text-center">{rating}</div>
+      <div className="flex items-center justify-center text-gray-800">TBD</div>
     );
+  else {
+    let color = "text-gray-600";
+
+    if (type === "P") {
+      if (rating < 2.33) color = "text-red-600";
+      else if (rating < 3.66) color = "text-yellow-600";
+      else color = "text-green-600";
+
+      rating = rating + "/5";
+    } else {
+      if (rating < 2.33) color = "text-green-600";
+      else if (rating < 3.66) color = "text-yellow-600";
+      else color = "text-red-600";
+
+      rating = rating + "/5";
+    }
+
+    return (
+      <div className={"flex items-center justify-center " + color}>
+        {rating}
+      </div>
+    );
+  }
 };
 
 export const ratingToDiv = (rating, text) => {
@@ -161,23 +183,31 @@ export const ratingToDiv = (rating, text) => {
   let color = "text-gray-600";
 
   if ((text === "Quality:" || text === "Professor:") && rating !== "TBD") {
-    if (rating < 1.66) color = "text-red-500";
-    else if (rating < 3.33) color = "text-yellow-500";
+    if (rating < 2.33) color = "text-red-500";
+    else if (rating < 3.66) color = "text-yellow-500";
     else color = "text-green-500";
-  } else if (rating !== "TBD") {
-    if (rating < 1.66) color = "text-green-500";
-    else if (rating < 3.33) color = "text-yellow-500";
+
+    rating = rating + "/5";
+  } else if (text == "Workload:" && rating !== "TBD") {
+    if (rating < 2.33) color = "text-green-500";
+    else if (rating < 3.66) color = "text-yellow-500";
     else color = "text-red-500";
+
+    rating = rating + "/5";
+  } else if (rating !== "TBD") {
+    if (rating < 2.33) rating = "LOW";
+    else if (rating < 3.66) rating = "MEDIUM";
+    else rating = "HARD";
   }
 
   return (
     <div
       className={
-        "px-4 font-bold bg-gray-100 rounded-full flex items-center justify-center " +
+        "px-3 font-bold bg-gray-100 rounded-full flex items-center justify-center " +
         color
       }
     >
-      {text + " " + rating}/5
+      {text + " " + rating}
     </div>
   );
 };

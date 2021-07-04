@@ -60,7 +60,7 @@ export default class ProfessorRating extends Component {
     return (
       <>
         <button
-          className="px-4 py-2 font-bold text-white bg-blue-400 focus:outline-none rounded-sm border-b-2 border-r-2 border-blue-600 hover:bg-blue-500"
+          className="px-4 py-1 mr-3 font-bold text-white bg-blue-400 focus:outline-none rounded-sm border-b-2 border-r-2 border-blue-600 hover:bg-blue-500"
           onClick={() => this.setState({ open: true })}
         >
           RATE
