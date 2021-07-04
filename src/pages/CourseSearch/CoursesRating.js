@@ -1,0 +1,143 @@
+import axios from "axios";
+import React, { Component } from "react";
+import SliderRating from "./SliderRating";
+
+import { GrClose } from "react-icons/gr";
+
+export default class CoursesRating extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      ratings: [0, 0, 0, 0],
+      selected_prof: "",
+    };
+
+    this.updateRating = this.updateRating.bind(this);
+    this.submitRating = this.submitRating.bind(this);
+  }
+
+  updateRating(toUpdate, val) {
+    let prev = [...this.state.ratings];
+    prev[toUpdate - 1] = val;
+    this.setState({ ratings: prev });
+  }
+
+  componentDidMount() {
+    this.setState({ selected_prof: this.props.professors[0] });
+  }
+
+  async submitRating() {
+    let course = this.props.course;
+    let ratings = this.state.ratings;
+    let professorRating = ratings[0];
+    let workloadRating = ratings[1];
+    let qualityRating = ratings[2];
+    let difficultyRating = ratings[3];
+    let professor = this.state.selected_prof;
+
+    let data = {
+      professorRating,
+      workloadRating,
+      qualityRating,
+      difficultyRating,
+      professor,
+      course,
+    };
+
+    let res = await axios.post(
+      "http://localhost:8000/api/ratings/create/",
+      data
+    );
+
+    this.setState({ open: false });
+  }
+
+  render() {
+    let professors = this.props.professors;
+    let class_name = this.props.course;
+
+    return (
+      <>
+        <button
+          className="px-4 py-1 mr-3 font-bold text-white bg-blue-400 focus:outline-none rounded-sm border-b-2 border-r-2 border-blue-600 hover:bg-blue-500"
+          onClick={() => this.setState({ open: true })}
+        >
+          RATE
+        </button>
+        {this.state.open && (
+          <div
+            className="w-full h-full top-0 left-0 bg-black bg-opacity-50 absolute z-50 flex items-center justify-center"
+            onClick={(e) => {
+              e.stopPropagation();
+              this.setState({ open: false });
+            }}
+          >
+            <div
+              className="w-1/2 2xl:w-1/3 h-1/2 bg-white rounded-sm flex flex-col justify-evenly px-10 relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <GrClose
+                onClick={() => this.setState({ open: false })}
+                className="absolute right-5 top-5 cursor-pointer"
+              />
+              <div className="flex">
+                <span className="font-bold text-2xl mr-3 w-2/5">
+                  Rating {class_name}
+                </span>
+                <select
+                  className="text-xl bg-white border-none focus:outline-none cursor-pointer overflow-hidden overflow-ellipsis whitespace-nowrap"
+                  onChange={(e) =>
+                    this.setState({ selected_section: e.target.value })
+                  }
+                >
+                  {professors.map((element, idx) => {
+                    return (
+                      <option
+                        value={element}
+                        key={idx}
+                        className="cursor-pointer"
+                      >
+                        {element}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <SliderRating
+                number={1}
+                text={"rate your professor"}
+                updateRating={this.updateRating}
+                reverse={false}
+              />
+              <SliderRating
+                number={2}
+                text={"ammount of work needed"}
+                updateRating={this.updateRating}
+                reverse={true}
+              />
+              <SliderRating
+                number={3}
+                text={"the overall quality"}
+                updateRating={this.updateRating}
+                reverse={false}
+              />
+              <SliderRating
+                number={4}
+                text={"level of difficulty"}
+                updateRating={this.updateRating}
+                reverse={true}
+              />
+              <button
+                className="px-4 py-2 font-bold text-white bg-blue-400 focus:outline-none rounded-sm border-b-2 border-r-2 border-blue-600 hover:bg-blue-500"
+                onClick={this.submitRating}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+}

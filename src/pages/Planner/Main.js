@@ -45,7 +45,7 @@ class Main extends Component {
 
   componentWillMount() {
     // Get all classes
-    axios.get("http://localhost:8000/api/classes/").then((response) => {
+    axios.get("http://localhost:8000/api/courses/").then((response) => {
       this.props.saveClasses(response.data);
     });
 

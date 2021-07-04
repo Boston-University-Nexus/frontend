@@ -44,10 +44,6 @@ body,
   font-size: 0.625rem;
 }
 
-.cellAnim {
-  transition: width 100ms ease-in, height 100ms ease-in;
-}
-
 .calendarItem {
   transition: top 100ms ease-in;
 
@@ -95,5 +91,27 @@ body,
       font-size: 0.65rem;
       max-width: 48%;
     }
+  }
+}
+
+#loading_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid black;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-radius: 100%;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

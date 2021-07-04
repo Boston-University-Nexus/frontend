@@ -59,9 +59,7 @@ class CalendarGraph extends Component {
       arr.push(
         <div
           className={
-            i === this.calendarEnd - 1
-              ? ""
-              : "border-b border-gray-300 cellAnim"
+            i === this.calendarEnd - 1 ? "" : "border-b border-gray-300"
           }
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
@@ -79,14 +77,14 @@ class CalendarGraph extends Component {
       arr.push(
         <div className="flex flex-col w-full relative" key={i}>
           <div
-            className="uppercase text-gray-600 flex items-center justify-center text-xs lg:text-sm xl:text-base cellAnim"
-            style={{ height: this.state.cellHeight + "px" }}
+            className="uppercase text-gray-600 flex items-center justify-center text-xs lg:text-sm xl:text-base"
+            style={{ height: window.innerHeight * 0.05 + "px" }}
           >
             {window.innerWidth > 768 ? i : i.substring(0, 3)}
           </div>
           <div
             className={
-              "flex flex-col cellAnim " +
+              "flex flex-col " +
               (i === daysOfWeek[0]
                 ? "border border-gray-300"
                 : "border border-l-0 border-gray-300")
@@ -113,7 +111,7 @@ class CalendarGraph extends Component {
 
       arr.push(
         <div
-          className="w-full flex items-center justify-end text-gray-600 whitespace-nowrap text-xs md:text-md cellAnim"
+          className="w-full flex items-center justify-end text-gray-600 whitespace-nowrap text-xs md:text-md transform -translate-y-1/2"
           style={{ height: this.state.cellHeight + "px" }}
           key={i}
         >
@@ -133,6 +131,23 @@ class CalendarGraph extends Component {
     );
 
     if (!same) {
+      // Get first and last class
+      let bestStart = 24;
+      let bestEnd = 0;
+      for (const section of this.props.activeSections) {
+        let start = parseInt(section.start.substring(0, 2));
+        let end = parseInt(section.end.substring(0, 2));
+
+        if (start - 1 < bestStart) bestStart = start - 1;
+        if (end + 1 > bestEnd) bestEnd = end + 1;
+      }
+      this.calendarEnd = bestEnd;
+      this.calendarStart = bestStart;
+
+      // Gets cell height according to current window width and start/end
+      let cellHeight = getCellHeight(bestStart, bestEnd);
+      this.setState({ cellHeight });
+
       // Save state so we know what the current calendar is
       this.setState(
         {
@@ -155,13 +170,27 @@ class CalendarGraph extends Component {
   }
 
   componentWillMount() {
-    // Gets cell height according to current window width
-    let cellHeight = getCellHeight(window.innerWidth);
-    window.addEventListener("resize", this.resize.bind(this));
-
     // Deep copy of sections to avoid shallow copy reference changing
     let sectionsList = JSON.parse(JSON.stringify(this.props.activeSections));
 
+    // Get first and last class
+    let bestStart = 24;
+    let bestEnd = 0;
+    for (const section of sectionsList) {
+      let start = parseInt(section.start.substring(0, 2));
+      let end = parseInt(section.end.substring(0, 2));
+
+      if (start - 1 < bestStart) bestStart = start - 1;
+      if (end + 1 > bestEnd) bestEnd = end + 1;
+    }
+    this.calendarEnd = bestEnd;
+    this.calendarStart = bestStart;
+
+    // Gets cell height according to current window width and start/end
+    let cellHeight = getCellHeight(bestStart, bestEnd);
+    window.addEventListener("resize", this.resize.bind(this));
+
+    // Generating calendar
     this.setState({ cellHeight });
     this.generateSections(sectionsList);
   }
@@ -196,15 +225,15 @@ class CalendarGraph extends Component {
 
   render() {
     return (
-      <div className="flex w-full">
-        <div className="flex w-full h-full overflow-hidden">
+      <div className="flex w-full items-start">
+        <div className="flex w-full h-full overflow-hidden items-start">
           <div
-            className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm cellAnim"
-            style={{ marginTop: this.state.cellHeight / 2 + "px" }}
+            className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"
+            style={{ marginTop: window.innerHeight * 0.05 + "px" }}
           >
             {this.hourLeyend()}
           </div>
-          <div className="flex w-11/12 h-full cellAnim" ref={this.calendarRef}>
+          <div className="flex w-11/12 h-full" ref={this.calendarRef}>
             {this.days()}
           </div>
         </div>
