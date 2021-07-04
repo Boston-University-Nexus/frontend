@@ -42,6 +42,8 @@ export default class Main extends Component {
     let query_terms = result[1];
     let search_for = result[0];
 
+    console.log(search_for);
+
     if (search_for.length === 0) {
       this.setState({ data: [], data_type: "", finished_loading: true });
       return;
@@ -71,6 +73,8 @@ export default class Main extends Component {
 
     if (valid && valid.length > 0) {
       this.setState({ data: valid.slice(0, 10) });
+    } else {
+      this.setState({ data: [], data_type: "not_found" });
     }
 
     this.setState({ finished_loading: true });
@@ -92,30 +96,32 @@ export default class Main extends Component {
         </h2>
         <SearchBar searchAction={this.searchAction} />
         <table className="w-full mt-4 table-fixed">
-          {this.state.data.length > 0 &&
+          {this.state.finished_loading &&
+            this.state.data.length > 0 &&
             (this.state.data_type == "courses" ? (
-              <tr className="h-12 w-full text-left bg-blue-100">
-                <th className="px-3 w-1/6">Course</th>
-                <th className="px-3 w-2/6">Title</th>
-                <th className="px-3 w-1/6">Prereqs</th>
+              <tr className="h-12 w-full bg-blue-100">
+                <th className="px-3 w-1/6 text-left">Course</th>
+                <th className="px-3 w-2/6 text-left">Title</th>
+                <th className="px-3 w-1/6 text-left">Prereqs</th>
                 <th className="px-3 w-1/6">Quality</th>
                 <th className="px-3 w-1/6">Difficulty</th>
               </tr>
             ) : this.state.data_type == "sections" ? (
               <tr className="h-12 w-full text-left bg-blue-100">
-                <th className="px-3 w-3/12">Course</th>
-                <th className="px-3 w-2/12">Type</th>
-                <th className="px-3 w-2/12">Days</th>
-                <th className="px-3 w-3/12">Time</th>
-                <th className="px-3 w-2/12">Professor</th>
+                <th className="px-3 w-3/12 text-left">Course</th>
+                <th className="px-3 w-2/12 text-left">Type</th>
+                <th className="px-3 w-2/12 text-left">Days</th>
+                <th className="px-3 w-3/12 text-left">Time</th>
+                <th className="px-3 w-2/12 text-left">Professor</th>
               </tr>
             ) : (
-              <tr className="h-12 w-full text-left bg-blue-100">
-                <th className="px-3">Name</th>
+              <tr className="h-12 w-full bg-blue-100">
+                <th className="px-3 text-left">Name</th>
                 <th className="px-3">Rating</th>
               </tr>
             ))}
           {this.state.finished_loading &&
+            this.state.data.length > 0 &&
             this.state.data.map((element) => {
               let data_type = this.state.data_type;
 
@@ -199,6 +205,16 @@ export default class Main extends Component {
               }
             })}
         </table>
+        {!this.state.finished_loading && this.state.data.length > 0 && (
+          <div className="w-full flex items-center justify-center">
+            <div id="loading_spinner"></div>
+          </div>
+        )}
+        {this.state.finished_loading &&
+          this.state.data.length == 0 &&
+          this.state.data_type === "not_found" && (
+            <div>No results found matching query, try something different!</div>
+          )}
       </div>
     );
   }

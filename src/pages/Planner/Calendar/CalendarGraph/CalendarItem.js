@@ -34,9 +34,9 @@ export default function CalendarItem(props) {
         height: calcHeight,
       }}
     >
+      <IoClose className="cursor-pointer absolute top-2 right-2" />
       <div className="flex justify-between items-start sectionTitle">
         <h3 className="font-bold">{props.section.title}</h3>
-        <IoClose className="" />
       </div>
 
       {/* ONLY IF SCREEN IS BIG ENOUGH */}
