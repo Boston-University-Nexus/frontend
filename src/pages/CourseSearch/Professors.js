@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import config from "../../config";
 import ProfessorRating from "./ProfessorRating";
 import {
   formatDays,
@@ -26,12 +27,11 @@ export default class Professors extends Component {
     let prof_name = window.location.search.split("=")[1];
 
     let res_prof = await axios.get(
-      "http://localhost:8000/api/professors?name__icontains=" + prof_name
+      config["server"] + "api/professors?name__icontains=" + prof_name
     );
 
     let res_sections = await axios.get(
-      "http://localhost:8000/api/sections?professor__name__icontains=" +
-        prof_name
+      config["server"] + "api/sections?professor__name__icontains=" + prof_name
     );
 
     let courses = new Set();

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import SliderRating from "./SliderRating";
 
 import { GrClose } from "react-icons/gr";
+import config from "../../config";
 
 export default class SectionsRating extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export default class SectionsRating extends Component {
     };
 
     let res = await axios.post(
-      "http://localhost:8000/api/ratings/create/",
+      config["server"] + "api/ratings/create/",
       data
     );
 

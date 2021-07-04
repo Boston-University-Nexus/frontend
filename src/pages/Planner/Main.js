@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
+import config from "../../config";
 
 // Functions
 import {
@@ -45,12 +46,12 @@ class Main extends Component {
 
   componentWillMount() {
     // Get all classes
-    axios.get("http://localhost:8000/api/courses/").then((response) => {
+    axios.get(config["server"] + "api/courses/").then((response) => {
       this.props.saveClasses(response.data);
     });
 
     // Get calendars
-    axios.get("http://localhost:8000/api/calendars/").then((response) => {
+    axios.get(config["server"] + "api/calendars/").then((response) => {
       this.props.saveCalendars(response.data);
       this.props.changeCalendar(response.data[0]);
       this.props.saveSections(response.data[0].sections);

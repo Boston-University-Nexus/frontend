@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import CoursesRating from "./CoursesRating";
+import config from "../../config";
 import SectionsRating from "./SectionsRating";
 import {
   formatPrereqs,
@@ -28,7 +29,8 @@ export default class Sections extends Component {
     let section = query.substring(8, 10);
 
     let res_section = await axios.get(
-      "http://localhost:8000/api/sections?course__college=" +
+      config["server"] +
+        "api/sections?course__college=" +
         college +
         "&course__department=" +
         department +
@@ -75,7 +77,7 @@ export default class Sections extends Component {
                 <FiChevronRight />
                 <a
                   href={
-                    "http://localhost:3000/coursesearch/courses?course=" +
+                    "/coursesearch/courses?course=" +
                     class_name.replaceAll(" ", "")
                   }
                   className="hover:underline"

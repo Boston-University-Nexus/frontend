@@ -160,9 +160,6 @@ class CalendarGraph extends Component {
 
   // On resize this is called
   resize() {
-    console.log(
-      "Resized window " + window.innerWidth + "x" + window.innerHeight
-    );
     let cellHeight = getCellHeight(window.innerWidth);
     this.setState({ cellHeight }, () =>
       this.generateSections(this.state.activeSections)
