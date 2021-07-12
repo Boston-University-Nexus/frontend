@@ -1,6 +1,6 @@
 import "./css/index.scss";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Components
 import Landing from "./pages/Landing/Landing";
@@ -8,6 +8,9 @@ import PlannerRouter from "./routers/PlannerRouter";
 import CourseSearchRouter from "./routers/CourseSearchRouter";
 import LoginRouter from "./routers/LoginRouter";
 import NotFound from "./pages/NotFound/NotFound";
+
+// Authentication
+import AuthGuard from "./components/AuthGuard";
 
 // Divide in different routers for organized routing
 function App() {
@@ -18,14 +21,18 @@ function App() {
           <Route exact path="/">
             <Landing />
           </Route>
-          <Route exact path="/planner">
-            <PlannerRouter />
-          </Route>
-          <Route exact path="/coursesearch">
-            <CourseSearchRouter />
-          </Route>
           <Route exact path="/login">
             <LoginRouter />
+          </Route>
+          <Route exact path="/planner">
+            <AuthGuard>
+              <PlannerRouter />
+            </AuthGuard>
+          </Route>
+          <Route exact path="/coursesearch">
+            <AuthGuard>
+              <CourseSearchRouter />
+            </AuthGuard>
           </Route>
           <Route>
             <NotFound />
