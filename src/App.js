@@ -9,6 +9,8 @@ import CourseSearchRouter from "./routers/CourseSearchRouter";
 import LoginRouter from "./routers/LoginRouter";
 import SignOutRouter from "./routers/SignOutRouter";
 import NotFound from "./pages/NotFound/NotFound";
+import About from "./pages/About/About";
+import Nav from "./components/Nav";
 
 // Authentication
 import AuthGuard from "./components/AuthGuard";
@@ -18,6 +20,7 @@ function App() {
   return (
     <Router>
       <div className="w-full h-full">
+        <Nav />
         <Switch>
           <Route exact path="/">
             <Landing />
@@ -37,6 +40,9 @@ function App() {
             <AuthGuard>
               <CourseSearchRouter />
             </AuthGuard>
+          </Route>
+          <Route exact path="/about">
+            <About />
           </Route>
           <Route>
             <NotFound />

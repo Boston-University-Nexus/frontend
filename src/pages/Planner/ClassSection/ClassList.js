@@ -44,11 +44,10 @@ class ClassList extends Component {
     this.setState({ typedText: e.target.value });
     this.props.displayClass([]);
 
-    let numWords = e.target.value.split(" ").length;
-    let val = e.target.value.toLowerCase().split(" ");
+    let searched = e.target.value.replaceAll(" ", "").toLowerCase();
 
     // Call helper function filter
-    let currentClasses = filter(numWords, this.props.classes, val);
+    let currentClasses = filter(searched, this.props.classes);
 
     // Save to state
     this.props.filterClasses(currentClasses);
@@ -56,11 +55,13 @@ class ClassList extends Component {
 
   render() {
     let classList = this.props.displayedClasses.slice(0, 75);
-    let isOpen = this.props.open;
 
     return (
       <div className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full">
-        <SearchBar handleType={this.handleType} isOpen={isOpen} />
+        <SearchBar
+          handleTypeSearch={this.handleType}
+          isOpen={this.props.open}
+        />
 
         {this.props.classStack.length === 0 && (
           <div
@@ -68,7 +69,7 @@ class ClassList extends Component {
             style={{ height: "calc(100% - 55px)" }}
           >
             {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-lg w-full">
+            <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-xs lg:text-sm xl:text-lg w-full">
               <span className="w-3/5">course</span>
               <div className="flex w-2/5 justify-center items-center">
                 <span className="text-center">qual/diff</span>
@@ -89,12 +90,12 @@ class ClassList extends Component {
               })}
 
               {/* IF EMPTY SEARCH */}
-              {classList.length == 0 && this.state.typedText.length < 1 && (
+              {classList.length === 0 && this.state.typedText.length < 1 && (
                 <StartTyping />
               )}
 
               {/* IF NOT FOUND */}
-              {classList.length == 0 && this.state.typedText.length > 0 && (
+              {classList.length === 0 && this.state.typedText.length > 0 && (
                 <NotFound />
               )}
             </div>

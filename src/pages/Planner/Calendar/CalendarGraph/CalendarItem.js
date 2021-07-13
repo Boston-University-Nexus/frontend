@@ -34,24 +34,28 @@ export default function CalendarItem(props) {
         height: calcHeight,
       }}
     >
+      <IoClose className="cursor-pointer absolute top-2 right-2" />
       <div className="flex justify-between items-start sectionTitle">
         <h3 className="font-bold">{props.section.title}</h3>
-        <IoClose className="" />
       </div>
-      <div className="flex items-center justify-start w-full sectionProps">
-        <h4 className="flex items-center uppercase whitespace-nowrap left-child">
-          <FaUserAlt className="" />
-          <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
-            {props.section.professor}
-          </span>
-        </h4>
-        <h4 className="flex items-center uppercase whitespace-nowrap right-child">
-          <IoLocationSharp className="" />
-          <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
-            {props.section.location}
-          </span>
-        </h4>
-      </div>
+
+      {/* ONLY IF SCREEN IS BIG ENOUGH */}
+      {window.innerWidth > 1024 && (
+        <div className="flex items-center justify-start w-full sectionProps">
+          <h4 className="flex items-center uppercase whitespace-nowrap left-child">
+            <FaUserAlt className="" />
+            <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
+              {props.section.professor}
+            </span>
+          </h4>
+          <h4 className="flex items-center uppercase whitespace-nowrap right-child">
+            <IoLocationSharp className="" />
+            <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
+              {props.section.location}
+            </span>
+          </h4>
+        </div>
+      )}
     </div>
   );
 }

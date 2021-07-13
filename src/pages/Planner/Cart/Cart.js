@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Functions
-import {
-  changeCalendar,
-  saveCalendars,
-  saveSections,
-} from "../../../state/actions";
+import { changeCalendar, saveCalendars } from "../../../state/actions";
 
 import CartItem from "./CartItem";
 

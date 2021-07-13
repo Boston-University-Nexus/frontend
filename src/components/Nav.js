@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { BrowserRouter as Router, Switch, Route, NavLink, Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default class PlannerNav extends Component {
   constructor(props) {
@@ -26,7 +26,14 @@ export default class PlannerNav extends Component {
               Planner
             </NavLink>
             <NavLink
-              to="/planner/about"
+              to="/coursesearch"
+              activeClassName="font-bold"
+              className="uppercase hover:underline mx-2"
+            >
+              Reviews & Info
+            </NavLink>
+            <NavLink
+              to="/about"
               activeClassName="font-bold"
               className="uppercase hover:underline mx-2"
             >
