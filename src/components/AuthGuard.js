@@ -13,7 +13,6 @@ const AuthGuard = (props) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log(user)
         setIsAuthenticated(true)
       } else {
         setIsAuthenticated(false)

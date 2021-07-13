@@ -7,6 +7,7 @@ import Landing from "./pages/Landing/Landing";
 import PlannerRouter from "./routers/PlannerRouter";
 import CourseSearchRouter from "./routers/CourseSearchRouter";
 import LoginRouter from "./routers/LoginRouter";
+import SignOutRouter from "./routers/SignOutRouter";
 import NotFound from "./pages/NotFound/NotFound";
 
 // Authentication
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <LoginRouter />
+          </Route>
+          <Route exact path="/signout">
+            <SignOutRouter/>
           </Route>
           <Route exact path="/planner">
             <AuthGuard>

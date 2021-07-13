@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import firebase from '../../lib/firebase';
 
 const Login = () => {
-  const [loginStatus, setLoginStatus] = useState(false);
+  let history = useHistory();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
-        setLoginStatus(true);
+        history.push("/");
       } else {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
@@ -18,35 +18,17 @@ const Login = () => {
           firebase
             .auth()
             .signInWithCustomToken(token)
-            .then(() => { window.location.href = "/login"})
+            .then(() => { history.push("/") })
             .catch(console.error);
+        } else {
+          window.location.href = "https://shib-nexus.herokuapp.com/";
         }
-
-        setLoginStatus(false);
       }
     })
-  }, []);
-
-  const signIn = () => {
-    window.location.href = "https://shib-nexus.herokuapp.com/";
-  }
-
-  const signOut = () => {
-    firebase.auth().signOut().then(() => {
-      console.log('success');
-      window.location.href = "/login";
-    }).catch((error) => {
-      console.log(error);
-    })
-  }
+  });
 
   return (
-    <div>
-      <button className="pr-3" onClick={signIn}>Sign In</button>
-      <button onClick={signOut}>Sign Out</button>
-
-      <p>Login Status: {loginStatus.toString()}</p>
-    </div>
+    <></>
   );
 };
 

@@ -1,18 +1,18 @@
 import { Route, Switch } from "react-router";
 
 // Components
-import Login from "../pages/Login/Login";
+import SignOut from "../pages/SignOut/SignOut";
 
-const LoginRouter = () => {
+const SignOutRouter = () => {
   return (
     <div className="flex flex-col h-full w-full">
       <Switch>
-        <Route exact path="/login">
-          <Login/>
+        <Route exact path="/signout">
+          <SignOut/>
         </Route>
       </Switch>
     </div>
   );
 };
 
-export default LoginRouter;
+export default SignOutRouter;
