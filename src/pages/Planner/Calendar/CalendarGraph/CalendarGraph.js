@@ -196,8 +196,6 @@ class CalendarGraph extends Component {
 
   // Generates all the calendar sections in their corresponding day
   generateSections(sectionsList) {
-    console.log("S", sectionsList);
-
     let sections = {
       Mon: [],
       Tue: [],

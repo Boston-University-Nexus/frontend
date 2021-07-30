@@ -25,16 +25,13 @@ export default class SectionsRating extends Component {
 
   async submitRating() {
     let section = this.props.section;
-    let course =
-      section.course.college +
-      section.course.department +
-      section.course.number;
+    let course = section.course_ID;
     let ratings = this.state.ratings;
     let professorRating = ratings[0];
     let workloadRating = ratings[1];
     let qualityRating = ratings[2];
     let difficultyRating = ratings[3];
-    let professor = section.professor.name;
+    let professor = section.professor_ID;
 
     let data = {
       professorRating,
@@ -45,10 +42,7 @@ export default class SectionsRating extends Component {
       course,
     };
 
-    let res = await axios.post(
-      config["server"] + "api/ratings/create/",
-      data
-    );
+    let res = await axios.post(config["server"] + "ratings/", data);
 
     this.setState({ open: false });
   }
@@ -82,12 +76,7 @@ export default class SectionsRating extends Component {
               />
               <div className="flex">
                 <span className="font-bold text-2xl w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
-                  Rating{" "}
-                  {section.course.college +
-                    section.course.department +
-                    section.course.number +
-                    " " +
-                    section.professor.name}
+                  Rating {section.course_code + " " + section.professor_name}
                 </span>
               </div>
               <SliderRating

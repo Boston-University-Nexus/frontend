@@ -54,21 +54,14 @@ class ClassCard extends Component {
 
   getHubs() {
     let current = this.props.item;
-
-    let url =
-      "?course__college=" +
-      current.college +
-      "&course__department=" +
-      current.department +
-      "&course__number=" +
-      current.number;
+    let url = "hubs?course_code=" + current.course_code;
 
     // Get all hubs
-    axios.get(config["server"] + "api/hub/" + url).then(
+    axios.get(config["server"] + url).then(
       function (response) {
         let arr = [];
         for (const item of response.data) {
-          arr.push(item.buhub.name);
+          arr.push(item.buhub_name);
         }
 
         this.setState({ hubs: arr });
@@ -78,18 +71,12 @@ class ClassCard extends Component {
 
   getSections() {
     let current = this.props.item;
-
-    let url =
-      "?course__college=" +
-      current.college +
-      "&course__department=" +
-      current.department +
-      "&course__number=" +
-      current.number;
+    let url = "sections?course_code=" + current.course_code;
 
     // Get all sections
-    axios.get(config["server"] + "api/sections/" + url).then(
+    axios.get(config["server"] + url).then(
       function (response) {
+        console.log(response.data);
         this.setState({ sections: response.data });
       }.bind(this)
     );

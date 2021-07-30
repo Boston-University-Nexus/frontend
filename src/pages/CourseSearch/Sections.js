@@ -23,20 +23,14 @@ export default class Sections extends Component {
 
   async componentDidMount() {
     let query = window.location.search.split("=")[1];
-    let college = query.substring(0, 3);
-    let department = query.substring(3, 5);
-    let number = query.substring(5, 8);
+    let course = query.substring(0, 8);
     let section = query.substring(8, 10);
 
     let res_section = await axios.get(
       config["server"] +
-        "api/sections?course__college=" +
-        college +
-        "&course__department=" +
-        department +
-        "&course__number=" +
-        number +
-        "&section=" +
+        "sections?course_code=" +
+        course +
+        "&section_code=" +
         section
     );
 
@@ -50,14 +44,6 @@ export default class Sections extends Component {
 
   render() {
     let element = this.state.data;
-    let class_name = "";
-    if (element.course)
-      class_name =
-        element.course.college +
-        " " +
-        element.course.department +
-        " " +
-        element.course.number;
 
     return (
       <div
@@ -78,37 +64,39 @@ export default class Sections extends Component {
                 <a
                   href={
                     "/coursesearch/courses?course=" +
-                    class_name.replaceAll(" ", "")
+                    element.course_code.replaceAll(" ", "")
                   }
                   className="hover:underline"
                 >
-                  {class_name}
+                  {element.course_code}
                 </a>
                 <FiChevronRight />
                 <a href="" className="hover:underline">
-                  {class_name + " " + element.section}
+                  {element.course_code + " " + element.section_code}
                 </a>
               </div>
               <span className="font-bold text-xl mr-4">
-                {class_name} {element.section}
+                {element.course_code} {element.section_code}
               </span>
-              <span className="text-xl text-gray-700">{element.title}</span>
+              <span className="text-xl text-gray-700">
+                {element.section_title}
+              </span>
             </div>
             <div className="flex gap-1 my-4">
               <SectionsRating section={element} />
               <span className="font-bold rounded-full flex items-center justify-center text-gray-600">
-                {element.workloadRatingNum} Ratings:
+                {element.course_workloadRatingNum} Ratings:
               </span>
-              {ratingToDiv(element.course.qualityRating, "Quality:")}
-              {ratingToDiv(element.professorRating, "Professor:")}
-              {ratingToDiv(element.workloadRating, "Workload:")}
-              {ratingToDiv(element.course.difficultyRating, "Difficulty:")}
+              {ratingToDiv(element.course_qualityRating, "Quality:")}
+              {ratingToDiv(element.section_professorRating, "Professor:")}
+              {ratingToDiv(element.section_workloadRating, "Workload:")}
+              {ratingToDiv(element.course_difficultyRating, "Difficulty:")}
             </div>
             <div className="mb-5 w-full mt-3">
               <p className="mb-2 text-gray-700 font-bold w-full border-b border-gray-300">
                 Description
               </p>
-              <p className="text-gray-700">{element.course.description}</p>
+              <p className="text-gray-700">{element.course_description}</p>
             </div>
             <div className="mb-5 w-full">
               <p className="mb-2 text-gray-700 font-bold w-full border-b border-gray-300">
@@ -116,11 +104,11 @@ export default class Sections extends Component {
               </p>
               <div className="text-gray-700">
                 <span className="mr-3">Prerequirements: </span>
-                <span>{formatPrereqs(element.prereqs)}</span>
+                <span>{formatPrereqs(element.course_prereqs)}</span>
               </div>
               <div className="text-gray-700">
                 <span className="mr-3">Corequirements: </span>
-                <span>{formatPrereqs(element.coreqs)}</span>
+                <span>{formatPrereqs(element.course_coreqs)}</span>
               </div>
             </div>
             <div className="mb-5 w-full">
@@ -128,13 +116,14 @@ export default class Sections extends Component {
                 Section details
               </p>
               <ul>
-                <li>Professor: {formatProfessor(element.professor.name)}</li>
-                <li>Days: {formatDaysLong(element.days)}</li>
+                <li>Professor: {formatProfessor(element.professor_name)}</li>
+                <li>Days: {formatDaysLong(element.section_days)}</li>
                 <li>
-                  Time: {formatTime(element.start)}-{formatTime(element.end)}
+                  Time: {formatTime(element.section_start)}-
+                  {formatTime(element.section_end)}
                 </li>
-                <li>Type: {element.type}</li>
-                <li>Room: {element.room || "To be decided"}</li>
+                <li>Type: {element.section_type}</li>
+                <li>Room: {element.section_room || "To be decided"}</li>
               </ul>
             </div>
             <div className="mb-5 w-full">
@@ -144,8 +133,8 @@ export default class Sections extends Component {
               <a
                 className="px-4 py-1 mr-3 font-bold text-gray-500 bg-gray-200 focus:outline-none rounded-sm border-b-2 border-r-2 border-gray-400 hover:bg-gray-300 cursor-pointer"
                 href={
-                  "/coursesearch/courses?course=" +
-                  class_name.replaceAll(" ", "")
+                  "/coursesearch/courses?course_code=" +
+                  element.course_code.replaceAll(" ", "")
                 }
               >
                 See other sections of this course
@@ -153,7 +142,7 @@ export default class Sections extends Component {
               <a
                 className="px-4 py-1 mr-3 font-bold text-gray-500 bg-gray-200 focus:outline-none rounded-sm border-b-2 border-r-2 border-gray-400 hover:bg-gray-300 cursor-pointer"
                 href={
-                  "/coursesearch/professors?professor=" + element.professor.name
+                  "/coursesearch/professors?professor=" + element.professor_name
                 }
               >
                 See other courses by this professor

@@ -49,34 +49,34 @@ export default class Recommended extends Component {
               {/* JUST VISUALS FOR NOW */}
               <ClassItem
                 item={{
-                  title: "Test recommended",
-                  department: "CS",
-                  college: "CAS",
-                  number: "112",
-                  qualityRating: 2,
-                  difficultyRating: 1,
+                  course_title: "Test recommended",
+                  course_department: "CS",
+                  course_college: "CAS",
+                  course_number: "112",
+                  course_qualityRating: 2,
+                  course_difficultyRating: 1,
                 }}
                 toggleMenu={this.props.toggleMenu}
               />
               <ClassItem
                 item={{
-                  title: "Test recommended",
-                  department: "CS",
-                  college: "CAS",
-                  number: "132",
-                  qualityRating: 3,
-                  difficultyRating: 3,
+                  course_title: "Test recommended",
+                  course_department: "CS",
+                  course_college: "CAS",
+                  course_number: "132",
+                  course_qualityRating: 3,
+                  course_difficultyRating: 3,
                 }}
                 toggleMenu={this.props.toggleMenu}
               />
               <ClassItem
                 item={{
-                  title: "Test recommended",
-                  department: "AS",
-                  college: "CAS",
-                  number: "100",
-                  qualityRating: 5,
-                  difficultyRating: 5,
+                  course_title: "Test recommended",
+                  course_department: "AS",
+                  course_college: "CAS",
+                  course_number: "100",
+                  course_qualityRating: 5,
+                  course_difficultyRating: 5,
                 }}
                 toggleMenu={this.props.toggleMenu}
               />

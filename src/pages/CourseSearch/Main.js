@@ -42,14 +42,12 @@ export default class Main extends Component {
     let query_terms = result[1];
     let search_for = result[0];
 
-    console.log(search_for);
-
     if (search_for.length === 0) {
       this.setState({ data: [], data_type: "", finished_loading: true });
       return;
     }
 
-    let url = config["server"] + "api/";
+    let url = config["server"];
 
     // For every query option we have
     for (const search_item of search_for) {
@@ -61,7 +59,7 @@ export default class Main extends Component {
           if (query != "professor")
             search_url += query + "=" + query_terms[query] + "&";
         }
-      else search_url += "name__icontains=" + query_terms["professor"];
+      else search_url += "professor_name_contains=" + query_terms["professor"];
 
       // Make request and check if there are any results
       var valid = await this.makeRequest(search_url);
@@ -126,11 +124,7 @@ export default class Main extends Component {
               let data_type = this.state.data_type;
 
               if (data_type === "courses") {
-                let loc =
-                  "/coursesearch/courses?course=" +
-                  element.college +
-                  element.department +
-                  element.number;
+                let loc = "/coursesearch/courses?course=" + element.course_code;
 
                 return (
                   <tr className="h-12 w-full text-gray-700 bg-indigo-50">
@@ -138,36 +132,36 @@ export default class Main extends Component {
                       className="px-3 hover:text-blue-500 cursor-pointer"
                       onClick={() => (window.location = loc)}
                     >
-                      {element.college} {element.department} {element.number}
+                      {element.course_code}
                     </td>
                     <td
                       className="px-3 overflow-ellipsis overflow-hidden whitespace-nowrap hover:text-blue-500 cursor-pointer"
                       onClick={() => (window.location = loc)}
                     >
-                      {element.title || "-"}
+                      {element.course_title || "-"}
                     </td>
-                    <td className="px-3">{formatPrereqs(element.prereqs)}</td>
-                    <td
-                      className="px-3"
-                      onClick={() => (window.location = loc)}
-                    >
-                      {formatRating(element.qualityRating)}
+                    <td className="px-3">
+                      {formatPrereqs(element.course_prereqs)}
                     </td>
                     <td
                       className="px-3"
                       onClick={() => (window.location = loc)}
                     >
-                      {formatRating(element.difficultyRating)}
+                      {formatRating(element.course_qualityRating)}
+                    </td>
+                    <td
+                      className="px-3"
+                      onClick={() => (window.location = loc)}
+                    >
+                      {formatRating(element.course_difficultyRating)}
                     </td>
                   </tr>
                 );
               } else if (data_type === "sections") {
                 let loc =
                   "/coursesearch/sections?section=" +
-                  element.course.college +
-                  element.course.department +
-                  element.course.number +
-                  element.section;
+                  element.course_code +
+                  element.section_code;
 
                 return (
                   <tr className="h-12 w-full text-gray-700 bg-indigo-50">
@@ -175,21 +169,23 @@ export default class Main extends Component {
                       className="px-3 hover:text-blue-500 cursor-pointer"
                       onClick={() => (window.location = loc)}
                     >
-                      {element.course.college} {element.course.department}{" "}
-                      {element.course.number} {element.section}
+                      {element.course_code} {element.section_code}
                     </td>
-                    <td className="px-3">{element.type || "-"}</td>
-                    <td className="px-3">{formatDays(element.days)}</td>
+                    <td className="px-3">{element.section_type || "-"}</td>
+                    <td className="px-3">{formatDays(element.section_days)}</td>
                     <td className="px-3">
-                      {formatTime(element.start)}-{formatTime(element.end)}
+                      {formatTime(element.section_start)}-
+                      {formatTime(element.section_end)}
                     </td>
                     <td className="px-3 w-1/5 overflow-ellipsis overflow-hidden whitespace-nowrap">
-                      {formatProfessor(element.professor.name)}
+                      {formatProfessor(element.professor_name)}
                     </td>
                   </tr>
                 );
               } else if (data_type === "professors") {
-                let loc = "/coursesearch/professors?professor=" + element.name;
+                let loc =
+                  "/coursesearch/professors?professor=" +
+                  element.professor_name;
 
                 return (
                   <tr className="h-12 w-full text-gray-700 bg-indigo-50">
@@ -197,9 +193,11 @@ export default class Main extends Component {
                       className="px-3 cursor-pointer hover:text-blue-500"
                       onClick={() => (window.location = loc)}
                     >
-                      {element.name}
+                      {element.professor_name}
                     </td>
-                    <td className="px-3">{formatRating(element.rating)}</td>
+                    <td className="px-3">
+                      {formatRating(element.professor_rating)}
+                    </td>
                   </tr>
                 );
               }

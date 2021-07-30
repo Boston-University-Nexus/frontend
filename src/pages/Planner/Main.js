@@ -46,12 +46,12 @@ class Main extends Component {
 
   componentWillMount() {
     // Get all classes
-    axios.get(config["server"] + "api/courses/").then((response) => {
+    axios.get(config["server"] + "courses/").then((response) => {
       this.props.saveClasses(response.data);
     });
 
     // Get calendars
-    axios.get(config["server"] + "api/calendars/").then((response) => {
+    axios.get(config["server"] + "calendars/").then((response) => {
       console.log("Received");
       this.props.saveCalendars(response.data);
       this.props.changeCalendar(response.data[0]);

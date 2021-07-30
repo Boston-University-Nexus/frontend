@@ -27,22 +27,22 @@ export default class Professors extends Component {
     let prof_name = window.location.search.split("=")[1];
 
     let res_prof = await axios.get(
-      config["server"] + "api/professors?name__icontains=" + prof_name
+      config["server"] + "professors?professor_name=" + prof_name
     );
 
     let res_sections = await axios.get(
-      config["server"] + "api/sections?professor__name__icontains=" + prof_name
+      config["server"] + "sections?professor_name=" + prof_name
     );
 
-    let courses = new Set();
+    let courses = [];
+    let courses_unique = [];
+
     for (const section of res_sections.data) {
-      courses.add(
-        section.course.college +
-          section.course.department +
-          section.course.number
-      );
+      if (!courses_unique.includes(section.course_code)) {
+        courses.push([section.course_code, section.course_ID]);
+        courses_unique.push(section.course_code);
+      }
     }
-    courses = Array.from(courses);
 
     this.setState({
       prof: res_prof.data[0],
@@ -72,16 +72,16 @@ export default class Professors extends Component {
                 </a>
                 <FiChevronRight />
                 <a href="" className="hover:underline">
-                  {prof.name}
+                  {prof.professor_name}
                 </a>
               </div>
-              <h1 className="font-bold text-xl mr-4">{prof.name}</h1>
+              <h1 className="font-bold text-xl mr-4">{prof.professor_name}</h1>
               <div className="flex gap-2 my-4">
                 <ProfessorRating courses={this.state.courses} prof={prof} />
                 <span className="font-bold flex items-center justify-center text-gray-600">
-                  {prof.ratingNum} Ratings:
+                  {prof.professor_ratingNum} Ratings:
                 </span>
-                {ratingToDiv(prof.rating, "Quality:")}
+                {ratingToDiv(prof.professor_rating, "Quality:")}
               </div>
             </div>
             <p className="text-lg mt-3 mb-1 font-bold">
@@ -122,39 +122,37 @@ export default class Professors extends Component {
                   {this.state.sections.map((element) => {
                     let loc =
                       "/coursesearch/sections?section=" +
-                      element.course.college +
-                      element.course.department +
-                      element.course.number +
-                      element.section;
+                      element.course_code +
+                      element.section_code;
                     return (
                       <tr
                         className="h-12 w-full text-gray-700 bg-indigo-50"
                         onClick={() => (window.location = loc)}
                       >
                         <td className="px-3 cursor-pointer hover:text-blue-500">
-                          {element.course.college} {element.course.department}{" "}
-                          {element.course.number} {element.section}
+                          {element.course_code} {element.section_code}
                         </td>
                         <td className="px-3 cursor-pointer hover:text-blue-500">
-                          {element.type || "-"}
+                          {element.section_type || "-"}
                         </td>
                         <td className="px-3 cursor-pointer hover:text-blue-500">
-                          {formatDays(element.days)}
+                          {formatDays(element.section_days)}
                         </td>
                         <td className="px-3 cursor-pointer hover:text-blue-500">
-                          {formatTime(element.start)}-{formatTime(element.end)}
+                          {formatTime(element.section_start)}-
+                          {formatTime(element.section_end)}
                         </td>
                         <td
                           className="px-3 cursor-pointer hover:text-blue-500"
                           onClick={() => (window.location = loc)}
                         >
-                          {formatRating(element.professorRating, "P")}
+                          {formatRating(element.section_professorRating, "P")}
                         </td>
                         <td
                           className="px-3 cursor-pointer hover:text-blue-500"
                           onClick={() => (window.location = loc)}
                         >
-                          {formatRating(element.workloadRating, "W")}
+                          {formatRating(element.section_workloadRating, "W")}
                         </td>
                       </tr>
                     );
