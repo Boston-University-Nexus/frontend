@@ -6,10 +6,10 @@ import { IoLocationSharp, IoClose } from "react-icons/io5";
 import { textToDiff, textToTime } from "./CalendarMethods";
 
 // Different colors for each class
-const colors = ["green", "yellow", "red", "blue", "indigo", "purple", "pink"];
+const colors = ["green", "yellow", "red", "blue", "purple", "pink"];
 
 export default function CalendarItem(props) {
-  let color = colors[props.section.id % colors.length];
+  let color = colors[props.colorId % colors.length];
 
   // Days of week fields are also h, so h + diff * h
   let fromTop =
@@ -51,7 +51,7 @@ export default function CalendarItem(props) {
           <h4 className="flex items-center uppercase whitespace-nowrap right-child">
             <IoLocationSharp className="" />
             <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
-              {props.section.location}
+              {props.section.room}
             </span>
           </h4>
         </div>

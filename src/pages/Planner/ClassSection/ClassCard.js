@@ -88,9 +88,8 @@ class ClassCard extends Component {
       current.number;
 
     // Get all sections
-    axios.get(config["server"] + "api/" + url).then(
+    axios.get(config["server"] + "api/sections/" + url).then(
       function (response) {
-        console.log(response.data);
         this.setState({ sections: response.data });
       }.bind(this)
     );
@@ -136,16 +135,11 @@ class ClassCard extends Component {
             Back
           </button>
           <h1 className="font-black lg:text-xl xl:text-2xl">
-            {item.college + " " + item.department + " " + item.number}
+            {item.course_code}
           </h1>
-          <h2 className="text-lg mb-1">{item.title}</h2>
+          <h2 className="text-lg mb-1">{item.course_title}</h2>
           <a
-            href={
-              "/coursesearch/courses?course=" +
-              item.college +
-              item.department +
-              item.number
-            }
+            href={"/coursesearch/courses?course=" + item.course_code}
             target="_blank"
             rel="noreferrer"
             className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm"
@@ -176,10 +170,10 @@ class ClassCard extends Component {
                 })}
               </div>
             )}
-            {item.prereqs !== "" && (
+            {item.course_prereqs !== "" && (
               <div className="mt-4 text-sm">
                 <p className="inline">Prerequisites:</p>
-                {item.prereqs.split(",").map((thisItem, key) => {
+                {item.course_prereqs.split("&").map((thisItem, key) => {
                   return (
                     <>
                       <button
@@ -189,7 +183,9 @@ class ClassCard extends Component {
                       >
                         {thisItem}
                       </button>
-                      {key < item.prereqs.split(",").length - 1 ? ", " : ""}
+                      {key < item.course_prereqs.split(",").length - 1
+                        ? ", "
+                        : ""}
                     </>
                   );
                 })}
@@ -197,7 +193,7 @@ class ClassCard extends Component {
               </div>
             )}
             <p className="text-sm mt-4">
-              {formatDescription(item.description)}
+              {formatDescription(item.course_description)}
             </p>
           </div>
 

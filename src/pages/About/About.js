@@ -4,6 +4,7 @@ import Contributor from "./Contributor";
 import PhillipImg from "../../img/phillip.jpg";
 import DanielImg from "../../img/daniel.jpg";
 import VineetImg from "../../img/vineet.jpeg";
+import NicImg from "../../img/nic.jpeg";
 import UserImg from "../../img/user.png";
 
 export default class About extends Component {
@@ -25,16 +26,9 @@ export default class About extends Component {
               recommendation algorithm, and planner front-end."
             />
             <Contributor
-              name="Vineet Raju"
-              position="Founder & Back-end Developer"
-              img={VineetImg}
-              linkedin="https://www.linkedin.com/in/vineet-raju/"
-              description="Data scraping and recommendation algorithm. Started the project with Nic."
-            />
-            <Contributor
               name="Nic Nguyen"
               position="Founder & Back-end Developer"
-              img={UserImg}
+              img={NicImg}
               linkedin=""
               description="Data scraping and recommendation algorithm. Started the project with Vineet."
             />
@@ -44,6 +38,13 @@ export default class About extends Component {
               img={PhillipImg}
               linkedin="https://www.linkedin.com/in/ptrandev/"
               description="Planner front-end and BU authentication system."
+            />
+            <Contributor
+              name="Vineet Raju"
+              position="Founder & Back-end Developer"
+              img={VineetImg}
+              linkedin="https://www.linkedin.com/in/vineet-raju/"
+              description="Data scraping and recommendation algorithm. Started the project with Nic."
             />
             <Contributor
               name="Yuchen C"
