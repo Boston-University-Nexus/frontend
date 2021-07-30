@@ -27,11 +27,11 @@ export default class Professors extends Component {
     let prof_name = window.location.search.split("=")[1];
 
     let res_prof = await axios.get(
-      config["server"] + "api/professors?name__icontains=" + prof_name
+      config["server"] + "professors?name__icontains=" + prof_name
     );
 
     let res_sections = await axios.get(
-      config["server"] + "api/sections?professor__name__icontains=" + prof_name
+      config["server"] + "sections?professor__name__icontains=" + prof_name
     );
 
     let courses = new Set();

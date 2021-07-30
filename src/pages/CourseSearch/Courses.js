@@ -30,7 +30,7 @@ export default class Courses extends Component {
 
     let res_courses = await axios.get(
       config["server"] +
-        "api/courses?college=" +
+        "courses?college=" +
         college +
         "&department=" +
         department +
@@ -40,7 +40,7 @@ export default class Courses extends Component {
 
     let res_sections = await axios.get(
       config["server"] +
-        "api/sections?course__college=" +
+        "sections?course__college=" +
         college +
         "&course__department=" +
         department +

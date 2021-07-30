@@ -64,7 +64,7 @@ class ClassCard extends Component {
       current.number;
 
     // Get all hubs
-    axios.get(config["server"] + "api/hub/" + url).then(
+    axios.get(config["server"] + "hub/" + url).then(
       function (response) {
         let arr = [];
         for (const item of response.data) {
@@ -88,7 +88,7 @@ class ClassCard extends Component {
       current.number;
 
     // Get all sections
-    axios.get(config["server"] + "api/sections/" + url).then(
+    axios.get(config["server"] + "sections/" + url).then(
       function (response) {
         this.setState({ sections: response.data });
       }.bind(this)

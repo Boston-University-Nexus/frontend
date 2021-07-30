@@ -45,10 +45,7 @@ export default class SectionsRating extends Component {
       course,
     };
 
-    let res = await axios.post(
-      config["server"] + "api/ratings/create/",
-      data
-    );
+    let res = await axios.post(config["server"] + "ratings/create/", data);
 
     this.setState({ open: false });
   }

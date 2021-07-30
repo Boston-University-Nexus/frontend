@@ -49,7 +49,7 @@ export default class Main extends Component {
       return;
     }
 
-    let url = config["server"] + "api/";
+    let url = config["server"] + "";
 
     // For every query option we have
     for (const search_item of search_for) {
