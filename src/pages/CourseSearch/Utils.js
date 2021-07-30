@@ -23,17 +23,17 @@ export const checkTypedType = (text) => {
 
   // CHECKS FOR AAABB0
   if (full_course_expr.test(text) && len <= 8) {
-    query_terms["college__icontains"] = text.substring(0, 3);
-    query_terms["department__icontains"] = text.substring(3, 5);
-    query_terms["number__icontains"] = text.substring(5, 8);
+    query_terms["course_college_contains"] = text.substring(0, 3);
+    query_terms["course_department_contains"] = text.substring(3, 5);
+    query_terms["course_number_contains"] = text.substring(5, 8);
     return [["courses"], query_terms];
   }
   // CHECKS FOR AAABB000A
   else if (full_section_expr.test(text) && len <= 10) {
-    query_terms["course__college__icontains"] = text.substring(0, 3);
-    query_terms["course__department__icontains"] = text.substring(3, 5);
-    query_terms["course__number__icontains"] = text.substring(5, 8);
-    query_terms["section__icontains"] = text.substring(8, 10);
+    query_terms["course_college_contains"] = text.substring(0, 3);
+    query_terms["course_department_contains"] = text.substring(3, 5);
+    query_terms["course_number_contains"] = text.substring(5, 8);
+    query_terms["section_code_contains"] = text.substring(8, 10);
     return [["sections"], query_terms];
   }
   // CHECKS FOR BB0
@@ -42,23 +42,23 @@ export const checkTypedType = (text) => {
     len <= 5 &&
     (len <= 2 || only_nums.test(text.substring(2, 5)))
   ) {
-    query_terms["department__icontains"] = text.substring(0, 2);
-    query_terms["number__icontains"] = text.substring(2, 5);
+    query_terms["course_department_contains"] = text.substring(0, 2);
+    query_terms["course_number_contains"] = text.substring(2, 5);
     return [["courses"], query_terms];
   }
   // CHECKS FOR BB000A
   else if (half_section_expr.test(text) && len <= 7) {
-    query_terms["course__department__icontains"] = text.substring(0, 2);
-    query_terms["course__number__icontains"] = text.substring(2, 5);
-    query_terms["course__section__icontains"] = text.substring(5, 7);
+    query_terms["course_department_contains"] = text.substring(0, 2);
+    query_terms["course_number_contains"] = text.substring(2, 5);
+    query_terms["course_section_contains"] = text.substring(5, 7);
     return [["sections"], query_terms];
   }
   // CHECKS FOR AAAB OR AAA0
   else if (college_expr.test(text) && len <= 6) {
-    query_terms["college__icontains"] = text.substring(0, 3);
+    query_terms["course_college_contains"] = text.substring(0, 3);
     if (only_nums.test(text.substring(3, 6)))
-      query_terms["number__icontains"] = text.substring(3, 6);
-    else query_terms["department__icontains"] = text.substring(3, 5);
+      query_terms["course_number_contains"] = text.substring(3, 6);
+    else query_terms["course_department_contains"] = text.substring(3, 5);
 
     query_terms["professor"] = text_original;
 

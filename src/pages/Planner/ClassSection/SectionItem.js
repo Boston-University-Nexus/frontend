@@ -41,20 +41,21 @@ export default class SectionItem extends Component {
       <div className="flex justify-between items-center text-xs py-3 hover:bg-blue-100 transition-colors pl-4 pr-1">
         <div className="flex flex-col justify-center w-1/3">
           <div className="flex items-end gap-1">
-            <h1 className="font-black text-base">{item.section}</h1>
-            <h2 className="uppercase">{item.type.substring(0, 3)}</h2>
+            <h1 className="font-black text-base">{item.section_code}</h1>
+            <h2 className="uppercase">{item.section_type.substring(0, 3)}</h2>
           </div>
           <h2 className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-            {item.professor.name}
+            {item.professor_name}
           </h2>
         </div>
         <div className="flex flex-col justify-center w-1/3">
           <div className="flex items-end gap-1">
             <h1 className="font-black uppercase">
-              {getDayInits(item.days.split(","))}
+              {getDayInits(item.section_days.split(","))}
             </h1>
             <h2 className="uppercase">
-              {item.start.substring(0, 5)}-{item.end.substring(0, 5)}
+              {item.section_start.substring(0, 5)}-
+              {item.section_end.substring(0, 5)}
             </h2>
           </div>
           <h2 className="flex items-center">
@@ -63,8 +64,14 @@ export default class SectionItem extends Component {
           </h2>
         </div>
         <div className="flex w-1/3 justify-evenly items-center">
-          <SectionRating ratingType="Professor" val={item.professorRating} />
-          <SectionRating ratingType="Workload" val={item.workloadRating} />
+          <SectionRating
+            ratingType="Professor"
+            val={item.section_professorRating}
+          />
+          <SectionRating
+            ratingType="Workload"
+            val={item.section_workloadRating}
+          />
           <button
             className={
               "cursor-pointer focus:outline-none w-7 flex items-center justify-center " +

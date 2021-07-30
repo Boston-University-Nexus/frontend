@@ -25,11 +25,11 @@ export default class CoursesRating extends Component {
   }
 
   componentDidMount() {
-    this.setState({ selected_prof: this.props.professors[0] });
+    this.setState({ selected_prof: this.props.professors[0][1] });
   }
 
   async submitRating() {
-    let course = this.props.course;
+    let course = this.props.course.course_ID;
     let ratings = this.state.ratings;
     let professorRating = ratings[0];
     let workloadRating = ratings[1];
@@ -46,14 +46,13 @@ export default class CoursesRating extends Component {
       course,
     };
 
-    let res = await axios.post(config["server"] + "api/ratings/create/", data);
+    let res = await axios.post(config["server"] + "ratings/", data);
 
     this.setState({ open: false });
   }
 
   render() {
     let professors = this.props.professors;
-    let class_name = this.props.course;
 
     return (
       <>
@@ -81,22 +80,22 @@ export default class CoursesRating extends Component {
               />
               <div className="flex">
                 <span className="font-bold text-2xl mr-3 w-2/5">
-                  Rating {class_name}
+                  Rating {this.props.course.course_code}
                 </span>
                 <select
                   className="text-xl bg-white border-none focus:outline-none cursor-pointer overflow-hidden overflow-ellipsis whitespace-nowrap"
                   onChange={(e) =>
-                    this.setState({ selected_section: e.target.value })
+                    this.setState({ selected_prof: parseInt(e.target.value) })
                   }
                 >
                   {professors.map((element, idx) => {
                     return (
                       <option
-                        value={element}
+                        value={element[1]}
                         key={idx}
                         className="cursor-pointer"
                       >
-                        {element}
+                        {element[0]}
                       </option>
                     );
                   })}
