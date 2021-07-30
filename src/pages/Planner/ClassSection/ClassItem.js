@@ -30,12 +30,7 @@ class ClassItem extends Component {
   }
 
   render() {
-    let classCode =
-      this.props.item.college +
-      " " +
-      this.props.item.department +
-      " " +
-      this.props.item.number;
+    let classCode = this.props.item.course_code;
     return (
       <div
         className="bg-white py-3 pl-4 pr-2 flex hover:bg-blue-100 cursor-pointer transition justify-between items-center"
@@ -46,17 +41,17 @@ class ClassItem extends Component {
             {classCode}
           </span>
           <span className="text-xs lg:text-sm overflow-ellipsis w-full whitespace-nowrap overflow-hidden">
-            {this.props.item.title}
+            {this.props.item.course_title}
           </span>
         </div>
         <div className="flex w-2/5 gap-1 justify-evenly items-center">
           <ClassRating
             ratingType="Quality"
-            val={this.props.item.qualityRating}
+            val={this.props.item.course_qualityRating}
           />
           <ClassRating
             ratingType="Difficulty"
-            val={this.props.item.difficultyRating}
+            val={this.props.item.course_difficultyRating}
           />
         </div>
       </div>

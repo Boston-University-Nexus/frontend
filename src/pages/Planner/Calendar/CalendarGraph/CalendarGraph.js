@@ -92,7 +92,7 @@ class CalendarGraph extends Component {
           >
             {this.hours()}
           </div>
-          {this.state.sections[i]}
+          {this.state.sections[i.slice(0, 1).toUpperCase() + i.slice(1, 3)]}
         </div>
       );
     }
@@ -134,6 +134,7 @@ class CalendarGraph extends Component {
       // Get first and last class
       let bestStart = 24;
       let bestEnd = 0;
+
       for (const section of this.props.activeSections) {
         let start = parseInt(section.start.substring(0, 2));
         let end = parseInt(section.end.substring(0, 2));
@@ -141,6 +142,7 @@ class CalendarGraph extends Component {
         if (start - 1 < bestStart) bestStart = start - 1;
         if (end + 1 > bestEnd) bestEnd = end + 1;
       }
+
       this.calendarEnd = bestEnd;
       this.calendarStart = bestStart;
 
@@ -194,20 +196,23 @@ class CalendarGraph extends Component {
 
   // Generates all the calendar sections in their corresponding day
   generateSections(sectionsList) {
+    console.log("S", sectionsList);
+
     let sections = {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [],
-      friday: [],
+      Mon: [],
+      Tue: [],
+      Wed: [],
+      Thu: [],
+      Fri: [],
     };
 
-    sectionsList.map((section) => {
+    sectionsList.map((section, id) => {
       if (!(section.displayed === false))
-        return section.days.map((day) => {
+        return section.days.split(",").map((day) => {
           return sections[day].push(
             <CalendarItem
               section={section}
+              colorId={id}
               h={this.state.cellHeight}
               key={section.id}
               start={this.calendarStart}

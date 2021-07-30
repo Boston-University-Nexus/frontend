@@ -10,9 +10,9 @@ export function filter(searched, currentClasses) {
   if (long_class.test(searched)) {
     currentClasses = currentClasses.filter(function (el) {
       return (
-        el.college.toLowerCase().includes(searched.substring(0, 3)) &&
-        el.department.toLowerCase().includes(searched.substring(3, 5)) &&
-        el.number.includes(searched.substring(5, 8))
+        el.course_college.toLowerCase().includes(searched.substring(0, 3)) &&
+        el.course_department.toLowerCase().includes(searched.substring(3, 5)) &&
+        el.course_number.includes(searched.substring(5, 8))
       );
     });
     // CS111
@@ -24,8 +24,8 @@ export function filter(searched, currentClasses) {
   ) {
     currentClasses = currentClasses.filter(function (el) {
       return (
-        el.department.toLowerCase().includes(searched.substring(0, 2)) &&
-        el.number.includes(searched.substring(2, 5))
+        el.course_department.toLowerCase().includes(searched.substring(0, 2)) &&
+        el.course_number.includes(searched.substring(2, 5))
       );
     });
     // CAS111
@@ -36,8 +36,8 @@ export function filter(searched, currentClasses) {
   ) {
     currentClasses = currentClasses.filter(function (el) {
       return (
-        el.college.toLowerCase().includes(searched.substring(0, 3)) &&
-        el.number.includes(searched.substring(3, 6))
+        el.course_college.toLowerCase().includes(searched.substring(0, 3)) &&
+        el.course_number.includes(searched.substring(3, 6))
       );
     });
     // CAS
@@ -46,7 +46,7 @@ export function filter(searched, currentClasses) {
     searched.length <= 3
   ) {
     currentClasses = currentClasses.filter(function (el) {
-      return el.college.toLowerCase().includes(searched.substring(0, 3));
+      return el.course_college.toLowerCase().includes(searched.substring(0, 3));
     });
   } else currentClasses = [];
 
