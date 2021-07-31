@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-
+import config from "../config";
 import { NavLink, Link } from "react-router-dom";
+
+// Icons
+import { FiUser } from "react-icons/fi";
 
 export default class PlannerNav extends Component {
   constructor(props) {
@@ -44,23 +47,25 @@ export default class PlannerNav extends Component {
               onMouseEnter={() => this.setState({ menuOpen: true })}
               onMouseLeave={() => this.setState({ menuOpen: false })}
             >
-              <div className="w-10 h-10 bg-green-500 rounded-full ml-5"></div>
+              <div className="p-2 flex items-center justify-center bg-gray-200 rounded-full ml-5">
+                <FiUser className="w-6 h-6" />
+              </div>
               {this.state.menuOpen && (
                 <div className="absolute flex flex-col bg-white shadow-xl rounded border border-gray-300 right-0">
-                  <Link
-                    to="/planner/login"
+                  <a
+                    href={config["server"] + "login"}
                     className="px-4 py-2 hover:bg-gray-200 hover:text-blue-500"
                   >
                     Login
-                  </Link>
+                  </a>
                   <Link
-                    to="/planner/profile"
+                    to="/profile"
                     className="px-4 py-2 hover:bg-gray-200 hover:text-blue-500"
                   >
                     Profile
                   </Link>
                   <Link
-                    to="/planner/settings"
+                    to="/settings"
                     className="px-4 py-2 hover:bg-gray-200 hover:text-blue-500"
                   >
                     Settings

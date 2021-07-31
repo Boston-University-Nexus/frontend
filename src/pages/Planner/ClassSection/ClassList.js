@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Functions
-import { displayClass, filterClasses } from "../../../state/actions";
-import { filter } from "../Methods";
+import { displayClass, saveClasses } from "../../../state/actions";
+import { filter } from "../Functions";
 
 // Components
 import NotFound from "./NotFound";
@@ -11,11 +11,12 @@ import StartTyping from "./StartTyping";
 import SearchBar from "./SearchBar";
 import ClassItem from "./ClassItem";
 import ClassCard from "./ClassCard";
+import config from "../../../config";
+import axios from "axios";
 
 // Redux
 const mapStateToProps = (state) => {
   return {
-    displayedClasses: state.displayedClasses,
     classes: state.classes,
     classStack: state.classStack,
   };
@@ -23,7 +24,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    filterClasses: (classes) => dispatch(filterClasses(classes)),
+    saveClasses: (classes) => dispatch(saveClasses(classes)),
     displayClass: (classes) => dispatch(displayClass(classes)),
   };
 };
@@ -45,16 +46,22 @@ class ClassList extends Component {
     this.props.displayClass([]);
 
     let searched = e.target.value.replaceAll(" ", "").toLowerCase();
+    let query = filter(searched);
 
-    // Call helper function filter
-    let currentClasses = filter(searched, this.props.classes);
+    console.log(query);
 
-    // Save to state
-    this.props.filterClasses(currentClasses);
+    if (query != "") {
+      // Call helper function filter
+      axios.get(config["server"] + "courses?" + query).then((res) => {
+        this.props.saveClasses(res.data);
+      });
+    } else {
+      this.props.saveClasses([]);
+    }
   }
 
   render() {
-    let classList = this.props.displayedClasses.slice(0, 75);
+    let classList = this.props.classes;
 
     return (
       <div className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full">

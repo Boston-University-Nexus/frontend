@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import Contributor from "./Contributor";
 
-import PhillipImg from "../../img/phillip.jpg";
-import DanielImg from "../../img/daniel.jpg";
-import VineetImg from "../../img/vineet.jpeg";
-import NicImg from "../../img/nic.jpeg";
-import UserImg from "../../img/user.png";
+import PhillipImg from "../../img/team/phillip.jpg";
+import DanielImg from "../../img/team/daniel.jpg";
+import VineetImg from "../../img/team/vineet.jpeg";
+import NicImg from "../../img/team/nic.jpeg";
+import YuchenImg from "../../img/team/yuchen.jpeg";
 
 export default class About extends Component {
   render() {
@@ -24,6 +24,7 @@ export default class About extends Component {
               linkedin="https://www.linkedin.com/in/dannymelchor"
               description="API endpoints, course search front-end/back-end, reviews system,
               recommendation algorithm, and planner front-end."
+              active={true}
             />
             <Contributor
               name="Nic Nguyen"
@@ -31,13 +32,7 @@ export default class About extends Component {
               img={NicImg}
               linkedin=""
               description="Data scraping and recommendation algorithm. Started the project with Vineet."
-            />
-            <Contributor
-              name="Phillip Tran"
-              position="Full Stack Developer"
-              img={PhillipImg}
-              linkedin="https://www.linkedin.com/in/ptrandev/"
-              description="Planner front-end and BU authentication system."
+              active={true}
             />
             <Contributor
               name="Vineet Raju"
@@ -45,13 +40,23 @@ export default class About extends Component {
               img={VineetImg}
               linkedin="https://www.linkedin.com/in/vineet-raju/"
               description="Data scraping and recommendation algorithm. Started the project with Nic."
+              active={true}
             />
             <Contributor
               name="Yuchen C"
               position="Lead Designer"
-              img={UserImg}
+              img={YuchenImg}
               linkedin=""
               description="Images and other art."
+              active={true}
+            />
+            <Contributor
+              name="Phillip Tran"
+              position="Full Stack Developer"
+              img={PhillipImg}
+              linkedin="https://www.linkedin.com/in/ptrandev/"
+              description="Planner front-end and BU authentication system."
+              active={false}
             />
           </div>
         </div>
