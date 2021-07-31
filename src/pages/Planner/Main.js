@@ -47,7 +47,6 @@ class Main extends Component {
   componentWillMount() {
     // Get calendars
     axios.get(config["server"] + "schedules/").then((response) => {
-      console.log("Received");
       this.props.saveCalendars(response.data);
       this.props.changeCalendar(response.data[0]);
       this.props.saveSections(response.data[0].sections);

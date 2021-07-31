@@ -35,11 +35,53 @@ class ClassList extends Component {
     this.state = {
       hasTyped: false,
       typedText: "",
+      sql_page: 0,
+      prev_query: "",
+      hasMore: true,
+      loading: false,
     };
 
     this.handleType = this.handleType.bind(this);
+    this.getMoreClasses = this.getMoreClasses.bind(this);
+    this.checkScroll = this.checkScroll.bind(this);
   }
 
+  // Checks if user has scrolled to load more classes
+  checkScroll(e) {
+    let scrolledPercentage = e.target.scrollTop / e.target.scrollHeight;
+    if (scrolledPercentage > 0.75 && this.state.hasMore) this.getMoreClasses();
+  }
+
+  // Loads more classes up
+  getMoreClasses() {
+    if (!this.state.loading) {
+      this.setState({ loading: true });
+      axios
+        .get(
+          config["server"] +
+            "courses?" +
+            this.state.prev_query +
+            "&page=" +
+            (this.state.sql_page + 1)
+        )
+        .then((res) => {
+          let prevClasses = [...this.props.classes];
+          if (prevClasses.length < 300) {
+            this.props.saveClasses(prevClasses.concat(res.data));
+            this.setState({
+              sql_page: this.state.sql_page + 1,
+              hasMore: true,
+              loading: false,
+            });
+          }
+        })
+        .catch((err) => {
+          this.setState({ hasMore: false });
+        });
+    }
+  }
+
+  // Loads classes based on type
   handleType(e) {
     // Is used to determine if we show "not found" or "start typing"
     this.setState({ typedText: e.target.value });
@@ -48,10 +90,13 @@ class ClassList extends Component {
     let searched = e.target.value.replaceAll(" ", "").toLowerCase();
     let query = filter(searched);
 
-    console.log(query);
-
     if (query != "") {
-      // Call helper function filter
+      // Call helper function filter and reset state
+      this.setState({
+        prev_query: query,
+        sql_page: 0,
+        hasMore: true,
+      });
       axios.get(config["server"] + "courses?" + query).then((res) => {
         this.props.saveClasses(res.data);
       });
@@ -84,7 +129,10 @@ class ClassList extends Component {
             </div>
 
             {/* DISPLAYED CLASSES */}
-            <div className="flex flex-col flex-grow w-full overflow-y-scroll h-5/6">
+            <div
+              className="flex flex-col flex-grow w-full overflow-y-scroll h-5/6"
+              onScroll={this.checkScroll}
+            >
               {/* IF CLASSES */}
               {classList.map((item, key) => {
                 return (
