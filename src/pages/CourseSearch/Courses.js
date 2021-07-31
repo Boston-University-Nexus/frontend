@@ -25,10 +25,6 @@ export default class Courses extends Component {
   async componentDidMount() {
     let query = window.location.search.split("=")[1];
 
-    let res_courses = await axios.get(
-      config["server"] + "courses?course_code=" + query
-    );
-
     let res_sections = await axios.get(
       config["server"] + "sections?course_code=" + query
     );
@@ -44,15 +40,14 @@ export default class Courses extends Component {
     }
 
     this.setState({
-      data: res_courses.data[0],
+      data: res_sections.data,
       professors,
-      data_sections: res_sections.data,
       loaded: true,
     });
   }
 
   render() {
-    let element = this.state.data;
+    let element = this.state.data[0];
 
     return (
       <div
@@ -149,7 +144,7 @@ export default class Courses extends Component {
                   </tr>
                 </thead>
                 <tbody className="overflow-y-auto">
-                  {this.state.data_sections.map((element) => {
+                  {this.state.data.map((element) => {
                     let loc =
                       "/coursesearch/sections?section=" +
                       element.course_code +
