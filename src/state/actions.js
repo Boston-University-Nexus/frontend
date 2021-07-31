@@ -1,7 +1,6 @@
 import {
   CHANGE_CALENDAR,
   CLASS_STACK,
-  FILTER_CLASSES,
   SAVE_CALENDARS,
   SAVE_CLASSES,
   SAVE_SECTIONS,
@@ -10,11 +9,6 @@ import {
 // Saves classes to state
 export const saveClasses = (payload) => {
   return { type: SAVE_CLASSES, payload };
-};
-
-// Saves filtered classes to state
-export const filterClasses = (payload) => {
-  return { type: FILTER_CLASSES, payload };
 };
 
 // Saves classes to the state stack (class cards)

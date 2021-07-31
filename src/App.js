@@ -9,12 +9,13 @@ import CourseSearchRouter from "./routers/CourseSearchRouter";
 import NotFound from "./pages/NotFound/NotFound";
 import About from "./pages/About/About";
 import Nav from "./components/Nav";
+import Profile from "./pages/Profile/Profile";
 
 // Divide in different routers for organized routing
 function App() {
   return (
     <Router>
-      <div className="w-full h-full">
+      <div className="w-full h-full flex justify-center">
         <Nav />
         <Switch>
           <Route exact path="/">
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route exact path="/about">
             <About />
+          </Route>
+          <Route exact path="/profile">
+            <Profile />
           </Route>
           <Route>
             <NotFound />
