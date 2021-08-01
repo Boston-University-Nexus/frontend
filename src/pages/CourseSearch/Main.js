@@ -11,6 +11,9 @@ import {
 } from "./Utils";
 import axios from "axios";
 
+// Icons
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+
 export default class Main extends Component {
   constructor(props) {
     super(props);
@@ -35,14 +38,14 @@ export default class Main extends Component {
     for (let i = 0; i < num; i++)
       if (i == selected)
         arr.push(
-          <div className="py-2 px-3 bg-blue-300 cursor-not-allowed select-none">
+          <div className="h-10 px-3 bg-blue-300 cursor-not-allowed select-none flex items-center">
             {i + sql_page * 5 + 1}
           </div>
         );
       else
         arr.push(
           <div
-            className="py-2 px-3 bg-blue-100 cursor-pointer select-none"
+            className="h-10 px-3 bg-blue-100 cursor-pointer select-none flex items-center"
             onClick={() => this.setState({ page: i })}
           >
             {i + sql_page * 5 + 1}
@@ -82,10 +85,18 @@ export default class Main extends Component {
       });
   }
 
-  //   Makes a request to the server at url "url"
+  // Makes a request to the server at url "url"
   async makeRequest(url) {
-    let res = await axios.get(url);
-    let data = res.data;
+    let data = [];
+
+    await axios
+      .get(url)
+      .then((res) => {
+        data = res.data;
+      })
+      .catch((err) => {
+        data = [];
+      });
 
     if (data.length === 0) return false;
     else return data;
@@ -100,7 +111,14 @@ export default class Main extends Component {
     let search_for = result[0];
 
     if (search_for.length === 0) {
-      this.setState({ data: [], data_type: "", finished_loading: true });
+      this.setState({
+        data: [],
+        data_type: "",
+        finished_loading: true,
+        sql_page: 0,
+        page: 0,
+        pages: 0,
+      });
       return;
     }
 
@@ -145,7 +163,7 @@ export default class Main extends Component {
   render() {
     return (
       <div
-        className="w-full md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl px-7"
+        className="w-full h-screen md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl px-7"
         style={{ paddingTop: 72 }}
       >
         <h1 className="font-bold text-xl mt-3">
@@ -217,7 +235,7 @@ export default class Main extends Component {
                         >
                           {element.course_title || "-"}
                         </td>
-                        <td className="px-3">
+                        <td className="px-3 overflow-hidden overflow-ellipsis">
                           {formatPrereqs(element.course_prereqs)}
                         </td>
                         <td
@@ -295,10 +313,10 @@ export default class Main extends Component {
           {/* Go back pages button */}
           {this.state.finished_loading && this.state.sql_page != 0 && (
             <div
-              className="py-2 px-3 bg-blue-100 cursor-pointer select-none"
+              className="h-10 px-2 bg-blue-100 cursor-pointer select-none flex items-center"
               onClick={this.loadPrevPage}
             >
-              ...
+              <FiChevronLeft />
             </div>
           )}
 
@@ -315,10 +333,10 @@ export default class Main extends Component {
           {this.state.finished_loading &&
             this.state.data.length == config["sql_max_items"] && (
               <div
-                className="py-2 px-3 bg-blue-100 cursor-pointer select-none"
+                className="h-10 px-2 bg-blue-100 cursor-pointer select-none flex items-center"
                 onClick={this.loadNextPage}
               >
-                ...
+                <FiChevronRight />
               </div>
             )}
         </div>
