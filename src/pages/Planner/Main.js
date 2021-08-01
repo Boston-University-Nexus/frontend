@@ -56,7 +56,7 @@ class Main extends Component {
   render() {
     return (
       <div
-        className="flex justify-center items-center h-full bg-blue-300 p-4"
+        className="flex justify-center items-center h-screen bg-blue-300 p-4"
         style={{ paddingTop: 72 }}
       >
         <div className="flex justify-center items-center h-full w-full">

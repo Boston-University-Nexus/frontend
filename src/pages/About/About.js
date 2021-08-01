@@ -10,13 +10,13 @@ import YuchenImg from "../../img/team/yuchen.jpeg";
 export default class About extends Component {
   render() {
     return (
-      <div
-        className="w-full min-h-full bg-blue-300 flex flex-col items-center justify-center pb-3"
-        style={{ paddingTop: 72 }}
-      >
-        <div className="flex flex-col items-center w-11/12 lg:w-3/4 xl:1/2 h-full bg-gray-100 shadow-xl py-8">
+      <div className="w-full bg-blue-300 flex items-start justify-center pb-3">
+        <div
+          className="flex flex-col items-center w-11/12 lg:w-3/4 xl:1/2 bg-gray-100 shadow-xl box-content py-10 mb-4"
+          style={{ marginTop: 72 }}
+        >
           <h2 className="mb-3 text-4xl font-sans font-bold">Our team</h2>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 h-full">
             <Contributor
               name="Daniel Melchor"
               position="Full Stack Developer"

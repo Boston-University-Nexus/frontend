@@ -15,7 +15,7 @@ import Profile from "./pages/Profile/Profile";
 function App() {
   return (
     <Router>
-      <div className="w-full h-full flex justify-center">
+      <div className="w-full flex justify-center">
         <Nav />
         <Switch>
           <Route exact path="/">

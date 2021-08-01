@@ -51,7 +51,7 @@ export default function CalendarItem(props) {
           <h4 className="flex items-center uppercase whitespace-nowrap right-child">
             <IoLocationSharp className="" />
             <span className="lg:ml-1 overflow-ellipsis overflow-hidden">
-              {props.section.room}
+              {props.section.building}
             </span>
           </h4>
         </div>
