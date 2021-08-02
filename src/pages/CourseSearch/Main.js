@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { request } from "../../middlewares/requests";
 import SearchBar from "./SearchBar";
-import config from "../../config";
+
 import {
   checkTypedType,
   formatDays,
@@ -9,12 +10,26 @@ import {
   formatRating,
   formatTime,
 } from "./Utils";
-import axios from "axios";
 
 // Icons
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { connect } from "react-redux";
+import { setPopups } from "../../state/actions";
 
-export default class Main extends Component {
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    popups: state.popups,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setPopups: (sections) => dispatch(setPopups(sections)),
+  };
+};
+
+class Main extends Component {
   constructor(props) {
     super(props);
 
@@ -66,7 +81,9 @@ export default class Main extends Component {
         sql_page: this.state.sql_page + 1,
         page: 0,
         data: result,
-        pages: Math.ceil(result.length / config["coursesearch_max_items"]),
+        pages: Math.ceil(
+          result.length / process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
+        ),
       });
   }
 
@@ -81,22 +98,21 @@ export default class Main extends Component {
         sql_page: this.state.sql_page - 1,
         page: 0,
         data: result,
-        pages: Math.ceil(result.length / config["coursesearch_max_items"]),
+        pages: Math.ceil(
+          result.length / process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
+        ),
       });
   }
 
-  // Makes a request to the server at url "url"
+  // Makes a request to the.REACT_APP_SERVER at url "url"
   async makeRequest(url) {
     let data = [];
 
-    await axios
-      .get(url)
-      .then((res) => {
-        data = res.data;
-      })
-      .catch((err) => {
-        data = [];
-      });
+    await request.get(url).then((res) => {
+      if (res && !res.error) data = res.data;
+      else if (!res) data = [];
+      else this.props.setPopups({ ...this.props.popups, rateLimit: true });
+    });
 
     if (data.length === 0) return false;
     else return data;
@@ -122,7 +138,7 @@ export default class Main extends Component {
       return;
     }
 
-    let url = config["server"];
+    let url = process.env.REACT_APP_SERVER;
 
     // For every query option we have
     for (const search_item of search_for) {
@@ -150,7 +166,9 @@ export default class Main extends Component {
       this.setState({
         data: valid,
         page: 0,
-        pages: Math.ceil(valid.length / config["coursesearch_max_items"]),
+        pages: Math.ceil(
+          valid.length / process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
+        ),
         sql_page: 0,
       });
     } else {
@@ -207,12 +225,14 @@ export default class Main extends Component {
               this.state.data.length > 0 &&
               this.state.data.map((element, idx) => {
                 let data_type = this.state.data_type;
-                let page = this.state.page * config["coursesearch_max_items"];
+                let page =
+                  this.state.page *
+                  process.env.REACT_APP_COURSESEARCH_MAX_ITEMS;
 
                 // If the idx is in the page we are in
                 if (
                   page <= idx &&
-                  idx < page + config["coursesearch_max_items"]
+                  idx < page + process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
                 )
                   if (data_type === "courses") {
                     let loc =
@@ -331,7 +351,7 @@ export default class Main extends Component {
 
           {/* Go more pages button */}
           {this.state.finished_loading &&
-            this.state.data.length == config["sql_max_items"] && (
+            this.state.data.length == process.env.REACT_APP_SQL_MAX_ITEMS && (
               <div
                 className="h-10 px-2 bg-blue-100 cursor-pointer select-none flex items-center"
                 onClick={this.loadNextPage}
@@ -354,3 +374,5 @@ export default class Main extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,9 +1,8 @@
-import axios from "axios";
 import React, { Component } from "react";
-import config from "../../config";
 
 // Images
 import UserImg from "../../img/user.png";
+import { request } from "../../middlewares/requests";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -15,12 +14,12 @@ export default class Profile extends Component {
 
   componentDidMount() {
     let loggedIn;
-    axios
-      .get(config["server"] + "whoami")
+    request
+      .get(process.env.REACT_APP_SERVER + "whoami")
       .then((res) => (loggedIn = true))
       .catch((err) => (loggedIn = false));
 
-    // if (!loggedIn) window.location.replace(config["server"] + "login");
+    // if (!loggedIn) window.location.replace(process.env.REACT_APP_SERVER + "login");
   }
   render() {
     return (

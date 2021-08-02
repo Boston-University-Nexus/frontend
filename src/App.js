@@ -10,12 +10,14 @@ import NotFound from "./pages/NotFound/NotFound";
 import About from "./pages/About/About";
 import Nav from "./components/Nav";
 import Profile from "./pages/Profile/Profile";
+import Popups from "./components/Popups/Popups";
 
 // Divide in different routers for organized routing
 function App() {
   return (
     <Router>
       <div className="w-full flex justify-center">
+        <Popups />
         <Nav />
         <Switch>
           <Route exact path="/">

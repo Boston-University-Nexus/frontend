@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import config from "../../../config";
 
 // Icons
 import { FiExternalLink } from "react-icons/fi";
@@ -7,7 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import { connect } from "react-redux";
 import { displayClass } from "../../../state/actions";
-import axios from "axios";
+import { request } from "../../../middlewares/requests";
 import SectionItem from "./SectionItem";
 
 const formatDescription = (descr) => {
@@ -57,7 +56,7 @@ class ClassCard extends Component {
     let url = "hubs?course_code=" + current.course_code;
 
     // Get all hubs
-    axios.get(config["server"] + url).then(
+    request.get(process.env.REACT_APP_SERVER + url).then(
       function (response) {
         let arr = [];
         for (const item of response.data) {
@@ -74,7 +73,7 @@ class ClassCard extends Component {
     let url = "sections?course_code=" + current.course_code;
 
     // Get all sections
-    axios.get(config["server"] + url).then(
+    request.get(process.env.REACT_APP_SERVER + url).then(
       function (response) {
         console.log(response.data);
         this.setState({ sections: response.data });

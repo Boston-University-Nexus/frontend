@@ -1,6 +1,7 @@
 import {
   CHANGE_CALENDAR,
   CLASS_STACK,
+  SET_POPUPS,
   SAVE_CALENDARS,
   SAVE_CLASSES,
   SAVE_SECTIONS,
@@ -12,6 +13,9 @@ const initialState = {
   activeCalendar: {}, // The calendar displayed
   activeSections: [], // The sections displayed on the current calendar
   classStack: [], // The class stack used for navigation (class cards)
+  popups: {
+    rateLimit: false,
+  }, // Shows popups
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -43,6 +47,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         classStack: action.payload,
+      };
+    case SET_POPUPS:
+      return {
+        ...state,
+        popups: action.payload,
       };
     default:
       return state;
