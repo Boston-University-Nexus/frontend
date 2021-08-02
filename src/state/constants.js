@@ -7,3 +7,6 @@ export const CLASS_STACK = "CLASS_STACK";
 export const SAVE_CALENDARS = "SAVE_CALENDARS";
 export const SAVE_SECTIONS = "SAVE_SECTIONS";
 export const CHANGE_CALENDAR = "CHANGE_CALENDAR";
+
+// EVENTS
+export const SET_POPUPS = "SET_POPUPS";

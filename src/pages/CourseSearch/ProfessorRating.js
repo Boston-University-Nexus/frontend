@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { Component } from "react";
+import { request } from "../../middlewares/requests";
 import SliderRating from "./SliderRating";
-import config from "../../config";
 
 import { GrClose } from "react-icons/gr";
 
@@ -46,7 +45,10 @@ export default class ProfessorRating extends Component {
       course,
     };
 
-    let res = await axios.post(config["server"] + "ratings/", data);
+    let res = await request.post(
+      process.env.REACT_APP_SERVER + "ratings/",
+      data
+    );
 
     this.setState({ open: false });
   }

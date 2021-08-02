@@ -1,6 +1,7 @@
 import {
   CHANGE_CALENDAR,
   CLASS_STACK,
+  SET_POPUPS,
   SAVE_CALENDARS,
   SAVE_CLASSES,
   SAVE_SECTIONS,
@@ -29,4 +30,9 @@ export const saveSections = (payload) => {
 // Changes the displayed calendar
 export const changeCalendar = (payload) => {
   return { type: CHANGE_CALENDAR, payload };
+};
+
+// Rate limit
+export const setPopups = (payload) => {
+  return { type: SET_POPUPS, payload };
 };

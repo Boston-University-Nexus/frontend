@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { Component } from "react";
+import { request } from "../../middlewares/requests";
 import CoursesRating from "./CoursesRating";
-import config from "../../config";
+
 import SectionsRating from "./SectionsRating";
 import {
   formatPrereqs,
@@ -26,8 +26,8 @@ export default class Sections extends Component {
     let course = query.substring(0, 8);
     let section = query.substring(8, 10);
 
-    let res_section = await axios.get(
-      config["server"] +
+    let res_section = await request.get(
+      process.env.REACT_APP_SERVER +
         "sections?course_code=" +
         course +
         "&section_code=" +

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Functions
-import { displayClass, saveClasses } from "../../../state/actions";
+import { displayClass, saveClasses, setPopups } from "../../../state/actions";
 import { filter } from "../Functions";
 
 // Components
@@ -11,14 +11,15 @@ import StartTyping from "./StartTyping";
 import SearchBar from "./SearchBar";
 import ClassItem from "./ClassItem";
 import ClassCard from "./ClassCard";
-import config from "../../../config";
-import axios from "axios";
+
+import { request } from "../../../middlewares/requests";
 
 // Redux
 const mapStateToProps = (state) => {
   return {
     classes: state.classes,
     classStack: state.classStack,
+    popups: state.popups,
   };
 };
 
@@ -26,6 +27,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     saveClasses: (classes) => dispatch(saveClasses(classes)),
     displayClass: (classes) => dispatch(displayClass(classes)),
+    setPopups: (boolean) => dispatch(setPopups(boolean)),
   };
 };
 
@@ -56,9 +58,9 @@ class ClassList extends Component {
   getMoreClasses() {
     if (!this.state.loading) {
       this.setState({ loading: true });
-      axios
+      request
         .get(
-          config["server"] +
+          process.env.REACT_APP_SERVER +
             "courses?" +
             this.state.prev_query +
             "&page=" +
@@ -97,9 +99,15 @@ class ClassList extends Component {
         sql_page: 0,
         hasMore: true,
       });
-      axios.get(config["server"] + "courses?" + query).then((res) => {
-        this.props.saveClasses(res.data);
-      });
+      request
+        .get(process.env.REACT_APP_SERVER + "courses?" + query)
+        .then((res) => {
+          if (res && !res.error) this.props.saveClasses(res.data);
+          else if (!res) this.props.saveClasses([]);
+          else {
+            this.props.setPopups({ ...this.props.popups, rateLimit: true });
+          }
+        });
     } else {
       this.props.saveClasses([]);
     }
@@ -134,15 +142,16 @@ class ClassList extends Component {
               onScroll={this.checkScroll}
             >
               {/* IF CLASSES */}
-              {classList.map((item, key) => {
-                return (
-                  <ClassItem
-                    item={item}
-                    key={key}
-                    toggleMenu={this.props.toggleMenu}
-                  />
-                );
-              })}
+              {classList &&
+                classList.map((item, key) => {
+                  return (
+                    <ClassItem
+                      item={item}
+                      key={key}
+                      toggleMenu={this.props.toggleMenu}
+                    />
+                  );
+                })}
 
               {/* IF EMPTY SEARCH */}
               {classList.length === 0 && this.state.typedText.length < 1 && (

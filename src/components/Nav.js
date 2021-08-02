@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import config from "../config";
+
 import { NavLink, Link } from "react-router-dom";
 
 // Icons
@@ -53,7 +53,7 @@ export default class PlannerNav extends Component {
               {this.state.menuOpen && (
                 <div className="absolute flex flex-col bg-white shadow-xl rounded border border-gray-300 right-0">
                   <a
-                    href={config["server"] + "login"}
+                    href={process.env.REACT_APP_SERVER + "login"}
                     className="px-4 py-2 hover:bg-gray-200 hover:text-blue-500"
                   >
                     Login

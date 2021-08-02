@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { Component } from "react";
 import CoursesRating from "./CoursesRating";
-import config from "../../config";
+
 import {
   formatDays,
   formatPrereqs,
@@ -10,6 +9,9 @@ import {
   formatTime,
   ratingToDiv,
 } from "./Utils";
+import { request } from "../../middlewares/requests";
+
+// Icons
 import { FiChevronRight } from "react-icons/fi";
 
 export default class Courses extends Component {
@@ -25,8 +27,8 @@ export default class Courses extends Component {
   async componentDidMount() {
     let query = window.location.search.split("=")[1];
 
-    let res_sections = await axios.get(
-      config["server"] + "sections?course_code=" + query
+    let res_sections = await request.get(
+      process.env.REACT_APP_SERVER + "sections?course_code=" + query
     );
 
     let professors = [];
