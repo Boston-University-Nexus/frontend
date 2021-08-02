@@ -6,10 +6,35 @@ import { IoLocationSharp, IoClose } from "react-icons/io5";
 import { textToDiff, textToTime } from "./CalendarMethods";
 
 // Different colors for each class
-const colors = ["green", "yellow", "red", "blue", "purple", "pink"];
+const colors = [
+  "text-green-500",
+  "text-yellow-500",
+  "text-red-500",
+  "text-blue-500",
+  "text-purple-500",
+  "text-pink-500",
+];
+const bgColors = [
+  "bg-green-100",
+  "bg-yellow-100",
+  "bg-red-100",
+  "bg-blue-100",
+  "bg-purple-100",
+  "bg-pink-100",
+];
+const borderColors = [
+  "border-green-500",
+  "border-yellow-500",
+  "border-red-500",
+  "border-blue-500",
+  "border-purple-500",
+  "border-pink-500",
+];
 
 export default function CalendarItem(props) {
   let color = colors[props.colorId % colors.length];
+  let bgColor = bgColors[props.colorId % colors.length];
+  let borderColor = borderColors[props.colorId % colors.length];
 
   // Days of week fields are also h, so h + diff * h
   let fromTop =
@@ -20,15 +45,7 @@ export default function CalendarItem(props) {
 
   return (
     <div
-      className={
-        "absolute bg-" +
-        color +
-        "-100 border-l-4 border-" +
-        color +
-        "-500 text-" +
-        color +
-        "-500 px-px lg:px-2 w-full flex flex-col items-left justify-center overflow-hidden calendarItem"
-      }
+      className={`absolute ${bgColor} border-l-4 ${borderColor} ${color} px-px lg:px-2 w-full flex flex-col items-left justify-center overflow-hidden calendarItem`}
       style={{
         top: fromTop,
         height: calcHeight,
