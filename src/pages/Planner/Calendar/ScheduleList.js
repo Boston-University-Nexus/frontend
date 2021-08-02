@@ -91,34 +91,35 @@ class ScheduleList extends Component {
           }
         >
           {/* For every calendar saved in state */}
-          {this.props.calendars.map((item, key) => {
-            let selected = item.title === this.props.activeCalendar.title;
-            return (
-              <div
-                className={
-                  "px-3 py-4 hover:bg-blue-100 flex items-center justify-between " +
-                  (selected ? "bg-blue-100" : "bg-white")
-                }
-                key={key}
-                onClick={() => {
-                  this.props.changeCalendar(item);
-                }}
-              >
-                <div className="flex items-center w-2/3">
-                  <FiStar />
-                  <span className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    {item.title}
-                  </span>
-                </div>
+          {this.props.calendars &&
+            this.props.calendars.map((item, key) => {
+              let selected = item.title === this.props.activeCalendar.title;
+              return (
+                <div
+                  className={
+                    "px-3 py-4 hover:bg-blue-100 flex items-center justify-between " +
+                    (selected ? "bg-blue-100" : "bg-white")
+                  }
+                  key={key}
+                  onClick={() => {
+                    this.props.changeCalendar(item);
+                  }}
+                >
+                  <div className="flex items-center w-2/3">
+                    <FiStar />
+                    <span className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                      {item.title}
+                    </span>
+                  </div>
 
-                <div className="flex text-gray-500 text-sm">
-                  <FaEdit className="hover:text-gray-400" />
-                  <FaCopy className="mx-1 hover:text-gray-400" />
-                  <FaTrashAlt className="hover:text-gray-400" />
+                  <div className="flex text-gray-500 text-sm">
+                    <FaEdit className="hover:text-gray-400" />
+                    <FaCopy className="mx-1 hover:text-gray-400" />
+                    <FaTrashAlt className="hover:text-gray-400" />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     );
