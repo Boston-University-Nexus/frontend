@@ -1,5 +1,5 @@
 export default {
-  server: "http://localhost:8000/",
+  server: "http://api.bunexus.app/",
   coursesearch_max_items: 10,
   sql_max_items: 50,
 };
