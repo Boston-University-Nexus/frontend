@@ -67,6 +67,7 @@ class ScheduleList extends Component {
   }
 
   render() {
+    console.log("T", this.props.calendars);
     return (
       <div
         className="ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none font-bold"
