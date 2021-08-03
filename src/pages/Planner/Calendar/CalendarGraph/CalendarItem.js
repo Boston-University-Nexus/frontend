@@ -5,7 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoLocationSharp, IoClose } from "react-icons/io5";
 import { textToDiff, textToTime } from "./CalendarMethods";
 
-// Different colors for each class
+// Different colors for each class so tailwind loads them
 const colors = [
   "text-green-500",
   "text-yellow-500",

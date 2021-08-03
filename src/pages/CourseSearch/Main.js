@@ -14,20 +14,7 @@ import {
 // Icons
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { connect } from "react-redux";
-import { setPopups } from "../../state/actions";
-
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    popups: state.popups,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setPopups: (sections) => dispatch(setPopups(sections)),
-  };
-};
+import { stateSetPopups } from "../../state/actions";
 
 class Main extends Component {
   constructor(props) {
@@ -108,14 +95,21 @@ class Main extends Component {
   async makeRequest(url) {
     let data = [];
 
-    await request.get(url).then((res) => {
-      if (res && !res.error) data = res.data;
-      else if (!res) data = [];
-      else this.props.setPopups({ ...this.props.popups, rateLimit: true });
-    });
+    if (this.props.stateLoggedIn) {
+      await request.get(url).then((res) => {
+        if (res && !res.error) data = res.data;
+        else if (!res) data = [];
+        else
+          this.props.stateSetPopups({
+            ...this.props.statePopups,
+            rateLimit: true,
+          });
+      });
 
-    if (data.length === 0) return false;
-    else return data;
+      if (data.length === 0) return false;
+      else return data;
+    } else
+      this.props.stateSetPopups({ ...this.props.statePopups, needLogin: true });
   }
 
   async searchAction(e) {
@@ -180,10 +174,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div
-        className="w-full h-screen md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl px-7"
-        style={{ paddingTop: 72 }}
-      >
+      <div className="w-full h-screen md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl p-7">
         <h1 className="font-bold text-xl mt-3">
           Welcome to our Reviews & Info section
         </h1>
@@ -225,15 +216,14 @@ class Main extends Component {
               this.state.data.length > 0 &&
               this.state.data.map((element, idx) => {
                 let data_type = this.state.data_type;
-                let page =
-                  this.state.page *
-                  process.env.REACT_APP_COURSESEARCH_MAX_ITEMS;
+                let max = parseInt(
+                  process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
+                );
+                let page = this.state.page * max;
+                console.log(page, idx, page + max);
 
                 // If the idx is in the page we are in
-                if (
-                  page <= idx &&
-                  idx < page + process.env.REACT_APP_COURSESEARCH_MAX_ITEMS
-                )
+                if (idx > page && idx < page + max)
                   if (data_type === "courses") {
                     let loc =
                       "/coursesearch/courses?course=" + element.course_code;
@@ -374,5 +364,19 @@ class Main extends Component {
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    statePopups: state.events.statePopups,
+    stateLoggedIn: state.users.stateLoggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSetPopups: (popups) => dispatch(stateSetPopups(popups)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

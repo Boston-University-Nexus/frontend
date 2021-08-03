@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import ClassItem from "./ClassSection/ClassItem";
 
-export default class Recommended extends Component {
+import { stateSetPopups } from "../../state/actions";
+import { connect } from "react-redux";
+
+class Recommended extends Component {
   render() {
     // If menu is displayed
     let isOpen = this.props.open;
@@ -22,7 +25,14 @@ export default class Recommended extends Component {
           {/* TOGGLE BUTTON */}
           <button
             className="bg-gray-600 text-white text-xs lg:text-sm px-1 lg:px-2 rounded-full focus:outline-none py-1 font-bold mr-1"
-            onClick={this.props.toggleMenu}
+            onClick={() => {
+              if (this.props.stateLoggedIn) this.props.toggleMenu();
+              else
+                this.props.stateSetPopups({
+                  ...this.props.statePopups,
+                  needLogin: true,
+                });
+            }}
           >
             {isOpen ? (
               <div className="flex items-center justify-center uppercase">
@@ -87,3 +97,19 @@ export default class Recommended extends Component {
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    statePopups: state.events.statePopups,
+    stateLoggedIn: state.users.stateLoggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSetPopups: (popups) => dispatch(stateSetPopups(popups)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Recommended);

@@ -24,7 +24,7 @@ const testStats = {
 // Redux
 const mapStateToProps = (state) => {
   return {
-    activeCalendar: state.activeCalendar,
+    stateActiveSchedule: state.root.stateActiveSchedule,
   };
 };
 
@@ -32,7 +32,7 @@ class Calendar extends Component {
   render() {
     return (
       <>
-        {this.props.activeCalendar && (
+        {this.props.stateActiveSchedule && (
           <div className="w-3/4 2xl:w-4/5 h-full bg-white p-4 flex flex-col items-center justify-between">
             <div className="w-full flex flex-col items-center">
               <div className="flex w-full items-center justify-start mb-3">

@@ -12,21 +12,7 @@ import {
 import { FiStar } from "react-icons/fi";
 
 // Functions
-import { changeCalendar } from "../../../state/actions";
-
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    activeCalendar: state.activeCalendar,
-    calendars: state.calendars,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeCalendar: (calendar) => dispatch(changeCalendar(calendar)),
-  };
-};
+import { stateSetSchedule } from "../../../state/actions";
 
 class ScheduleList extends Component {
   constructor(props) {
@@ -34,25 +20,23 @@ class ScheduleList extends Component {
 
     this.scheduleDrop = React.createRef();
 
-    this.changeCalendar = this.changeCalendar.bind(this);
+    this.changeToSchedule = this.changeToSchedule.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
     this.state = { open: false };
   }
 
-  changeCalendar(e) {
-    // Changes displayed calendar in state
-    let itemTitle = e.target.value;
-
-    for (const schedule of this.props.calendars) {
-      if (schedule.title.toLowerCase() === itemTitle.toLowerCase()) {
-        this.props.changeCalendar(schedule);
+  // Changes displayed calendar in state
+  changeToSchedule(item) {
+    for (const schedule of this.props.stateSchedules) {
+      if (schedule.title.toLowerCase() === item.title.toLowerCase()) {
+        this.props.stateSetSchedule(schedule);
       }
     }
   }
 
+  // Closes popup when clicked outside
   handleClick(e) {
-    // Closes popup when clicked outside
     if (
       this.state.open &&
       this.scheduleDrop &&
@@ -67,7 +51,6 @@ class ScheduleList extends Component {
   }
 
   render() {
-    console.log("T", this.props.calendars);
     return (
       <div
         className="ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none font-bold"
@@ -78,7 +61,7 @@ class ScheduleList extends Component {
           className="flex px-4 py-0.5 items-center w-full"
           onClick={() => this.setState({ open: !this.state.open })}
         >
-          {this.props.activeCalendar.title}
+          {this.props.stateActiveSchedule.title}
           {this.state.open ? (
             <FaChevronUp className="ml-2" />
           ) : (
@@ -92,9 +75,10 @@ class ScheduleList extends Component {
           }
         >
           {/* For every calendar saved in state */}
-          {this.props.calendars &&
-            this.props.calendars.map((item, key) => {
-              let selected = item.title === this.props.activeCalendar.title;
+          {this.props.stateSchedules &&
+            this.props.stateSchedules.map((item, key) => {
+              let selected =
+                item.title === this.props.stateActiveSchedule.title;
               return (
                 <div
                   className={
@@ -103,7 +87,7 @@ class ScheduleList extends Component {
                   }
                   key={key}
                   onClick={() => {
-                    this.props.changeCalendar(item);
+                    this.changeToSchedule(item);
                   }}
                 >
                   <div className="flex items-center w-2/3">
@@ -126,5 +110,19 @@ class ScheduleList extends Component {
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    stateActiveSchedule: state.root.stateActiveSchedule,
+    stateSchedules: state.root.stateSchedules,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSetSchedule: (calendar) => dispatch(stateSetSchedule(calendar)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleList);
