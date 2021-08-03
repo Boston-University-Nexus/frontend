@@ -1,12 +1,12 @@
 // Classes
-export const SAVE_CLASSES = "SAVE_CLASSES";
-export const FILTER_CLASSES = "FILTER_CLASSES";
-export const CLASS_STACK = "CLASS_STACK";
+export const SAVE_COURSES = "SAVE_COURSES";
+export const COURSE_STACK = "COURSE_STACK";
 
 // Calendars
-export const SAVE_CALENDARS = "SAVE_CALENDARS";
-export const SAVE_SECTIONS = "SAVE_SECTIONS";
-export const CHANGE_CALENDAR = "CHANGE_CALENDAR";
+export const SAVE_SCHEDULES = "SAVE_SCHEDULES";
+export const VISIBLE_SECTIONS = "VISIBLE_SECTIONS";
+export const SET_SCHEDULE = "SET_SCHEDULE";
 
 // EVENTS
 export const SET_POPUPS = "SET_POPUPS";
+export const LOG_IN = "LOG_IN";

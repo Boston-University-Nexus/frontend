@@ -1,15 +1,4 @@
 import { Component } from "react";
-import { connect } from "react-redux";
-import { request } from "../../middlewares/requests";
-
-// Functions
-import {
-  changeCalendar,
-  saveCalendars,
-  saveClasses,
-  saveSections,
-  setPopups,
-} from "../../state/actions";
 
 // Components
 import ClassList from "./ClassSection/ClassList";
@@ -17,33 +6,17 @@ import Calendar from "./Calendar/Calendar";
 import Recommended from "./Recommended";
 import Cart from "./Cart/Cart";
 
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    popups: state.popups,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveClasses: (classes) => dispatch(saveClasses(classes)),
-    saveCalendars: (calendars) => dispatch(saveCalendars(calendars)),
-    changeCalendar: (calendar) => dispatch(changeCalendar(calendar)),
-    saveSections: (sections) => dispatch(saveSections(sections)),
-    setPopups: (sections) => dispatch(setPopups(sections)),
-  };
-};
-
-class Main extends Component {
+export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recommendedOpen: true,
+      recommendedOpen: this.props.stateLoggedIn,
     };
 
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
+  // Open and close the recommended menu
   toggleMenu(e, val) {
     if (typeof val !== "undefined")
       // Toggle the recommended menu
@@ -51,29 +24,9 @@ class Main extends Component {
     else this.setState({ recommendedOpen: !this.state.recommendedOpen });
   }
 
-  componentWillMount() {
-    // Get calendars
-    request.get(process.env.REACT_APP_SERVER + "schedules/").then((res) => {
-      if (res && !res.error) {
-        this.props.saveCalendars(res.data);
-        this.props.changeCalendar(res.data[0]);
-        this.props.saveSections(res.data[0].sections);
-      } else if (!res) {
-        this.props.saveCalendars([]);
-        this.props.changeCalendar([]);
-        this.props.saveSections([]);
-      } else {
-        this.props.setPopups({ ...this.props.popups, rateLimit: true });
-      }
-    });
-  }
-
   render() {
     return (
-      <div
-        className="flex justify-center items-center h-screen bg-blue-300 p-4"
-        style={{ paddingTop: 72 }}
-      >
+      <div className="justify-center items-center h-full bg-blue-300 p-4 flex-auto">
         <div className="flex justify-center items-center h-full w-full">
           <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">
             <ClassList
@@ -94,5 +47,3 @@ class Main extends Component {
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);

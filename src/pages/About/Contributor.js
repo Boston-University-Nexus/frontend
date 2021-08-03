@@ -1,5 +1,6 @@
 import React from "react";
 
+// Component for about images
 export default function Contributor(props) {
   return (
     <div className="overflow-hidden flex flex-col items-center group justify-center w-5/6 sm:w-1/3 md:w-1/4 shadow-md hover:shadow-2xl rounded bg-white border hover:border-blue-300">

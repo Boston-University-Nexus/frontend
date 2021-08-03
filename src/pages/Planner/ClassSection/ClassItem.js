@@ -2,19 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import ClassRating from "./ClassRating";
-import { displayClass } from "../../../state/actions";
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    displayClass: (classes) => dispatch(displayClass(classes)),
-  };
-};
-
-const mapStateToProps = (state) => {
-  return {
-    classStack: state.classStack,
-  };
-};
+import { stateDisplayCourse } from "../../../state/actions";
 
 // The item displayed in the class section/recommended section
 class ClassItem extends Component {
@@ -26,7 +14,10 @@ class ClassItem extends Component {
 
   display() {
     this.props.toggleMenu(null, false);
-    this.props.displayClass([...this.props.classStack, this.props.item]);
+    this.props.stateDisplayCourse([
+      ...this.props.stateCourseStack,
+      this.props.item,
+    ]);
   }
 
   render() {
@@ -58,5 +49,17 @@ class ClassItem extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateDisplayCourse: (classes) => dispatch(stateDisplayCourse(classes)),
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    stateCourseStack: state.root.stateCourseStack,
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClassItem);

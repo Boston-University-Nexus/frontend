@@ -2,25 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Functions
-import { changeCalendar, saveCalendars } from "../../../state/actions";
+import { stateSaveSchedules, stateSetSchedule } from "../../../state/actions";
 
 import CartItem from "./CartItem";
-
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    activeSections: state.activeSections,
-    activeCalendar: state.activeCalendar,
-    calendars: state.calendars,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveCalendars: (calendars) => dispatch(saveCalendars(calendars)),
-    changeCalendar: (calendar) => dispatch(changeCalendar(calendar)),
-  };
-};
 
 class Cart extends Component {
   constructor(props) {
@@ -31,11 +15,11 @@ class Cart extends Component {
 
   updateCart(thisTitle) {
     // Copies state (avoids shallow copies)
-    let calendars = [...this.props.calendars];
+    let calendars = [...this.props.stateSchedules];
     let currentSection;
 
     for (let i = 0; i < calendars.length; i++)
-      if (calendars[i] === this.props.activeCalendar) currentSection = i;
+      if (calendars[i] === this.props.stateActiveSchedule) currentSection = i;
 
     // Finds and changes the appropiate class display property
     for (let j = 0; j < calendars[currentSection].sections.length; j++)
@@ -46,15 +30,15 @@ class Cart extends Component {
       }
 
     // Saves to state
-    this.props.saveCalendars(calendars);
-    this.props.changeCalendar(calendars[currentSection]);
+    this.props.stateSaveSchedules(calendars);
+    this.props.stateSetSchedule(calendars[currentSection]);
   }
 
   render() {
     return (
       <div className="w-1/4 2xl:w-1/5 h-full bg-blue-100 flex flex-col">
-        {this.props.activeCalendar.sections &&
-          this.props.activeCalendar.sections.map((item, key) => {
+        {this.props.stateActiveSchedule.sections &&
+          this.props.stateActiveSchedule.sections.map((item, key) => {
             return (
               <CartItem item={item} key={key} updateCart={this.updateCart} />
             );
@@ -63,5 +47,20 @@ class Cart extends Component {
     );
   }
 }
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    stateVisibleSections: state.root.stateVisibleSections,
+    stateActiveSchedule: state.root.stateActiveSchedule,
+    stateSchedules: state.root.stateSchedules,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSaveSchedules: (calendars) => dispatch(stateSaveSchedules(calendars)),
+    stateSetSchedule: (calendar) => dispatch(stateSetSchedule(calendar)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

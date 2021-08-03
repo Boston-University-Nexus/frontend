@@ -1,38 +1,31 @@
 import {
-  CHANGE_CALENDAR,
-  CLASS_STACK,
+  SAVE_COURSES,
+  COURSE_STACK,
+  SAVE_SCHEDULES,
+  VISIBLE_SECTIONS,
+  SET_SCHEDULE,
   SET_POPUPS,
-  SAVE_CALENDARS,
-  SAVE_CLASSES,
-  SAVE_SECTIONS,
+  LOG_IN,
 } from "./constants";
 
-// Saves classes to state
-export const saveClasses = (payload) => {
-  return { type: SAVE_CLASSES, payload };
-};
-
-// Saves classes to the state stack (class cards)
-export const displayClass = (payload) => {
-  return { type: CLASS_STACK, payload };
-};
-
-// Saves calendars to state
-export const saveCalendars = (payload) => {
-  return { type: SAVE_CALENDARS, payload };
-};
-
-// Saves sections to state
-export const saveSections = (payload) => {
-  return { type: SAVE_SECTIONS, payload };
-};
-
-// Changes the displayed calendar
-export const changeCalendar = (payload) => {
-  return { type: CHANGE_CALENDAR, payload };
-};
-
-// Rate limit
-export const setPopups = (payload) => {
-  return { type: SET_POPUPS, payload };
-};
+// For consistency and to make these functions easily
+// recognizable, all start with state
+export const stateSetLoggedIn = (payload) => ({ type: LOG_IN, payload });
+export const stateSaveCourses = (payload) => ({ type: SAVE_COURSES, payload });
+export const stateDisplayCourse = (payload) => ({
+  type: COURSE_STACK,
+  payload,
+});
+export const stateSaveSchedules = (payload) => ({
+  type: SAVE_SCHEDULES,
+  payload,
+});
+export const stateSetVisibleSections = (payload) => ({
+  type: VISIBLE_SECTIONS,
+  payload,
+});
+export const stateSetSchedule = (payload) => ({
+  type: SET_SCHEDULE,
+  payload,
+});
+export const stateSetPopups = (payload) => ({ type: SET_POPUPS, payload });

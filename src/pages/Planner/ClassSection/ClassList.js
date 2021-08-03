@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Functions
-import { displayClass, saveClasses, setPopups } from "../../../state/actions";
+import {
+  stateDisplayCourse,
+  stateSaveCourses,
+  stateSetPopups,
+} from "../../../state/actions";
 import { filter } from "../Functions";
 
 // Components
@@ -14,108 +18,77 @@ import ClassCard from "./ClassCard";
 
 import { request } from "../../../middlewares/requests";
 
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    classes: state.classes,
-    classStack: state.classStack,
-    popups: state.popups,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveClasses: (classes) => dispatch(saveClasses(classes)),
-    displayClass: (classes) => dispatch(displayClass(classes)),
-    setPopups: (boolean) => dispatch(setPopups(boolean)),
-  };
-};
-
 class ClassList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       hasTyped: false,
+      hasMore: true,
       typedText: "",
       sql_page: 0,
       prev_query: "",
-      hasMore: true,
-      loading: false,
     };
 
     this.handleType = this.handleType.bind(this);
-    this.getMoreClasses = this.getMoreClasses.bind(this);
-    this.checkScroll = this.checkScroll.bind(this);
-  }
-
-  // Checks if user has scrolled to load more classes
-  checkScroll(e) {
-    let scrolledPercentage = e.target.scrollTop / e.target.scrollHeight;
-    if (scrolledPercentage > 0.75 && this.state.hasMore) this.getMoreClasses();
-  }
-
-  // Loads more classes up
-  getMoreClasses() {
-    if (!this.state.loading) {
-      this.setState({ loading: true });
-      request
-        .get(
-          process.env.REACT_APP_SERVER +
-            "courses?" +
-            this.state.prev_query +
-            "&page=" +
-            (this.state.sql_page + 1)
-        )
-        .then((res) => {
-          let prevClasses = [...this.props.classes];
-          if (prevClasses.length < 300) {
-            this.props.saveClasses(prevClasses.concat(res.data));
-            this.setState({
-              sql_page: this.state.sql_page + 1,
-              hasMore: true,
-              loading: false,
-            });
-          }
-        })
-        .catch((err) => {
-          this.setState({ hasMore: false });
-        });
-    }
   }
 
   // Loads classes based on type
   handleType(e) {
-    // Is used to determine if we show "not found" or "start typing"
-    this.setState({ typedText: e.target.value });
-    this.props.displayClass([]);
+    let prevTyped = this.state.typedText.replaceAll(" ", "").toLowerCase();
+    let nowTyped = e.target.value.replaceAll(" ", "").toLowerCase();
 
-    let searched = e.target.value.replaceAll(" ", "").toLowerCase();
-    let query = filter(searched);
+    // If user deleted a character, pasted something different, or
+    // there are more classes to load than what we received
+    if (
+      prevTyped.length > nowTyped.length ||
+      nowTyped.substring(0, prevTyped.length) !== prevTyped ||
+      this.state.hasMore
+    ) {
+      // Saved typed text to compare after
+      this.setState({ typedText: e.target.value });
 
-    if (query != "") {
-      // Call helper function filter and reset state
-      this.setState({
-        prev_query: query,
-        sql_page: 0,
-        hasMore: true,
-      });
-      request
-        .get(process.env.REACT_APP_SERVER + "courses?" + query)
-        .then((res) => {
-          if (res && !res.error) this.props.saveClasses(res.data);
-          else if (!res) this.props.saveClasses([]);
-          else {
-            this.props.setPopups({ ...this.props.popups, rateLimit: true });
-          }
+      // Delete class stack (for course cards)
+      this.props.stateDisplayCourse([]);
+
+      // Get type of query we should make
+      let query = filter(nowTyped);
+
+      if (query != "") {
+        // Call helper function filter and reset state
+        this.setState({
+          prev_query: query,
+          sql_page: 0,
         });
+        request
+          .get(process.env.REACT_APP_SERVER + "courses?" + query)
+          .then((res) => {
+            if (res && !res.error) {
+              this.props.stateSaveCourses(res.data);
+              this.setState({ hasMore: res.data.length === 300 });
+            } else if (!res) this.props.stateSaveCourses([]);
+            else {
+              this.props.stateSetPopups({
+                ...this.props.statePopups,
+                rateLimit: true,
+              });
+            }
+          });
+      }
+    } else if (prevTyped.length < nowTyped.length && !this.state.hasMore) {
+      let courseCopy = [...this.props.stateCourses];
+
+      // Javascript filter instead of DB query
+      courseCopy = courseCopy.filter((a) => {
+        return a.course_code.toLowerCase().includes(nowTyped);
+      });
+
+      this.props.stateSaveCourses(courseCopy);
     } else {
-      this.props.saveClasses([]);
+      this.props.stateSaveCourses([]);
     }
   }
 
   render() {
-    let classList = this.props.classes;
-
     return (
       <div className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full">
         <SearchBar
@@ -123,7 +96,7 @@ class ClassList extends Component {
           isOpen={this.props.open}
         />
 
-        {this.props.classStack.length === 0 && (
+        {this.props.stateCourseStack.length === 0 && (
           <div
             className="flex flex-col w-full items-center justify-center"
             style={{ height: "calc(100% - 55px)" }}
@@ -142,37 +115,55 @@ class ClassList extends Component {
               onScroll={this.checkScroll}
             >
               {/* IF CLASSES */}
-              {classList &&
-                classList.map((item, key) => {
-                  return (
-                    <ClassItem
-                      item={item}
-                      key={key}
-                      toggleMenu={this.props.toggleMenu}
-                    />
-                  );
-                })}
+              {this.props.stateCourses.map((item, key) => {
+                return (
+                  <ClassItem
+                    item={item}
+                    key={key}
+                    toggleMenu={this.props.toggleMenu}
+                  />
+                );
+              })}
 
               {/* IF EMPTY SEARCH */}
-              {classList.length === 0 && this.state.typedText.length < 1 && (
-                <StartTyping />
-              )}
+              {this.props.stateCourses.length === 0 &&
+                this.state.typedText.length < 1 && <StartTyping />}
 
               {/* IF NOT FOUND */}
-              {classList.length === 0 && this.state.typedText.length > 0 && (
-                <NotFound />
-              )}
+              {this.props.stateCourses.length === 0 &&
+                this.state.typedText.length > 0 && <NotFound />}
             </div>
           </div>
         )}
-        {this.props.classStack.length > 0 && (
+        {this.props.stateCourseStack.length > 0 && (
           <ClassCard
-            item={this.props.classStack[this.props.classStack.length - 1]}
+            item={
+              this.props.stateCourseStack[
+                this.props.stateCourseStack.length - 1
+              ]
+            }
           />
         )}
       </div>
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    stateCourses: state.root.stateCourses,
+    stateCourseStack: state.root.stateCourseStack,
+    statePopups: state.events.statePopups,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSaveCourses: (classes) => dispatch(stateSaveCourses(classes)),
+    stateDisplayCourse: (classes) => dispatch(stateDisplayCourse(classes)),
+    stateSetPopups: (boolean) => dispatch(stateSetPopups(boolean)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClassList);

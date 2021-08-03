@@ -1,61 +1,88 @@
 import {
-  CHANGE_CALENDAR,
-  CLASS_STACK,
+  SAVE_COURSES,
+  COURSE_STACK,
+  SAVE_SCHEDULES,
+  VISIBLE_SECTIONS,
+  SET_SCHEDULE,
   SET_POPUPS,
-  SAVE_CALENDARS,
-  SAVE_CLASSES,
-  SAVE_SECTIONS,
+  LOG_IN,
 } from "./constants";
 
-const initialState = {
-  classes: [], // All the classes received from the backend
-  calendars: [], // All the calendars received from the backend
-  activeCalendar: {}, // The calendar displayed
-  activeSections: [], // The sections displayed on the current calendar
-  classStack: [], // The class stack used for navigation (class cards)
-  popups: {
-    rateLimit: false,
-  }, // Shows popups
+// DEFAULT STATE - MANAGES THE DAT
+const rootState = {
+  stateCourses: [], // All the classes received from the backend
+  stateSchedules: [], // All the calendars received from the backend
+  stateActiveSchedule: {}, // The calendar displayed
+  stateVisibleSections: [], // The sections displayed on the current calendar
+  stateCourseStack: [], // The class stack used for navigation (class cards)
 };
 
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SAVE_CLASSES:
+export const root = (state = rootState, a) => {
+  switch (a.type) {
+    case SAVE_SCHEDULES:
       return {
         ...state,
-        classes: action.payload,
+        stateSchedules: a.payload,
+        stateActiveSchedule: a.payload[0],
+        stateVisibleSections: a.payload[0].sections,
       };
-    case SAVE_CALENDARS:
+    case SAVE_COURSES:
       return {
         ...state,
-        calendars: action.payload,
-        activeCalendar: action.payload[0],
-        activeSections: action.payload[0].sections,
+        stateCourses: a.payload,
       };
-    case SAVE_SECTIONS:
+    case VISIBLE_SECTIONS:
       return {
         ...state,
-        activeSections: action.payload,
+        stateVisibleSections: a.payload,
       };
-    case CHANGE_CALENDAR:
+    case SET_SCHEDULE:
       return {
         ...state,
-        activeCalendar: action.payload,
-        activeSections: action.payload.sections,
+        stateActiveSchedule: a.payload,
+        stateVisibleSections: a.payload.sections,
       };
-    case CLASS_STACK:
+    case COURSE_STACK:
       return {
         ...state,
-        classStack: action.payload,
-      };
-    case SET_POPUPS:
-      return {
-        ...state,
-        popups: action.payload,
+        stateCourseStack: a.payload,
       };
     default:
       return state;
   }
 };
 
-export default rootReducer;
+// EVENTS STATE - MANAGES POPUPS, NOTIFICATIONS, ETC
+const eventsState = {
+  statePopups: {
+    rateLimit: false,
+    needLogin: false,
+  }, // Shows popups
+};
+export const events = (state = eventsState, a) => {
+  switch (a.type) {
+    case SET_POPUPS:
+      return {
+        ...state,
+        statePopups: a.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+// USERS STATE - MANAGES INFO RELATED TO USERS
+const usersState = {
+  stateLoggedIn: false, // Manages logged in state (only for display)
+};
+export const users = (state = usersState, a) => {
+  switch (a.type) {
+    case LOG_IN:
+      return {
+        ...state,
+        stateLoggedIn: a.payload,
+      };
+    default:
+      return state;
+  }
+};

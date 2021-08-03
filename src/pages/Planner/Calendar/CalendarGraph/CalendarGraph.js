@@ -1,5 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { request } from "../../../../middlewares/requests";
+import {
+  stateSaveCourses,
+  stateSaveSchedules,
+  stateSetPopups,
+  stateSetVisibleSections,
+} from "../../../../state/actions";
 
 // Components
 import CalendarItem from "./CalendarItem";
@@ -9,15 +16,8 @@ import { getCellHeight } from "./CalendarMethods";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    calendars: state.calendars,
-    activeSections: state.activeSections,
-  };
-};
-
 const compareArrOfObj = (arr1, arr2) => {
+  if (!arr1 || !arr2) return true;
   if (arr1.length !== arr2.length) return false;
 
   for (let i = 0; i < arr1.length; i++) {
@@ -127,7 +127,7 @@ class CalendarGraph extends Component {
     // Only update if active calendar changed
     let same = compareArrOfObj(
       this.state.activeSections,
-      this.props.activeSections
+      this.props.stateVisibleSections
     );
 
     if (!same) {
@@ -135,7 +135,7 @@ class CalendarGraph extends Component {
       let bestStart = 24;
       let bestEnd = 0;
 
-      for (const section of this.props.activeSections) {
+      for (const section of this.props.stateVisibleSections) {
         let start = parseInt(section.start.substring(0, 2));
         let end = parseInt(section.end.substring(0, 2));
 
@@ -153,9 +153,15 @@ class CalendarGraph extends Component {
       // Save state so we know what the current calendar is
       this.setState(
         {
-          activeSections: JSON.parse(JSON.stringify(this.props.activeSections)),
+          activeSections: JSON.parse(
+            JSON.stringify(this.props.stateVisibleSections)
+          ),
         },
-        () => this.generateSections(this.state.activeSections)
+        () => {
+          if (this.props.stateLoggedIn) {
+            this.generateSections(this.state.activeSections);
+          }
+        }
       );
     }
   }
@@ -168,30 +174,21 @@ class CalendarGraph extends Component {
     );
   }
 
+  // Load schedule from backend (if logged in)
   componentWillMount() {
-    // Deep copy of sections to avoid shallow copy reference changing
-    let sectionsList = JSON.parse(JSON.stringify(this.props.activeSections));
-
-    // Get first and last class
-    let bestStart = 24;
-    let bestEnd = 0;
-    for (const section of sectionsList) {
-      let start = parseInt(section.start.substring(0, 2));
-      let end = parseInt(section.end.substring(0, 2));
-
-      if (start - 1 < bestStart) bestStart = start - 1;
-      if (end + 1 > bestEnd) bestEnd = end + 1;
-    }
-    this.calendarEnd = bestEnd;
-    this.calendarStart = bestStart;
-
-    // Gets cell height according to current window width and start/end
-    let cellHeight = getCellHeight(bestStart, bestEnd);
-    window.addEventListener("resize", this.resize.bind(this));
-
-    // Generating calendar
-    this.setState({ cellHeight });
-    this.generateSections(sectionsList);
+    if (this.props.stateLoggedIn)
+      request.get(process.env.REACT_APP_SERVER + "schedules/").then((res) => {
+        if (res && !res.error) {
+          this.props.stateSaveSchedules(res.data);
+        } else if (!res) {
+          this.props.stateSaveSchedules([[{ sections: [] }]]);
+        } else {
+          this.props.stateSetPopups({
+            ...this.props.statePopups,
+            rateLimit: true,
+          });
+        }
+      });
   }
 
   // Generates all the calendar sections in their corresponding day
@@ -242,4 +239,23 @@ class CalendarGraph extends Component {
   }
 }
 
-export default connect(mapStateToProps)(CalendarGraph);
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    stateSchedules: state.root.stateSchedules,
+    stateVisibleSections: state.root.stateVisibleSections,
+    stateLoggedIn: state.users.stateLoggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSaveCourses: (calendars) => dispatch(stateSaveCourses(calendars)),
+    stateSaveSchedules: (calendar) => dispatch(stateSaveSchedules(calendar)),
+    stateSetVisibleSections: (sections) =>
+      dispatch(stateSetVisibleSections(sections)),
+    stateSetPopups: (sections) => dispatch(stateSetPopups(sections)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarGraph);

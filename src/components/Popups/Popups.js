@@ -1,21 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setPopups } from "../../state/actions";
+import { stateSetPopups } from "../../state/actions";
 import Cookies from "./Cookies";
+import NeedLogin from "./NeedLogin";
 import RateLimit from "./RateLimit";
-
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    popups: state.popups,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setPopups: (boolean) => dispatch(setPopups(boolean)),
-  };
-};
 
 class Popups extends Component {
   constructor(props) {
@@ -24,6 +12,7 @@ class Popups extends Component {
       active: false,
       popups: {
         rateLimit: false,
+        needLogin: false,
       },
     };
 
@@ -31,21 +20,21 @@ class Popups extends Component {
   }
 
   closePopup(val) {
-    let popups = { ...this.props.popups, [val]: false };
+    let popups = { ...this.props.statePopups, [val]: false };
     let active = Object.values(popups).includes(true);
 
-    this.props.setPopups(popups);
+    this.props.stateSetPopups(popups);
     this.setState({ active, popups });
   }
 
   componentDidMount() {
-    let popups = this.props.popups;
+    let popups = this.props.statePopups;
     let active = Object.values(popups).includes(true);
     this.setState({ active, popups });
   }
 
   componentDidUpdate() {
-    let popups = this.props.popups;
+    let popups = this.props.statePopups;
     let active = Object.values(popups).includes(true);
 
     if (active != this.state.active) {
@@ -65,11 +54,29 @@ class Popups extends Component {
               : { display: "none" }
           }
         >
-          {this.props.popups.rateLimit && <RateLimit close={this.closePopup} />}
+          {this.props.statePopups.rateLimit && (
+            <RateLimit close={this.closePopup} />
+          )}
+          {this.props.statePopups.needLogin && (
+            <NeedLogin close={this.closePopup} />
+          )}
         </div>
       </>
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    statePopups: state.events.statePopups,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateSetPopups: (boolean) => dispatch(stateSetPopups(boolean)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popups);

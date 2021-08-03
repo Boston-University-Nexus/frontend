@@ -8,6 +8,7 @@ import { FaMinus } from "react-icons/fa";
 // Components
 import SectionRating from "./SectionRating";
 
+// Converts days to initials
 const getDayInits = (days) => {
   let str = "";
   for (const day of days) {

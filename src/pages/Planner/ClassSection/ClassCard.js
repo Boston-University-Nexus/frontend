@@ -5,38 +5,9 @@ import { FiExternalLink } from "react-icons/fi";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { connect } from "react-redux";
-import { displayClass } from "../../../state/actions";
+import { stateDisplayCourse } from "../../../state/actions";
 import { request } from "../../../middlewares/requests";
 import SectionItem from "./SectionItem";
-
-const formatDescription = (descr) => {
-  if (descr.length > 150) {
-    return (
-      <>
-        {descr.substring(0, 150)}
-        {"... "}
-        <button className="text-blue-500 font-bold cursor-pointer hover:text-blue-600 transition-colors inline">
-          see more
-        </button>
-      </>
-    );
-  } else {
-    return descr;
-  }
-};
-
-// Redux
-const mapStateToProps = (state) => {
-  return {
-    classStack: state.classStack,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    displayClass: (classes) => dispatch(displayClass(classes)),
-  };
-};
 
 class ClassCard extends Component {
   constructor(props) {
@@ -45,10 +16,35 @@ class ClassCard extends Component {
       currentClass: "",
       hubs: [],
       sections: [],
+      shortDescription: true,
     };
 
     this.removeClassFromStack = this.removeClassFromStack.bind(this);
     this.getHubs = this.getHubs.bind(this);
+  }
+
+  // Shortens description
+  formatDescription(descr) {
+    if (descr.length > 150) {
+      return (
+        <>
+          {this.state.shortDescription
+            ? descr.substring(0, 150) + "..."
+            : descr}
+          <button
+            className="text-blue-500 font-bold cursor-pointer hover:text-blue-600 transition-colors inline"
+            onClick={() =>
+              this.setState({ shortDescription: !this.state.shortDescription })
+            }
+          >
+            {this.state.shortDescription && "see more"}
+            {!this.state.shortDescription && "see less"}
+          </button>
+        </>
+      );
+    } else {
+      return descr;
+    }
   }
 
   getHubs() {
@@ -68,17 +64,14 @@ class ClassCard extends Component {
     );
   }
 
-  getSections() {
+  async getSections() {
     let current = this.props.item;
     let url = "sections?course_code=" + current.course_code;
 
     // Get all sections
-    request.get(process.env.REACT_APP_SERVER + url).then(
-      function (response) {
-        console.log(response.data);
-        this.setState({ sections: response.data });
-      }.bind(this)
-    );
+    request.get(process.env.REACT_APP_SERVER + url).then((res) => {
+      this.setState({ sections: res.data });
+    });
   }
 
   componentDidUpdate() {
@@ -100,10 +93,10 @@ class ClassCard extends Component {
   }
 
   removeClassFromStack() {
-    let currentStack = [...this.props.classStack];
+    let currentStack = [...this.props.stateCourseStack];
     currentStack.splice(currentStack.length - 1, 1);
 
-    this.props.displayClass([...currentStack]);
+    this.props.stateDisplayCourse([...currentStack]);
   }
 
   render() {
@@ -112,7 +105,7 @@ class ClassCard extends Component {
 
     return (
       <div className="w-full h-full">
-        <div class="p-4">
+        <div className="p-4">
           <button
             className="flex items-center justify-start text-gray-600 w-full focus:outline-none hover:text-black transition-colors mb-4"
             onClick={this.removeClassFromStack}
@@ -179,7 +172,7 @@ class ClassCard extends Component {
               </div>
             )}
             <p className="text-sm mt-4">
-              {formatDescription(item.course_description)}
+              {this.formatDescription(item.course_description)}
             </p>
           </div>
 
@@ -201,5 +194,18 @@ class ClassCard extends Component {
     );
   }
 }
+
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    stateCourseStack: state.root.stateCourseStack,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stateDisplayCourse: (classes) => dispatch(stateDisplayCourse(classes)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClassCard);
