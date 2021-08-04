@@ -16,7 +16,7 @@ class ClassItem extends Component {
     this.props.toggleMenu(null, false);
     this.props.stateDisplayCourse([
       ...this.props.stateCourseStack,
-      this.props.item,
+      this.props.item.course_ID,
     ]);
   }
 
