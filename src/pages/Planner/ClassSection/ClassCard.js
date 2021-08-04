@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 
 // Icons
 import { FiExternalLink } from "react-icons/fi";
@@ -9,125 +9,133 @@ import { stateDisplayCourse } from "../../../state/actions";
 import { request } from "../../../middlewares/requests";
 import SectionItem from "./SectionItem";
 
-class ClassCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentClass: "",
-      hubs: [],
-      sections: [],
-      shortDescription: true,
-    };
+function ClassCard(props) {
+  const [course, setCourse] = useState();
+  const [hubs, setHubs] = useState();
+  const [sections, setSections] = useState();
 
-    this.removeClassFromStack = this.removeClassFromStack.bind(this);
-    this.getHubs = this.getHubs.bind(this);
-  }
+  const [shortDescription, setShortDescription] = useState(true);
+
+  // Format prereqs links
+  const formatPrereqs = (prereqs) => {
+    let prereqs_codes = prereqs.codes.split("|").map((a) => a.split("&"));
+    let prereqs_ids = prereqs.ids.split("|").map((a) => a.split("&"));
+
+    return prereqs_codes.map((prq_group, group_idx) => {
+      return (
+        <>
+          {prq_group.map((prq, idx) => {
+            return (
+              <>
+                <button
+                  className="inline text-blue-500 hover:text-blue-600 transition-colors font-bold"
+                  onClick={() => {
+                    props.stateDisplayCourse([
+                      ...props.stateCourseStack,
+                      parseInt(prereqs_ids[group_idx][idx]),
+                    ]);
+                  }}
+                  key={idx * group_idx}
+                >
+                  {prq.substring(3, 8)}
+                </button>
+                {idx < prq_group.length - 1 && " and "}
+              </>
+            );
+          })}
+          {group_idx < prereqs_codes.length - 1 && " or "}
+        </>
+      );
+    });
+  };
 
   // Shortens description
-  formatDescription(descr) {
+  const formatDescription = (descr) => {
     if (descr.length > 150) {
       return (
         <>
-          {this.state.shortDescription
-            ? descr.substring(0, 150) + "..."
-            : descr}
+          {shortDescription ? descr.substring(0, 150) + "..." : descr}
           <button
             className="text-blue-500 font-bold cursor-pointer hover:text-blue-600 transition-colors inline"
-            onClick={() =>
-              this.setState({ shortDescription: !this.state.shortDescription })
-            }
+            onClick={() => setShortDescription(!shortDescription)}
           >
-            {this.state.shortDescription && "see more"}
-            {!this.state.shortDescription && "see less"}
+            {shortDescription && "see more"}
+            {!shortDescription && "see less"}
           </button>
         </>
       );
     } else {
       return descr;
     }
-  }
+  };
 
-  getHubs() {
-    let current = this.props.item;
-    let url = "hubs?course_code=" + current.course_code;
+  const getCourse = () => {
+    let url = "courses?course_ID=" + props.item + "&options=prereqs";
 
-    // Get all hubs
-    request.get(process.env.REACT_APP_SERVER + url).then(
-      function (response) {
-        let arr = [];
-        for (const item of response.data) {
-          arr.push(item.buhub_name);
-        }
+    request.get(process.env.REACT_APP_SERVER + url).then((res) => {
+      if (res && res.data) setCourse(res.data[0]);
+      else console.log(props.item);
+    });
+  };
 
-        this.setState({ hubs: arr });
-      }.bind(this)
-    );
-  }
+  const getHubs = () => {
+    let url = "hubs?course_ID=" + props.item;
 
-  async getSections() {
-    let current = this.props.item;
-    let url = "sections?course_code=" + current.course_code;
+    request.get(process.env.REACT_APP_SERVER + url).then((res) => {
+      if (res) setHubs(res.data.map((a) => a.buhub_name));
+      else setHubs([]);
+    });
+  };
+
+  const getSections = async () => {
+    let url = "sections?course_ID=" + props.item;
 
     // Get all sections
     request.get(process.env.REACT_APP_SERVER + url).then((res) => {
-      this.setState({ sections: res.data });
+      if (res) setSections(res.data);
+      else setSections([]);
     });
-  }
+  };
 
-  componentDidUpdate() {
-    let current = this.props.item;
-
-    if (current.title !== this.state.currentClass) {
-      this.setState({ currentClass: current.title });
-      this.getHubs();
-      this.getSections();
-    }
-  }
-
-  componentDidMount() {
-    this.getHubs();
-    this.getSections();
-
-    let current = this.props.item;
-    this.setState({ currentClass: current.title });
-  }
-
-  removeClassFromStack() {
-    let currentStack = [...this.props.stateCourseStack];
+  const removeClassFromStack = () => {
+    let currentStack = [...props.stateCourseStack];
     currentStack.splice(currentStack.length - 1, 1);
 
-    this.props.stateDisplayCourse([...currentStack]);
-  }
+    props.stateDisplayCourse([...currentStack]);
+  };
 
-  render() {
-    let item = this.props.item;
-    let hubs = this.state.hubs;
+  useEffect(() => {
+    getCourse();
+    getHubs();
+    getSections();
+  }, [props.stateCourseStack]);
 
+  if (hubs && sections && course) {
     return (
       <div className="w-full h-full">
         <div className="p-4">
           <button
             className="flex items-center justify-start text-gray-600 w-full focus:outline-none hover:text-black transition-colors mb-4"
-            onClick={this.removeClassFromStack}
+            onClick={removeClassFromStack}
           >
             <FaArrowLeft className="mr-2" />
             Back
           </button>
           <h1 className="font-black lg:text-xl xl:text-2xl">
-            {item.course_code}
+            {course.course_code}
           </h1>
-          <h2 className="text-lg mb-1">{item.course_title}</h2>
-          <a
-            href={"/coursesearch/courses?course=" + item.course_code}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-500 border inline-block border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm"
-          >
-            <span className="inline align-middle">
-              View on Nexus Course Review
-            </span>
-            <FiExternalLink className="inline align-middle ml-1" />
-          </a>
+          <h2 className="text-lg mb-1">{course.course_title}</h2>
+          <div className="flex">
+            <a
+              href={"/coursesearch/courses?course=" + course.course_code}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-500 border border-solid border-blue-500 rounded-full px-3 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-600 hover:border-blue-600 transition-colors mt-1 text-sm flex items-center"
+            >
+              <span>View on Course Search</span>
+              <FiExternalLink className="inline align-middle ml-1" />
+            </a>
+          </div>
         </div>
         <div
           className="flex w-full h-full items-start justify-start flex-col overflow-y-scroll"
@@ -149,30 +157,14 @@ class ClassCard extends Component {
                 })}
               </div>
             )}
-            {item.course_prereqs !== "" && (
+            {course.course_prereqs.codes !== "" && (
               <div className="mt-4 text-sm">
-                <p className="inline">Prerequisites:</p>
-                {item.course_prereqs.split("&").map((thisItem, key) => {
-                  return (
-                    <>
-                      <button
-                        className="inline text-blue-500 hover:text-blue-600 transition-colors font-bold ml-1"
-                        onClick={() => this.addClassToStack(thisItem)}
-                        key={key}
-                      >
-                        {thisItem}
-                      </button>
-                      {key < item.course_prereqs.split(",").length - 1
-                        ? ", "
-                        : ""}
-                    </>
-                  );
-                })}
-                ; or equivalent.
+                <p className="inline">Prerequisites: </p>
+                {formatPrereqs(course.course_prereqs)}; or equivalent.
               </div>
             )}
             <p className="text-sm mt-4">
-              {this.formatDescription(item.course_description)}
+              {formatDescription(course.course_description)}
             </p>
           </div>
 
@@ -184,7 +176,7 @@ class ClassCard extends Component {
               </div>
             </div>
             <div className="flex flex-col w-full">
-              {this.state.sections.map((item, key) => {
+              {sections.map((item, key) => {
                 return <SectionItem item={item} key={key} />;
               })}
             </div>
@@ -192,7 +184,7 @@ class ClassCard extends Component {
         </div>
       </div>
     );
-  }
+  } else return <p>Loading...</p>;
 }
 
 // Redux
