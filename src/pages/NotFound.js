@@ -8,9 +8,10 @@ class NotFound extends Component {
   }
   render() {
     return (
-      <div className="flex w-full h-full justify-center items-center">
+      <div className="flex w-full h-screen justify-center items-center">
         <div className="text-5xl w-1/2 text-center leading-relaxed">
-          Whoops! We couldn't find what you were looking for.{" "}
+          <span className="font-bold">404.</span> Whoops! We couldn't find what
+          you were looking for.{" "}
           <a className="text-blue-500 hover:underline" href="/">
             Go back!
           </a>

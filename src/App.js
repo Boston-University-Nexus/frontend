@@ -3,18 +3,19 @@ import { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Components
-import Landing from "./pages/Landing/Landing";
-import NotFound from "./pages/NotFound/NotFound";
+import Landing from "./pages/Landing";
+import NotFound from "./pages/NotFound";
 import About from "./pages/About/About";
 import Nav from "./components/Nav";
 import Profile from "./pages/Profile/Profile";
 import Popups from "./components/Popups/Popups";
 
 import CourseSearchRouter from "./routers/CourseSearchRouter";
-import { stateSetLoggedIn } from "./state/actions";
+import { stateSaveUser, stateSetLoggedIn } from "./state/actions";
 import { request } from "./middlewares/requests";
 import { connect } from "react-redux";
 import PlannerMain from "./pages/Planner/Main";
+import Callback from "./pages/Callback";
 
 // Divide in different routers for organized routing
 class App extends Component {
@@ -28,8 +29,12 @@ class App extends Component {
   async componentDidMount() {
     // Pinging to check if we are logged in
     const res = await request.get(process.env.REACT_APP_SERVER + "whoami");
-    if (!res || res.error) this.props.stateSetLoggedIn(false);
-    else this.props.stateSetLoggedIn(true);
+    if (!res || res.error) {
+      this.props.stateSetLoggedIn(false);
+    } else {
+      this.props.stateSetLoggedIn(true);
+      this.props.stateSaveUser(res.data.user);
+    }
 
     this.setState({ loaded: true });
   }
@@ -39,7 +44,7 @@ class App extends Component {
       <>
         {this.state.loaded && (
           <Router>
-            <div className="w-full min-h-screen h-screen flex flex-col">
+            <div className="w-full flex flex-col">
               <Popups />
               <Nav />
               <Switch>
@@ -58,6 +63,9 @@ class App extends Component {
                 <Route exact path="/profile">
                   <Profile />
                 </Route>
+                <Route exact path="/callback">
+                  <Callback />
+                </Route>
                 <Route>
                   <NotFound />
                 </Route>
@@ -74,6 +82,7 @@ class App extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     stateSetLoggedIn: (classes) => dispatch(stateSetLoggedIn(classes)),
+    stateSaveUser: (user) => dispatch(stateSaveUser(user)),
   };
 };
 

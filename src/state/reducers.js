@@ -6,6 +6,8 @@ import {
   SET_SCHEDULE,
   SET_POPUPS,
   LOG_IN,
+  SET_KEY,
+  SAVE_USER,
 } from "./constants";
 
 // DEFAULT STATE - MANAGES THE DAT
@@ -74,6 +76,7 @@ export const events = (state = eventsState, a) => {
 // USERS STATE - MANAGES INFO RELATED TO USERS
 const usersState = {
   stateLoggedIn: false, // Manages logged in state (only for display)
+  stateExtensionKey: "", // Stores user's extension key
 };
 export const users = (state = usersState, a) => {
   switch (a.type) {
@@ -81,6 +84,16 @@ export const users = (state = usersState, a) => {
       return {
         ...state,
         stateLoggedIn: a.payload,
+      };
+    case SAVE_USER:
+      return {
+        ...state,
+        stateUser: a.payload,
+      };
+    case SET_KEY:
+      return {
+        ...state,
+        stateExtensionKey: a.payload,
       };
     default:
       return state;

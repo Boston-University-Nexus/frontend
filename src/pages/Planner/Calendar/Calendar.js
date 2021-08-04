@@ -33,7 +33,7 @@ class Calendar extends Component {
     return (
       <>
         {this.props.stateActiveSchedule && (
-          <div className="w-3/4 2xl:w-4/5 h-full bg-white p-4 flex flex-col items-center justify-between">
+          <div className="w-full sm:w-3/4 2xl:w-4/5 h-full bg-white p-4 flex flex-col items-center justify-between">
             <div className="w-full flex flex-col items-center">
               <div className="flex w-full items-center justify-start mb-3">
                 <h1 className="font-bold text-2xl uppercase">Schedule</h1>

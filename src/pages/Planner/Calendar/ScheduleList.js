@@ -53,15 +53,16 @@ class ScheduleList extends Component {
   render() {
     return (
       <div
-        className="ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none font-bold"
+        className="w-1/2 sm:w-auto ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none font-bold"
         ref={this.scheduleDrop}
       >
-        {/* Dropdown */}
         <div
           className="flex px-4 py-0.5 items-center w-full"
           onClick={() => this.setState({ open: !this.state.open })}
         >
-          {this.props.stateActiveSchedule.title}
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+            {this.props.stateActiveSchedule.title}
+          </span>
           {this.state.open ? (
             <FaChevronUp className="ml-2" />
           ) : (
@@ -70,7 +71,7 @@ class ScheduleList extends Component {
         </div>
         <div
           className={
-            "absolute top-full mt-3 left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity " +
+            "absolute top-full mt-3 right-0 sm:left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity " +
             (this.state.open ? "opacity-100" : "invisible opacity-0")
           }
         >
