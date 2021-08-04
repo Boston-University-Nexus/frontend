@@ -51,8 +51,8 @@ export default function CalendarItem(props) {
         height: calcHeight,
       }}
     >
-      <IoClose className="cursor-pointer absolute top-2 right-2" />
-      <div className="flex justify-between items-start sectionTitle">
+      <IoClose className="cursor-pointer absolute top-2 right-2 hidden sm:block" />
+      <div className="hidden sm:flex justify-between items-start sectionTitle">
         <h3 className="font-bold">{props.section.title}</h3>
       </div>
 

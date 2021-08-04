@@ -26,9 +26,12 @@ export default class Main extends Component {
 
   render() {
     return (
-      <div className="justify-center items-center h-full bg-blue-300 p-4 flex-auto">
-        <div className="flex justify-center items-center h-full w-full">
-          <div className="flex flex-col w-1/4 2xl:w-1/5 h-full overflow-hidden">
+      <div className="flex justify-center items-center h-full sm:h-screen page bg-blue-300">
+        <div className="flex flex-col sm:flex-row justify-center items-center h-full w-full p-2 sm:p-4">
+          <div
+            className="flex flex-col w-full sm:w-1/4 2xl:w-1/5 sm:h-full overflow-hidden"
+            style={window.innerWidth < 640 ? { height: "90vh" } : {}}
+          >
             <ClassList
               open={this.state.recommendedOpen}
               toggleMenu={this.toggleMenu}
@@ -38,7 +41,7 @@ export default class Main extends Component {
               toggleMenu={this.toggleMenu}
             />
           </div>
-          <div className="shadow-xl w-3/4 2xl:w-4/5 ml-4 h-full flex">
+          <div className="shadow-xl w-full sm:w-3/4 2xl:w-4/5 mt-6 sm:mt-0 sm:ml-4 h-full flex">
             <Calendar />
             <Cart />
           </div>

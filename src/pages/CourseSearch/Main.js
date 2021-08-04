@@ -174,7 +174,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="w-full h-screen md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl p-7">
+      <div className="w-full h-full md:w-3/4 xl:w-2/3 2xl:w-1/2 bg-white h-full shadow-2xl p-7">
         <h1 className="font-bold text-xl mt-3">
           Welcome to our Reviews & Info section
         </h1>

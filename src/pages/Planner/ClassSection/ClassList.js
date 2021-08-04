@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 
 // Functions
@@ -8,6 +8,7 @@ import {
   stateSetPopups,
 } from "../../../state/actions";
 import { filter } from "../Functions";
+import { debounce } from "lodash";
 
 // Components
 import NotFound from "./NotFound";
@@ -18,135 +19,144 @@ import ClassCard from "./ClassCard";
 
 import { request } from "../../../middlewares/requests";
 
-class ClassList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasTyped: false,
-      hasMore: true,
-      typedText: "",
-      sql_page: 0,
-      prev_query: "",
-    };
+function ClassList(props) {
+  const [hasTyped, setHasTyped] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [typedText, setTypedText] = useState("");
+  const [sql_page, setSqlPage] = useState(0);
+  const [prev_query, setPrevQuery] = useState("");
 
-    this.handleType = this.handleType.bind(this);
-  }
+  // Calls db
+  const makeQuery = (query) => {
+    query = query.toLowerCase().replaceAll(" ", "");
+    let max = parseInt(process.env.REACT_APP_SQL_MAX_ITEMS);
 
-  // Loads classes based on type
-  handleType(e) {
-    let prevTyped = this.state.typedText.replaceAll(" ", "").toLowerCase();
-    let nowTyped = e.target.value.replaceAll(" ", "").toLowerCase();
+    request
+      .get(process.env.REACT_APP_SERVER + "courses?" + query)
+      .then((res) => {
+        if (res && !res.error) {
+          props.stateSaveCourses(res.data);
+          setHasMore(res.data.length === max);
+        } else if (!res) props.stateSaveCourses([]);
+        else {
+          props.stateSetPopups({
+            ...props.statePopups,
+            rateLimit: true,
+          });
+        }
+      });
+  };
+
+  // Filters with javascript
+  const filterWithJS = (query) => {
+    let courseCopy = [...props.stateCourses];
+    query = query.toLowerCase();
+
+    // Javascript filter instead of DB query
+    courseCopy = courseCopy.filter((a) => {
+      return (
+        a.course_code
+          .replaceAll(" ", "")
+          .toLowerCase()
+          .includes(query.replaceAll(" ", "")) ||
+        a.course_title.toLowerCase().includes(query.trimStart())
+      );
+    });
+
+    props.stateSaveCourses(courseCopy);
+  };
+
+  // Debounces the function call with params query
+  const debounceQuery = useCallback(
+    debounce((query, call) => call(query), 200),
+    []
+  );
+
+  // Loads classes based on type (either queries db or filters with JS)
+  const handleType = (e) => {
+    setHasTyped(true);
+    let nowTyped = e.target.value;
 
     // If user deleted a character, pasted something different, or
     // there are more classes to load than what we received
-    if (
-      prevTyped.length > nowTyped.length ||
-      nowTyped.substring(0, prevTyped.length) !== prevTyped ||
-      this.state.hasMore
+    if (nowTyped == "") {
+      setHasTyped(false);
+      props.stateSaveCourses([]);
+    } else if (
+      typedText.length > nowTyped.length ||
+      nowTyped.substring(0, typedText.length) !== typedText ||
+      hasMore
     ) {
       // Saved typed text to compare after
-      this.setState({ typedText: e.target.value });
+      setTypedText(nowTyped);
 
       // Delete class stack (for course cards)
-      this.props.stateDisplayCourse([]);
+      props.stateDisplayCourse([]);
 
       // Get type of query we should make
       let query = filter(nowTyped);
 
       if (query != "") {
         // Call helper function filter and reset state
-        this.setState({
-          prev_query: query,
-          sql_page: 0,
-        });
-        request
-          .get(process.env.REACT_APP_SERVER + "courses?" + query)
-          .then((res) => {
-            if (res && !res.error) {
-              this.props.stateSaveCourses(res.data);
-              this.setState({ hasMore: res.data.length === 300 });
-            } else if (!res) this.props.stateSaveCourses([]);
-            else {
-              this.props.stateSetPopups({
-                ...this.props.statePopups,
-                rateLimit: true,
-              });
-            }
-          });
+        setPrevQuery(query);
+        setSqlPage(0);
+        debounceQuery(query, makeQuery);
       }
-    } else if (prevTyped.length < nowTyped.length && !this.state.hasMore) {
-      let courseCopy = [...this.props.stateCourses];
-
-      // Javascript filter instead of DB query
-      courseCopy = courseCopy.filter((a) => {
-        return a.course_code.toLowerCase().includes(nowTyped);
-      });
-
-      this.props.stateSaveCourses(courseCopy);
-    } else {
-      this.props.stateSaveCourses([]);
+    } else if (typedText.length < nowTyped.length && !hasMore) {
+      setTypedText(nowTyped);
+      debounceQuery(nowTyped, filterWithJS);
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full">
-        <SearchBar
-          handleTypeSearch={this.handleType}
-          isOpen={this.props.open}
-        />
+  return (
+    <div className="bg-white shadow-xl flex flex-col w-full mb-4 overflow-hidden h-full">
+      <SearchBar handleTypeSearch={handleType} isOpen={props.open} />
 
-        {this.props.stateCourseStack.length === 0 && (
-          <div
-            className="flex flex-col w-full items-center justify-center"
-            style={{ height: "calc(100% - 55px)" }}
-          >
-            {/* INDICATES WHAT EACH ITEM IS */}
-            <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-xs lg:text-sm xl:text-lg w-full">
-              <span className="w-3/5">course</span>
-              <div className="flex w-2/5 justify-center items-center">
-                <span className="text-center">qual/diff</span>
-              </div>
-            </div>
-
-            {/* DISPLAYED CLASSES */}
-            <div
-              className="flex flex-col flex-grow w-full overflow-y-scroll h-5/6"
-              onScroll={this.checkScroll}
-            >
-              {/* IF CLASSES */}
-              {this.props.stateCourses.map((item, key) => {
-                return (
-                  <ClassItem
-                    item={item}
-                    key={key}
-                    toggleMenu={this.props.toggleMenu}
-                  />
-                );
-              })}
-
-              {/* IF EMPTY SEARCH */}
-              {this.props.stateCourses.length === 0 &&
-                this.state.typedText.length < 1 && <StartTyping />}
-
-              {/* IF NOT FOUND */}
-              {this.props.stateCourses.length === 0 &&
-                this.state.typedText.length > 0 && <NotFound />}
+      {props.stateCourseStack.length === 0 && (
+        <div
+          className="flex flex-col w-full items-center justify-center"
+          style={{ height: "calc(100% - 55px)" }}
+        >
+          {/* INDICATES WHAT EACH ITEM IS */}
+          <div className="py-2 pl-4 pr-2 flex justify-between uppercase font-bold text-gray-600 text-xs lg:text-sm xl:text-lg w-full">
+            <span className="w-3/5">course</span>
+            <div className="flex w-2/5 justify-center items-center">
+              <span className="text-center">qual/diff</span>
             </div>
           </div>
-        )}
-        {this.props.stateCourseStack.length > 0 && (
-          <ClassCard
-            item={
-              this.props.stateCourseStack[
-                this.props.stateCourseStack.length - 1
-              ]
-            }
-          />
-        )}
-      </div>
-    );
-  }
+
+          {/* DISPLAYED CLASSES */}
+          <div className="flex flex-col flex-grow w-full overflow-y-scroll h-5/6">
+            {/* IF CLASSES */}
+            {props.stateCourses.map((item, key) => {
+              return (
+                <ClassItem
+                  item={item}
+                  key={key}
+                  toggleMenu={props.toggleMenu}
+                />
+              );
+            })}
+
+            {/* IF EMPTY SEARCH */}
+            {props.stateCourses.length === 0 && typedText.length < 1 && (
+              <StartTyping />
+            )}
+
+            {/* IF NOT FOUND */}
+            {props.stateCourses.length === 0 && typedText.length > 0 && (
+              <NotFound />
+            )}
+          </div>
+        </div>
+      )}
+      {props.stateCourseStack.length > 0 && (
+        <ClassCard
+          item={props.stateCourseStack[props.stateCourseStack.length - 1]}
+        />
+      )}
+    </div>
+  );
 }
 
 // Redux

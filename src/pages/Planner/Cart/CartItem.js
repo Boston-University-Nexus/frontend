@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Component } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
@@ -16,78 +16,62 @@ function getDayInits(arr) {
   return str.toUpperCase();
 }
 
-export default class CartItem extends Component {
-  state = { checked: true, hovered: false, screenW: window.innerWidth };
+export default function CartItem(props) {
+  const [checked, setChecked] = useState(true);
+  const [screenW, setScreenW] = useState(true);
 
-  // Updates the checkboxes with their correct value
-  componentDidUpdate(prevProps) {
-    if (prevProps.item !== this.props.item) {
-      this.setState({
-        checked: !(this.props.item.displayed === false),
-      });
-    }
-  }
+  useEffect(() => {
+    window.addEventListener("resize", () => setScreenW(window.innerWidth));
 
-  componentDidMount() {
-    this.setState({ checked: !(this.props.item.displayed === false) });
-    window.addEventListener(
-      "resize",
-      function () {
-        this.setState({ screenW: window.innerWidth });
-      }.bind(this)
-    );
-  }
+    setScreenW(window.innerWidth);
+    setChecked(!(props.item.displayed === false));
 
-  render() {
-    return (
-      <div
-        className="w-full h-26 flex items-center justify-between px-2 lg:px-4 py-5 border-b border-solid border-gray-400 cursor-pointer hover:bg-blue-200 transition-colors select-none"
-        onClick={() => {
-          this.props.updateCart(this.props.item.title, this.props.item);
-          this.setState({ checked: !this.state.checked });
-        }}
-        onMouseEnter={() => this.setState({ hovered: true })}
-        onMouseLeave={() => this.setState({ hovered: false })}
-      >
-        <div className="flex items-center w-full">
-          {this.state.checked ? (
-            <ImCheckboxChecked
-              className="text-xl text-blue-500"
-              style={{
-                minWidth: Math.max(this.state.screenW / 80, 10),
-                width: Math.max(this.state.screenW / 80, 10),
-              }}
-            />
-          ) : (
-            <ImCheckboxUnchecked
-              className="text-xl text-blue-500"
-              style={{
-                minWidth: Math.max(this.state.screenW / 80, 10),
-                width: Math.max(this.state.screenW / 80, 10),
-              }}
-            />
-          )}
-          <div className="flex flex-col justify-center ml-2">
-            <span className="font-bold text-xs md:text-sm lg:text-base whitespace-nowrap">
-              {this.props.item.title}
+    return () => {
+      window.removeEventListener("resize", () => setScreenW(window.innerWidth));
+    };
+  }, []);
+
+  return (
+    <div
+      className="w-full h-26 flex items-center justify-between px-2 lg:px-4 py-5 border-b border-solid border-gray-300 cursor-pointer hover:bg-blue-200 transition-colors select-none group"
+      onClick={() => {
+        props.updateCart(props.item.title, props.item);
+        setChecked(!checked);
+      }}
+    >
+      <div className="flex items-center w-full">
+        {checked ? (
+          <ImCheckboxChecked
+            className="text-xl text-blue-500"
+            style={{
+              minWidth: Math.max(screenW / 80, 10),
+              width: Math.max(screenW / 80, 10),
+            }}
+          />
+        ) : (
+          <ImCheckboxUnchecked
+            className="text-xl text-blue-500"
+            style={{
+              minWidth: Math.max(screenW / 80, 10),
+              width: Math.max(screenW / 80, 10),
+            }}
+          />
+        )}
+        <div className="flex flex-col justify-center ml-2">
+          <span className="font-bold text-xs md:text-sm lg:text-base whitespace-nowrap">
+            {props.item.title}
+          </span>
+          <div className="flex flex-col text-sm">
+            <span className="text-xs lg:text-sm whitespace-nowrap">
+              {props.item.start}-{props.item.end}
             </span>
-            <div className="flex items-center text-sm">
-              <span className="font-bold mr-1 text-xs lg:text-sm">
-                {getDayInits(this.props.item.days)}
-              </span>
-              <span className="text-xs lg:text-sm whitespace-nowrap">
-                {this.props.item.start}-{this.props.item.end}
-              </span>
-            </div>
+            <span className="mr-1 text-xs lg:text-sm">
+              {getDayInits(props.item.days)}
+            </span>
           </div>
         </div>
-        <FaTrashAlt
-          className={
-            "text-xl text-gray-400 hover:text-red-500 transition " +
-            (this.state.hovered ? "opacity-100" : "opacity-0")
-          }
-        />
       </div>
-    );
-  }
+      <FaTrashAlt className="text-xl text-gray-400 hover:text-red-500 transition-colors transition-oapcity opacity-0 group-hover:opacity-100" />
+    </div>
+  );
 }

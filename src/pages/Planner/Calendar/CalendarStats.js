@@ -4,7 +4,7 @@ import StatsRating from "./StatsRating";
 // Displays current calendar's statistics
 export default function CalendarStats(props) {
   return (
-    <div className="w-full h-1/5 flex overflow-hidden">
+    <div className="w-full h-1/5 hidden sm:flex overflow-hidden">
       <div className="flex flex-col w-1/2 items-center justify-center">
         {/* Circular stats */}
         <div className="flex justify-center items-center">

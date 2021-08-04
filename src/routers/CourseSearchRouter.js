@@ -9,7 +9,7 @@ import Professors from "../pages/CourseSearch/Professors.js";
 
 const CourseSearchRouter = () => {
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center">
+    <div className="flex flex-col h-screen page w-full items-center justify-center">
       <Switch>
         <Route exact path="/coursesearch">
           <Main />
