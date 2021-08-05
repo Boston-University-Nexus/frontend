@@ -17,9 +17,9 @@ function ClassCard(props) {
   const [shortDescription, setShortDescription] = useState(true);
 
   // Format prereqs links
-  const formatPrereqs = (prereqs) => {
-    let prereqs_codes = prereqs.codes.split("|").map((a) => a.split("&"));
-    let prereqs_ids = prereqs.ids.split("|").map((a) => a.split("&"));
+  const formatPrereqs = (prereqs_codes, prereqs_ids) => {
+    prereqs_codes = JSON.parse(prereqs_codes);
+    prereqs_ids = JSON.parse(prereqs_ids);
 
     return prereqs_codes.map((prq_group, group_idx) => {
       return (
@@ -73,6 +73,8 @@ function ClassCard(props) {
     let url = "courses?course_ID=" + props.item + "&options=prereqs";
 
     request.get(process.env.REACT_APP_SERVER + url).then((res) => {
+      console.log(res);
+
       if (res && res.data) setCourse(res.data[0]);
       else console.log(props.item);
     });
@@ -157,10 +159,14 @@ function ClassCard(props) {
                 })}
               </div>
             )}
-            {course.course_prereqs.codes !== "" && (
+            {course.course_prereqs !== "[]" && (
               <div className="mt-4 text-sm">
                 <p className="inline">Prerequisites: </p>
-                {formatPrereqs(course.course_prereqs)}; or equivalent.
+                {formatPrereqs(
+                  course.course_prereqs,
+                  course.course_prereqs_ids
+                )}
+                ; or equivalent.
               </div>
             )}
             <p className="text-sm mt-4">

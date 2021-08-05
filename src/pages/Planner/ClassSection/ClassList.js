@@ -47,28 +47,9 @@ function ClassList(props) {
       });
   };
 
-  // Filters with javascript
-  const filterWithJS = (query) => {
-    let courseCopy = [...props.stateCourses];
-    query = query.toLowerCase();
-
-    // Javascript filter instead of DB query
-    courseCopy = courseCopy.filter((a) => {
-      return (
-        a.course_code
-          .replaceAll(" ", "")
-          .toLowerCase()
-          .includes(query.replaceAll(" ", "")) ||
-        a.course_title.toLowerCase().includes(query.trimStart())
-      );
-    });
-
-    props.stateSaveCourses(courseCopy);
-  };
-
   // Debounces the function call with params query
   const debounceQuery = useCallback(
-    debounce((query, call) => call(query), 200),
+    debounce((query, call) => call(query), 400),
     []
   );
 
@@ -82,11 +63,7 @@ function ClassList(props) {
     if (nowTyped == "") {
       setHasTyped(false);
       props.stateSaveCourses([]);
-    } else if (
-      typedText.length > nowTyped.length ||
-      nowTyped.substring(0, typedText.length) !== typedText ||
-      hasMore
-    ) {
+    } else {
       // Saved typed text to compare after
       setTypedText(nowTyped);
 
@@ -101,10 +78,9 @@ function ClassList(props) {
         setPrevQuery(query);
         setSqlPage(0);
         debounceQuery(query, makeQuery);
+      } else {
+        props.stateSaveCourses([]);
       }
-    } else if (typedText.length < nowTyped.length && !hasMore) {
-      setTypedText(nowTyped);
-      debounceQuery(nowTyped, filterWithJS);
     }
   };
 
