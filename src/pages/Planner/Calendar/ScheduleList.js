@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // Icons
@@ -14,102 +14,76 @@ import { FiStar } from "react-icons/fi";
 // Functions
 import { stateSetSchedule } from "../../../state/actions";
 
-class ScheduleList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.scheduleDrop = React.createRef();
-
-    this.changeToSchedule = this.changeToSchedule.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
-    this.state = { open: false };
-  }
+function ScheduleList(props) {
+  const [open, setOpen] = useState(false);
 
   // Changes displayed calendar in state
-  changeToSchedule(item) {
-    for (const schedule of this.props.stateSchedules) {
+  const changeToSchedule = (item) => {
+    for (const schedule of props.stateSchedules) {
       if (schedule.title.toLowerCase() === item.title.toLowerCase()) {
-        this.props.stateSetSchedule(schedule);
+        props.stateSetSchedule(schedule);
+        setOpen(false);
       }
     }
-  }
+  };
 
-  // Closes popup when clicked outside
-  handleClick(e) {
-    if (
-      this.state.open &&
-      this.scheduleDrop &&
-      !this.scheduleDrop.current.contains(e.target)
-    ) {
-      this.setState({ open: false });
-    }
-  }
-
-  componentDidMount() {
-    window.addEventListener("click", this.handleClick.bind(this));
-  }
-
-  render() {
-    return (
+  return (
+    <div className="w-1/2 sm:w-auto ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none">
       <div
-        className="w-1/2 sm:w-auto ml-5 relative bg-gray-200 text-gray-600 rounded-full flex items-center capitalize cursor-pointer select-none font-bold"
-        ref={this.scheduleDrop}
+        className="flex px-2 lg:px-4 lg:py-0.5 items-center w-full font-bold"
+        onClick={() => setOpen(true)}
       >
-        <div
-          className="flex px-4 py-0.5 items-center w-full"
-          onClick={() => this.setState({ open: !this.state.open })}
-        >
-          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-            {this.props.stateActiveSchedule.title}
-          </span>
-          {this.state.open ? (
-            <FaChevronUp className="ml-2" />
-          ) : (
-            <FaChevronDown className="ml-2" />
-          )}
-        </div>
-        <div
-          className={
-            "absolute top-full mt-3 right-0 sm:left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity " +
-            (this.state.open ? "opacity-100" : "invisible opacity-0")
-          }
-        >
-          {/* For every calendar saved in state */}
-          {this.props.stateSchedules &&
-            this.props.stateSchedules.map((item, key) => {
-              let selected =
-                item.title === this.props.stateActiveSchedule.title;
-              return (
-                <div
-                  className={
-                    "px-3 py-4 hover:bg-blue-100 flex items-center justify-between " +
-                    (selected ? "bg-blue-100" : "bg-white")
-                  }
-                  key={key}
-                  onClick={() => {
-                    this.changeToSchedule(item);
-                  }}
-                >
-                  <div className="flex items-center w-2/3">
-                    <FiStar />
-                    <span className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                      {item.title}
-                    </span>
-                  </div>
-
-                  <div className="flex text-gray-500 text-sm">
-                    <FaEdit className="hover:text-gray-400" />
-                    <FaCopy className="mx-1 hover:text-gray-400" />
-                    <FaTrashAlt className="hover:text-gray-400" />
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+        <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-sm lg:text-base">
+          {props.stateActiveSchedule.title}
+        </span>
+        {open ? (
+          <FaChevronUp className="ml-2" />
+        ) : (
+          <FaChevronDown className="ml-2" />
+        )}
       </div>
-    );
-  }
+      {open && (
+        <>
+          <div
+            className="w-full h-full fixed top-0 left-0 z-50"
+            onClick={() => setOpen(false)}
+          ></div>
+          <div className="absolute top-full mt-3 right-0 sm:left-0 shadow-2xl rounded-lg flex flex-col w-64 overflow-hidden z-30 border transition-opacity z-50">
+            {/* For every calendar saved in state */}
+            {props.stateSchedules &&
+              props.stateSchedules.map((item, key) => {
+                let selected = item.title === props.stateActiveSchedule.title;
+                return (
+                  <div
+                    className={
+                      "px-2 lg:px-3 py-2 lg:py-4 hover:bg-blue-100 flex items-center justify-between " +
+                      (selected ? "bg-blue-100" : "bg-white")
+                    }
+                    key={key}
+                    onClick={() => {
+                      changeToSchedule(item);
+                    }}
+                  >
+                    <div className="flex items-center w-2/3 text-sm lg:text-base">
+                      <FiStar />
+                      <span className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                        {item.title}
+                      </span>
+                    </div>
+
+                    <div className="flex text-gray-500 text-sm">
+                      <FaEdit className="hover:text-gray-400" />
+                      <FaCopy className="mx-1 hover:text-gray-400" />
+                      <FaTrashAlt className="hover:text-gray-400" />
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 // Redux

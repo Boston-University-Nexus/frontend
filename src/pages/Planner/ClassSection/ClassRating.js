@@ -8,7 +8,10 @@ function getColor(val, type) {
   if (val == 0)
     return (
       <div
-        className={"flex items-center justify-center rounded-sm px-1 " + color}
+        className={
+          "text-sm lg:text-base flex items-center justify-center rounded-sm px-1 " +
+          color
+        }
       >
         TBD
       </div>
@@ -31,7 +34,10 @@ function getColor(val, type) {
 
   return (
     <div
-      className={"flex items-center justify-center rounded-sm px-1 " + color}
+      className={
+        "text-sm lg:text-base flex items-center justify-center rounded-sm px-1 " +
+        color
+      }
     >
       {val}
     </div>
