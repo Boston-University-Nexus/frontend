@@ -56,12 +56,14 @@ function ScheduleList(props) {
                 return (
                   <div
                     className={
-                      "px-2 lg:px-3 py-2 lg:py-4 hover:bg-blue-100 flex items-center justify-between " +
-                      (selected ? "bg-blue-100" : "bg-white")
+                      "px-2 lg:px-3 py-2 lg:py-4 flex items-center justify-between " +
+                      (selected
+                        ? "bg-blue-200 cursor-not-allowed"
+                        : "bg-white hover:bg-blue-100")
                     }
                     key={key}
                     onClick={() => {
-                      changeToSchedule(item);
+                      if (!selected) changeToSchedule(item);
                     }}
                   >
                     <div className="flex items-center w-2/3 text-sm lg:text-base">

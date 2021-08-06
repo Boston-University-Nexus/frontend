@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { request } from "../../../../middlewares/requests";
 import {
@@ -32,78 +32,34 @@ const compareArrOfObj = (arr1, arr2) => {
   return true;
 };
 
-class CalendarGraph extends Component {
-  constructor(props) {
-    super(props);
+function CalendarGraph(props) {
+  const [calendarStart, setCalendarStart] = useState(9);
+  const [calendarEnd, setCalendarEnd] = useState(17);
+  const [activeSections, setActiveSections] = useState([]);
+  const [sectionsList, setSectionsList] = useState([]);
 
-    this.state = {
-      activeSections: [], // The current calendar displayed
-      sections: {}, // A dictionary containing all section items
-      cellHeight: null, // Dinamically sets cell height
-    };
-
-    this.hours = this.hours.bind(this);
-    this.days = this.days.bind(this);
-    this.generateSections = this.generateSections.bind(this);
-
-    this.calendarStart = 7; // Earliest hour displayed
-    this.calendarEnd = 19; // Latest hour displayed
-
-    this.calendarRef = React.createRef();
-  }
+  const [cellHeight, setCellHeight] = useState(50);
 
   // Returns a cell for every hour in a day
-  hours() {
+  const hours = () => {
     let arr = [];
-    for (let i = this.calendarStart; i < this.calendarEnd; i++) {
+    for (let i = calendarStart; i < calendarEnd; i++) {
       arr.push(
         <div
-          className={
-            i === this.calendarEnd - 1 ? "" : "border-b border-gray-300"
-          }
-          style={{ height: this.state.cellHeight + "px" }}
+          className={i === calendarEnd - 1 ? "" : "border-b border-gray-300"}
+          style={{ height: cellHeight + "px" }}
           key={i}
         ></div>
       );
     }
 
     return arr;
-  }
-
-  // Returns a day for every day of the week (with all hours in it)
-  days() {
-    let arr = [];
-    for (const i of daysOfWeek) {
-      arr.push(
-        <div className="flex flex-col w-full relative" key={i}>
-          <div
-            className="uppercase text-gray-600 flex items-center justify-center text-xs lg:text-sm xl:text-base"
-            style={{ height: window.innerHeight * 0.05 + "px" }}
-          >
-            {window.innerWidth > 768 ? i : i.substring(0, 3)}
-          </div>
-          <div
-            className={
-              "flex flex-col " +
-              (i === daysOfWeek[0]
-                ? "border border-gray-300"
-                : "border border-l-0 border-gray-300")
-            }
-          >
-            {this.hours()}
-          </div>
-          {this.state.sections[i.slice(0, 1).toUpperCase() + i.slice(1, 3)]}
-        </div>
-      );
-    }
-
-    return arr;
-  }
+  };
 
   // Returns the hour text next to the scheduler
-  hourLeyend() {
+  const hourLeyend = () => {
     let arr = [];
-    for (let i = this.calendarStart; i <= this.calendarEnd; i++) {
+    for (let i = calendarStart; i <= calendarEnd; i++) {
       let text = i % 12;
       if (i > 12) text += " PM";
       else if (i === 12) text = "12 PM";
@@ -112,7 +68,7 @@ class CalendarGraph extends Component {
       arr.push(
         <div
           className="w-full flex items-center justify-end text-gray-600 whitespace-nowrap text-xs md:text-md transform -translate-y-1/2"
-          style={{ height: this.state.cellHeight + "px" }}
+          style={{ height: cellHeight + "px" }}
           key={i}
         >
           {text}
@@ -121,21 +77,48 @@ class CalendarGraph extends Component {
     }
 
     return arr;
-  }
+  };
 
-  componentDidUpdate() {
-    // Only update if active calendar changed
-    let same = compareArrOfObj(
-      this.state.activeSections,
-      this.props.stateVisibleSections
-    );
+  // On resize this is called
+  const resize = () => {
+    let cellHeight = getCellHeight(calendarStart, calendarEnd);
+    setCellHeight(cellHeight);
+  };
+
+  // On load
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    if (props.stateLoggedIn)
+      request.get(process.env.REACT_APP_SERVER + "schedules/").then((res) => {
+        if (res && !res.error) {
+          props.stateSaveSchedules(res.data);
+          setSectionsList(res.data[0].sections);
+        } else if (!res) {
+          props.stateSaveSchedules([[{ sections: [] }]]);
+          setSectionsList([]);
+        } else {
+          props.stateSetPopups({
+            ...props.statePopups,
+            rateLimit: true,
+          });
+        }
+      });
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  // On update
+  useEffect(() => {
+    const same = compareArrOfObj(sectionsList, props.stateVisibleSections);
 
     if (!same) {
       // Get first and last class
       let bestStart = 24;
       let bestEnd = 0;
 
-      for (const section of this.props.stateVisibleSections) {
+      for (const section of props.stateVisibleSections) {
         let start = parseInt(section.start.substring(0, 2));
         let end = parseInt(section.end.substring(0, 2));
 
@@ -143,56 +126,23 @@ class CalendarGraph extends Component {
         if (end + 1 > bestEnd) bestEnd = end + 1;
       }
 
-      this.calendarEnd = bestEnd;
-      this.calendarStart = bestStart;
+      setCalendarEnd(bestEnd);
+      setCalendarStart(bestStart);
 
       // Gets cell height according to current window width and start/end
       let cellHeight = getCellHeight(bestStart, bestEnd);
-      this.setState({ cellHeight });
+      setCellHeight(cellHeight);
 
       // Save state so we know what the current calendar is
-      this.setState(
-        {
-          activeSections: JSON.parse(
-            JSON.stringify(this.props.stateVisibleSections)
-          ),
-        },
-        () => {
-          if (this.props.stateLoggedIn) {
-            this.generateSections(this.state.activeSections);
-          }
-        }
+      var deepCopySections = JSON.parse(
+        JSON.stringify(props.stateVisibleSections)
       );
+      setSectionsList(deepCopySections);
     }
-  }
-
-  // On resize this is called
-  resize() {
-    let cellHeight = getCellHeight(window.innerWidth);
-    this.setState({ cellHeight }, () =>
-      this.generateSections(this.state.activeSections)
-    );
-  }
-
-  // Load schedule from backend (if logged in)
-  componentWillMount() {
-    if (this.props.stateLoggedIn)
-      request.get(process.env.REACT_APP_SERVER + "schedules/").then((res) => {
-        if (res && !res.error) {
-          this.props.stateSaveSchedules(res.data);
-        } else if (!res) {
-          this.props.stateSaveSchedules([[{ sections: [] }]]);
-        } else {
-          this.props.stateSetPopups({
-            ...this.props.statePopups,
-            rateLimit: true,
-          });
-        }
-      });
-  }
+  });
 
   // Generates all the calendar sections in their corresponding day
-  generateSections(sectionsList) {
+  useEffect(() => {
     let sections = {
       Mon: [],
       Tue: [],
@@ -208,35 +158,55 @@ class CalendarGraph extends Component {
             <CalendarItem
               section={section}
               colorId={id}
-              h={this.state.cellHeight}
+              h={cellHeight}
               key={section.id}
-              start={this.calendarStart}
+              start={calendarStart}
             />
           );
         });
       return <></>;
     });
 
-    this.setState({ sections });
-  }
+    setActiveSections(sections);
+  }, [cellHeight, sectionsList]);
 
-  render() {
-    return (
-      <div className="flex w-full items-start">
-        <div className="flex w-full h-full overflow-hidden items-start">
-          <div
-            className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"
-            style={{ marginTop: window.innerHeight * 0.05 + "px" }}
-          >
-            {this.hourLeyend()}
-          </div>
-          <div className="flex w-11/12 h-full" ref={this.calendarRef}>
-            {this.days()}
-          </div>
+  return (
+    <div className="flex w-full items-start">
+      <div className="flex w-full h-full overflow-hidden items-start">
+        <div
+          className="flex flex-col w-1/12 mr-1 text-xs xl:mt-0 xl:text-sm"
+          style={{ marginTop: window.innerHeight * 0.05 + "px" }}
+        >
+          {hourLeyend()}
+        </div>
+        <div className="flex w-11/12 h-full">
+          {daysOfWeek.map((i, idx) => {
+            return (
+              <div className="flex flex-col w-full relative" key={i}>
+                <div
+                  className="uppercase text-gray-600 flex items-center justify-center text-xs lg:text-sm xl:text-base"
+                  style={{ height: window.innerHeight * 0.05 + "px" }}
+                >
+                  {window.innerWidth > 768 ? i : i.substring(0, 3)}
+                </div>
+                <div
+                  className={
+                    "flex flex-col " +
+                    (i === daysOfWeek[0]
+                      ? "border border-gray-300"
+                      : "border border-l-0 border-gray-300")
+                  }
+                >
+                  {hours()}
+                </div>
+                {activeSections[i.slice(0, 1).toUpperCase() + i.slice(1, 3)]}
+              </div>
+            );
+          })}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 // Redux
