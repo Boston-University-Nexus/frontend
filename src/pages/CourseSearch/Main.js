@@ -1,4 +1,4 @@
-import React, { Component, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { request } from "../../middlewares/requests";
 import SearchBar from "./SearchBar";
 
@@ -53,9 +53,7 @@ function Main(props) {
 
   // Debounces the function call with params query
   const debounceQuery = useCallback(
-    debounce((query, call) => {
-      call(query);
-    }, 400),
+    debounce((query, call) => call(query), 400),
     []
   );
 
@@ -93,9 +91,9 @@ function Main(props) {
       let search_url = url + search_item + "?";
 
       // Create the search url
-      if (search_item != "professors")
+      if (search_item !== "professors")
         for (const query in query_terms) {
-          if (query != "professor")
+          if (query !== "professor")
             search_url += query + "=" + query_terms[query] + "&";
         }
       else
@@ -129,11 +127,11 @@ function Main(props) {
         University students about classes, professors, sections, etc. Start by
         searching something in the search bar below!
       </h2>
-      <SearchBar searchAction={onSearch} />
+      <SearchBar search={onSearch} />
       <table className="w-full mt-4 table-fixed">
         <thead>
           {data.length > 0 &&
-            (type == "courses" ? (
+            (type === "courses" ? (
               <tr className="h-12 w-full bg-blue-100">
                 <th className="px-3 w-1/6 text-left">Course</th>
                 <th className="px-3 w-2/6 text-left">Title</th>
@@ -141,7 +139,7 @@ function Main(props) {
                 <th className="px-3 w-1/6">Quality</th>
                 <th className="px-3 w-1/6">Difficulty</th>
               </tr>
-            ) : type == "sections" ? (
+            ) : type === "sections" ? (
               <tr className="h-12 w-full text-left bg-blue-100">
                 <th className="px-3 w-3/12 text-left">Course</th>
                 <th className="px-3 w-2/12 text-left">Type</th>
@@ -253,6 +251,7 @@ function Main(props) {
                     </tr>
                   );
                 }
+              return <></>;
             })}
         </tbody>
       </table>
@@ -282,7 +281,7 @@ function Main(props) {
           <div id="loading_spinner"></div>
         </div>
       )}
-      {data.length == 0 && type === "not_found" && (
+      {data.length === 0 && type === "not_found" && (
         <div>No results found matching query, try something different!</div>
       )}
     </div>

@@ -37,7 +37,7 @@ class Popups extends Component {
     let popups = this.props.statePopups;
     let active = Object.values(popups).includes(true);
 
-    if (active != this.state.active) {
+    if (active !== this.state.active) {
       this.setState({ active, popups });
     }
   }

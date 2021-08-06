@@ -4,7 +4,6 @@ import CoursesRating from "./CoursesRating";
 import {
   formatDays,
   formatPrereqs,
-  formatProfessor,
   formatRating,
   formatTime,
   ratingToDiv,
@@ -67,9 +66,7 @@ export default class Courses extends Component {
                   Home
                 </a>
                 <FiChevronRight />
-                <a href="" className="hover:underline">
-                  {element.course_code}
-                </a>
+                <p className="hover:underline">{element.course_code}</p>
               </div>
               <span className="font-bold text-xl mr-4">
                 {element.course_code}

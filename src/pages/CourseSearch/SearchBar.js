@@ -17,7 +17,7 @@ export default class SearchBar extends Component {
             (e.target.placeholder =
               "Search for a professor, course, section...")
           }
-          onChange={this.props.searchAction}
+          onChange={this.props.search}
         />
         <button
           type="submit"

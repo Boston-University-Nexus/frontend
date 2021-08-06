@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { request } from "../../middlewares/requests";
-import CoursesRating from "./CoursesRating";
 
 import SectionsRating from "./SectionsRating";
 import {
@@ -71,9 +70,9 @@ export default class Sections extends Component {
                   {element.course_code}
                 </a>
                 <FiChevronRight />
-                <a href="" className="hover:underline">
+                <p className="hover:underline">
                   {element.course_code + " " + element.section_code}
-                </a>
+                </p>
               </div>
               <span className="font-bold text-xl mr-4">
                 {element.course_code} {element.section_code}

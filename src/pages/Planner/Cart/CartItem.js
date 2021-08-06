@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Component } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
@@ -29,7 +28,7 @@ export default function CartItem(props) {
     return () => {
       window.removeEventListener("resize", () => setScreenW(window.innerWidth));
     };
-  }, []);
+  }, [props.item.displayed]);
 
   return (
     <div
