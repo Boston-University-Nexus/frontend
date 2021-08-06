@@ -32,7 +32,7 @@ export default function CartItem(props) {
 
   return (
     <div
-      className="w-full h-26 flex items-center justify-between px-2 lg:px-4 py-5 border-b border-solid border-gray-300 cursor-pointer hover:bg-blue-200 transition-colors select-none group"
+      className="w-full flex items-center justify-between px-2 lg:px-4 py-2 xl:py-3 2xl:py-4 border-b border-solid border-gray-300 cursor-pointer hover:bg-blue-200 transition-colors select-none group"
       onClick={() => {
         props.updateCart(props.item.title, props.item);
         setChecked(!checked);

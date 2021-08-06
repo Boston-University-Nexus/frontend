@@ -34,7 +34,7 @@ export default class About extends Component {
               position="Founder & Back-end Developer"
               img={VineetImg}
               linkedin="https://www.linkedin.com/in/vineet-raju/"
-              description="Founder,Data scraping,Extension,Not finished..."
+              description="Founder,Data scraping,Extension,Recommendation Algorithm,Not finished..."
             />
             <Contributor
               name="Yuchen C"
