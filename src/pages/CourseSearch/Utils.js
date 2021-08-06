@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const checkTypedType = (text) => {
   // IF SEARCH BAR EMPTY
-  if (text.length == 0) return [[], {}];
+  if (text.length === 0) return [[], {}];
 
   let text_original = text;
   text = text.replace(/\s/g, "").toLowerCase();
@@ -188,7 +188,7 @@ export const ratingToDiv = (rating, text) => {
     else color = "text-green-500";
 
     rating = rating + "/5";
-  } else if (text == "Workload:" && rating !== "TBD") {
+  } else if (text === "Workload:" && rating !== "TBD") {
     if (rating < 2.33) color = "text-green-500";
     else if (rating < 3.66) color = "text-yellow-500";
     else color = "text-red-500";

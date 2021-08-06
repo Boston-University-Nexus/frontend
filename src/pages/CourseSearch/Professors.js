@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import { request } from "../../middlewares/requests";
 
 import ProfessorRating from "./ProfessorRating";
-import {
-  formatDays,
-  formatProfessor,
-  formatRating,
-  formatTime,
-  ratingToDiv,
-} from "./Utils";
+import { formatDays, formatRating, formatTime, ratingToDiv } from "./Utils";
 import { FiChevronRight } from "react-icons/fi";
 
 export default class Professors extends Component {
@@ -71,9 +65,7 @@ export default class Professors extends Component {
                   Home
                 </a>
                 <FiChevronRight />
-                <a href="" className="hover:underline">
-                  {prof.professor_name}
-                </a>
+                <p className="hover:underline">{prof.professor_name}</p>
               </div>
               <h1 className="font-bold text-xl mr-4">{prof.professor_name}</h1>
               <div className="flex gap-2 my-4">

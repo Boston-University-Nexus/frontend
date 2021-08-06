@@ -5,7 +5,7 @@ import React from "react";
 function getColor(val, type) {
   // Decides the color based on the rating
   let color = "bg-gray-200";
-  if (val == 0)
+  if (val === 0)
     return (
       <div
         className={

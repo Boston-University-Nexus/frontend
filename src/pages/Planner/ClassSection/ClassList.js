@@ -21,22 +21,17 @@ import { request } from "../../../middlewares/requests";
 
 function ClassList(props) {
   const [hasTyped, setHasTyped] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const [typedText, setTypedText] = useState("");
-  const [sql_page, setSqlPage] = useState(0);
-  const [prev_query, setPrevQuery] = useState("");
 
   // Calls db
   const makeQuery = (query) => {
     query = query.toLowerCase().replaceAll(" ", "");
-    let max = parseInt(process.env.REACT_APP_SQL_MAX_ITEMS);
 
     request
       .get(process.env.REACT_APP_SERVER + "courses?" + query)
       .then((res) => {
         if (res && !res.error) {
           props.stateSaveCourses(res.data);
-          setHasMore(res.data.length === max);
         } else if (!res) props.stateSaveCourses([]);
         else {
           props.stateSetPopups({
@@ -60,7 +55,7 @@ function ClassList(props) {
 
     // If user deleted a character, pasted something different, or
     // there are more classes to load than what we received
-    if (nowTyped == "") {
+    if (nowTyped === "") {
       setHasTyped(false);
       props.stateSaveCourses([]);
     } else {
@@ -73,10 +68,8 @@ function ClassList(props) {
       // Get type of query we should make
       let query = filter(nowTyped);
 
-      if (query != "") {
+      if (query !== "") {
         // Call helper function filter and reset state
-        setPrevQuery(query);
-        setSqlPage(0);
         debounceQuery(query, makeQuery);
       } else {
         props.stateSaveCourses([]);
@@ -115,14 +108,14 @@ function ClassList(props) {
             })}
 
             {/* IF EMPTY SEARCH */}
-            {props.stateCourses.length === 0 && typedText.length < 1 && (
-              <StartTyping />
-            )}
+            {!hasTyped &&
+              props.stateCourses.length === 0 &&
+              typedText.length < 1 && <StartTyping />}
 
             {/* IF NOT FOUND */}
-            {props.stateCourses.length === 0 && typedText.length > 0 && (
-              <NotFound />
-            )}
+            {hasTyped &&
+              props.stateCourses.length === 0 &&
+              typedText.length > 0 && <NotFound />}
           </div>
         </div>
       )}

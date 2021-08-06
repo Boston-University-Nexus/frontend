@@ -41,10 +41,7 @@ export default class SectionsRating extends Component {
       course,
     };
 
-    let res = await request.post(
-      process.env.REACT_APP_SERVER + "ratings/",
-      data
-    );
+    await request.post(process.env.REACT_APP_SERVER + "ratings/", data);
 
     this.setState({ open: false });
   }

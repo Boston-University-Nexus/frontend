@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Contributor from "./Contributor";
 
 // Pictures
-import PhillipImg from "../../img/team/phillip.jpg";
+// import PhillipImg from "../../img/team/phillip.jpg";
 import DanielImg from "../../img/team/daniel.jpg";
 import VineetImg from "../../img/team/vineet.jpeg";
 import NicImg from "../../img/team/nic.jpeg";
